@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
+import { AppState } from '../reducers';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
+import { RouterProps } from '../configs/Router';
 
 interface HomeProps {
 
@@ -8,18 +10,20 @@ interface HomeProps {
 
 interface StateProps {
     user: any;
-    message: any;
-    topic: any;
-    ui: any;
 }
 
-type Props = HomeProps & StateProps & ConnectComponentProps;
+type Props = HomeProps & StateProps & RouterProps & ConnectComponentProps;
 
 class Home extends React.Component<Props, any> {
+
+    private onPress(): void {
+        this.props.router.toDash();
+    }
 
     public render(): JSX.Element {
         return (
             <View style={styles.container}>
+                <Button title='ToDash' onPress={this.onPress.bind(this)} />
                 <Text style={styles.welcome}>
                     Welcome to React Native!
                 </Text>
@@ -54,12 +58,9 @@ const styles = StyleSheet.create({
     },
 });
 
-function mapStateToProps(state: any, ownProps: HomeProps): StateProps {
+function mapStateToProps(state: AppState, ownProps?: HomeProps): StateProps {
     return {
-        user: state.user,
-        message: state.message,
-        topic: state.topic,
-        ui: state.home
+        user: state.user
     };
 }
 

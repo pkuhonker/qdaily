@@ -1,7 +1,12 @@
 import { Navigator, BackAndroid, Platform, Route } from 'react-native';
-import connectComponent from '../utils/connectComponent';
 import * as CustomSceneConfigs from './sceneConfig';
+import Dash, { DashProps } from '../containers/Dash';
 import * as _ from 'lodash';
+
+export interface RouterProps {
+    router: Router;
+    route: Route;
+}
 
 export default class Router {
     private navigator: Navigator;
@@ -30,11 +35,17 @@ export default class Router {
         route.index = nextIndex;
         route.sceneConfig = route.sceneConfig ? route.sceneConfig : CustomSceneConfigs.customFloatFromRight;
         route.id = _.uniqueId();
-        route.component = connectComponent(<any>route.component);
         this.navigator.push(route);
     }
 
     public pop() {
         this.navigator.pop();
+    }
+
+    toDash(props?: DashProps) {
+        this.push(props, {
+            component: Dash,
+            name: 'dash'
+        });
     }
 }

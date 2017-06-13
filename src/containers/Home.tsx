@@ -9,7 +9,6 @@ interface HomeProps {
 }
 
 interface StateProps {
-    user: any;
 }
 
 type Props = HomeProps & StateProps & RouterProps & ConnectComponentProps;
@@ -60,7 +59,6 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state: AppState, ownProps?: HomeProps): StateProps {
     return {
-        user: state.user
     };
 }
 

@@ -9,7 +9,6 @@ export interface DashProps {
 }
 
 interface StateProps {
-    user: any;
 }
 
 type Props = DashProps & StateProps & ConnectComponentProps & RouterProps;
@@ -23,7 +22,7 @@ class Dash extends React.Component<Props, any> {
     public render(): JSX.Element {
         return (
             <View>
-                <Button title='fuck' onPress={this.onPress.bind(this)} />
+                <Button title='后退' onPress={this.onPress.bind(this)} />
             </View>
         );
     }
@@ -31,7 +30,6 @@ class Dash extends React.Component<Props, any> {
 
 function mapStateToProps(state: AppState, ownProps?: DashProps): StateProps {
     return {
-        user: state.user
     };
 }
 

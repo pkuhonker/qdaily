@@ -1,22 +1,28 @@
 {
-	"name": "astro",
-	"version": "0.0.1",
-	"private": true,
-	"scripts": {
-		"start": "node node_modules/react-native/local-cli/cli.js start",
-		"test": "jest"
-	},
-	"dependencies": {
-		"react": "16.0.0-alpha.12",
-		"react-native": "0.45.1"
-	},
-	"devDependencies": {
-		"babel-jest": "20.0.3",
-		"babel-preset-react-native": "1.9.2",
-		"jest": "20.0.4",
-		"react-test-renderer": "16.0.0-alpha.12"
-	},
-	"jest": {
-		"preset": "react-native"
-	}
+  "name": "astro",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "android": "node node_modules/react-native/local-cli/cli.js run-android",
+    "ios": "node node_modules/react-native/local-cli/cli.js run-ios"
+  },
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "react": "16.0.0-alpha.6",
+    "react-native": "0.43.2",
+    "react-navigation": "^1.0.0-beta.11",
+    "react-redux": "^5.0.5",
+    "redux": "^3.6.0"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.66",
+    "@types/react": "^15.0.23",
+    "@types/react-native": "^0.43.9",
+    "@types/react-navigation": "^1.0.7",
+    "@types/react-redux": "^4.4.42",
+    "babel-preset-react-native": "1.9.2",
+    "tslint": "^4.3.1",
+    "typescript": "^2.3.4"
+  }
 }

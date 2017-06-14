@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 import { AppState } from '../reducers';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
-import { RouterProps } from '../configs/Router';
 
 interface HomeProps {
 
@@ -11,12 +11,12 @@ interface HomeProps {
 interface StateProps {
 }
 
-type Props = HomeProps & StateProps & RouterProps & ConnectComponentProps;
+type Props = HomeProps & StateProps & ConnectComponentProps;
 
 class Home extends React.Component<Props, any> {
 
     private onPress(): void {
-        this.props.router.toDash();
+        Actions['dash']();
     }
 
     public render(): JSX.Element {

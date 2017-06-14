@@ -1,58 +1,45 @@
 import * as React from 'react';
-import { Navigator, ViewProperties, Route, SceneConfig } from 'react-native';
-import Router from '../configs/Router';
+import { connect } from 'react-redux';
+import { Router, Scene } from 'react-native-router-flux';
+import { AppState } from '../reducers';
+import connectComponent from '../utils/connectComponent';
 import Home from './Home';
+import Dash from './Dash';
 
-const initialRoute: Route = {
-    name: 'home',
-    index: 0,
-    component: Home,
-    id: "0"
-};
+const RouterWithRedux = connect()(Router);
 
-export default class Navigation extends React.Component<any, any> {
+interface NavigationProps {
+}
 
-    private navigator: React.Component<any, any>;
-    private router: Router;
-    private routeViews: { [index: number]: React.Component<any, any> };
+interface StateProps {
+}
+
+type Props = NavigationProps & StateProps;
+
+class Navigation extends React.Component<NavigationProps, any> {
 
     constructor(props: any) {
         super(props);
-        this.routeViews = {};
-    }
-
-    private renderScene({ component, name, props, id, index }: Route, navigator: Navigator): React.ReactElement<ViewProperties> | undefined {
-        this.router = this.router || new Router(navigator);
-        if (component) {
-            return React.createElement(component, {
-                ...props,
-                ref: view => this.routeViews[index as number] = view,
-                router: this.router,
-                route: {
-                    name,
-                    id,
-                    index
-                }
-            });
-        }
-        return undefined;
-    }
-
-    private configureScene(route: Route): SceneConfig {
-        if (route.sceneConfig) {
-            return route.sceneConfig;
-        }
-        return Navigator.SceneConfigs.FloatFromRight;
     }
 
     public render() {
         return (
-            <Navigator
-                ref={view => this.navigator = view}
-                initialRoute={initialRoute}
-                configureScene={this.configureScene.bind(this)}
-                renderScene={this.renderScene.bind(this)}
-            />
+            <RouterWithRedux>
+                <Scene key="root">
+                    <Scene key="home" component={Home} hideNavBar initial={true} />
+                    <Scene key="dash" component={Dash} />
+                </Scene>
+            </RouterWithRedux>
         );
     }
 }
+
+function mapStateToProps(state: AppState, ownProps?: NavigationProps): StateProps {
+    return {
+    };
+}
+
+export default connectComponent({
+    LayoutComponent: Navigation,
+    mapStateToProps: mapStateToProps
+});

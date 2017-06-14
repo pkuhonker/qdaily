@@ -1,13 +1,15 @@
 import { createStore, applyMiddleware, Middleware, Store } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import promiseMiddleware from './promiseMiddleware';
+import asyncActionCallbackMiddleware from './asyncActionCallbackMiddleware';
 import reducers from '../reducers';
 
 declare const module: any;
 
 const middlewares: Middleware[] = [
     thunkMiddleware,
-    promiseMiddleware
+    promiseMiddleware,
+    asyncActionCallbackMiddleware
 ];
 
 export default function configureStore(initialState?: any): Store<any> {

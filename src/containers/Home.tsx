@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { View, Tabs } from 'antd-mobile';
-import { Actions } from 'react-native-router-flux';
 import { AppState } from '../reducers';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
 
@@ -18,10 +17,6 @@ type Props = HomeProps & StateProps & ConnectComponentProps;
 
 class Home extends React.Component<Props, any> {
 
-    private onPress(): void {
-        Actions['dash']();
-    }
-
     public render(): JSX.Element {
         return (
             <View style={styles.container}>
@@ -29,7 +24,6 @@ class Home extends React.Component<Props, any> {
                     <TabPane tab='NEWS' key='news'>
                     </TabPane>
                     <TabPane tab='LABS' key='labs'>
-                        
                     </TabPane>
                 </Tabs>
             </View>

@@ -1,12 +1,14 @@
 {
     "compilerOptions": {
         "target": "es6",
-        "module": "commonjs",
+        "module": "es2015",
+        "moduleResolution": "node",
         "jsx": "react",
         "sourceMap": true,
         "rootDir": "src",
         "outDir": "./out",
         "noImplicitAny": false,
+        "allowSyntheticDefaultImports": true,
         "strict": true
     }
 }

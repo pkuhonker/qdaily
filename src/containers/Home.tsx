@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 import { View, Tabs } from 'antd-mobile';
+import Banners from '../components/Banners';
 import { AppState } from '../reducers';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
 
@@ -22,6 +23,9 @@ class Home extends React.Component<Props, any> {
             <View style={styles.container}>
                 <Tabs defaultActiveKey='news'>
                     <TabPane tab='NEWS' key='news'>
+                        <ScrollView>
+                            <Banners />
+                        </ScrollView>
                     </TabPane>
                     <TabPane tab='LABS' key='labs'>
                     </TabPane>
@@ -34,8 +38,6 @@ class Home extends React.Component<Props, any> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
         backgroundColor: '#F5FCFF',
     }
 });

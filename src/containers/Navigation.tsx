@@ -6,7 +6,7 @@ import connectComponent from '../utils/connectComponent';
 import Home from './Home';
 import Dash from './Dash';
 
-const RouterWithRedux = connect()(Router);
+const RouterWithRedux = connect()(Router as any);
 
 interface NavigationProps {
 }

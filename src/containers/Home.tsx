@@ -7,6 +7,8 @@ import Feed from '../components/Feed';
 import { AppState } from '../reducers';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
 
+const data = require('../../data.json');
+
 const TabPane = Tabs.TabPane;
 
 interface HomeProps {
@@ -29,9 +31,16 @@ class Home extends React.Component<Props, any> {
                             <Banners />
                             <WhiteSpace />
                             <HeadLine />
-                            <WhiteSpace />
-                            <Feed />
-                            <WhiteSpace />
+                            {
+                                data.response.feeds.map(feed => {
+                                    return (
+                                        <View key={feed.post.id}>
+                                            <WhiteSpace />
+                                            <Feed feed={feed}/>
+                                        </View>
+                                    );
+                                })
+                            }
                         </ScrollView>
                     </TabPane>
                     <TabPane tab='LABS' key='labs'>

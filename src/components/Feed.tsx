@@ -25,37 +25,28 @@ export interface IFeed {
 }
 
 export interface FeedProp {
-    feed?: IFeed;
+    feed: IFeed;
 }
 
 export default class Feed extends React.Component<FeedProp, any> {
-
-    private feed: IFeed = {
-        image: 'http://img.qdaily.com/article/article_show/20170602185127NhzM7wSLXmy2pWAt.jpg?imageMogr2/auto-orient/thumbnail/!640x380r/gravity/Center/crop/640x380/quality/85/format/jpg/ignore-error/1',
-        type: 1,
-        post: {
-            id: 41574,
-            title: "苹果App Store 9年卖了1000亿美元的软件，这相当于什么水平？ | 好奇心小数据",
-            publish_time: 1496401430,
-            comment_count: 15,
-            praise_count: 57,
-            category: {
-                id: 4,
-                title: "智能",
-                normal: "http://img.qdaily.com/category/icon_black/20160606004531Fg254UJbRaLqOmvY.png?imageMogr2/auto-orient/thumbnail/!128x128r/gravity/Center/crop/128x128/quality/85/ignore-error/1",
-                normal_hl: "http://img.qdaily.com/category/icon_yellow_app/20160606004532NrgPYnKo3UXRaw1i.png?imageMogr2/auto-orient/thumbnail/!160x160r/gravity/Center/crop/160x160/quality/85/ignore-error/1",
-                image_lab: "http://img.qdaily.com/category/icon_yellow_app/20160606004532NrgPYnKo3UXRaw1i.png?imageMogr2/auto-orient/thumbnail/!160x160r/gravity/Center/crop/160x160/quality/85/ignore-error/1",
-                image_experiment: ""
-            },
-        }
-    };
 
     private parseTime(time: number) {
         return moment(time * 1000, undefined, 'zh-cn').fromNow();
     }
 
     public render() {
-        const { feed = this.feed } = this.props;
+        const { feed } = this.props;
+
+        const comment = feed.post.comment_count ? [
+            <Icon style={[styles.postDetailText]} name='comment-o' />,
+            <Text style={[styles.postDetailText]}>{feed.post.comment_count}</Text>
+        ] : null;
+
+        const praise = feed.post.praise_count ? [
+            <Icon style={[styles.postDetailText, { fontSize: 10 }]} name='heart-o' />,
+            <Text style={[styles.postDetailText]}>{feed.post.praise_count}</Text>
+        ] : null;
+
         return (
             <TouchableNativeFeedback>
                 <View style={styles.container}>
@@ -63,10 +54,8 @@ export default class Feed extends React.Component<FeedProp, any> {
                         <Text style={styles.postTitle}>{feed.post.title}</Text>
                         <View style={styles.postDetail}>
                             <Text style={[styles.postDetailText]}>{feed.post.category.title}</Text>
-                            <Icon style={[styles.postDetailText]} name='comment-o'/>
-                            <Text style={[styles.postDetailText]}>{feed.post.comment_count}</Text>
-                            <Icon style={[styles.postDetailText, { fontSize: 10 }]} name='heart-o'/>
-                            <Text style={[styles.postDetailText]}>{feed.post.praise_count}</Text>
+                            {comment}
+                            {praise}
                             <Text style={[styles.postDetailText]}>{this.parseTime(feed.post.publish_time)}</Text>
                         </View>
                     </View>

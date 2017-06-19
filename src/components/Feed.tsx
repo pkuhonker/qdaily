@@ -1,5 +1,7 @@
 import * as React from 'react';
+import moment from 'moment';
 import { StyleSheet, Text, View, Image, ViewStyle, TextStyle, ImageStyle, TouchableNativeFeedback } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export interface FeedCategory {
     id: number;
@@ -48,6 +50,10 @@ export default class Feed extends React.Component<FeedProp, any> {
         }
     };
 
+    private parseTime(time: number) {
+        return moment(time * 1000, undefined, 'zh-cn').fromNow();
+    }
+
     public render() {
         const { feed = this.feed } = this.props;
         return (
@@ -57,6 +63,11 @@ export default class Feed extends React.Component<FeedProp, any> {
                         <Text style={styles.postTitle}>{feed.post.title}</Text>
                         <View style={styles.postDetail}>
                             <Text style={[styles.postDetailText]}>{feed.post.category.title}</Text>
+                            <Icon style={[styles.postDetailText]} name='comment-o'/>
+                            <Text style={[styles.postDetailText]}>{feed.post.comment_count}</Text>
+                            <Icon style={[styles.postDetailText, { fontSize: 10 }]} name='heart-o'/>
+                            <Text style={[styles.postDetailText]}>{feed.post.praise_count}</Text>
+                            <Text style={[styles.postDetailText]}>{this.parseTime(feed.post.publish_time)}</Text>
                         </View>
                     </View>
                     <Image style={styles.image} source={{ uri: feed.image }}>
@@ -90,8 +101,10 @@ const styles = StyleSheet.create({
     } as TextStyle,
     postDetail: {
         flexDirection: 'row',
+        alignItems: 'center'
     } as ViewStyle,
     postDetailText: {
-        fontSize: 11
+        fontSize: 11,
+        marginRight: 5
     } as TextStyle
 });

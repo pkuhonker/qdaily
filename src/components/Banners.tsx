@@ -27,7 +27,7 @@ export default class Banners extends React.Component<any, any> {
     private renderPage(data: BannerData): JSX.Element {
         return (
             <View key={data.image} style={[styles.container, { backgroundColor: 'red' }]}>
-                <Image style={{ height: 200, justifyContent: 'flex-end' }} source={{ uri: data.image }}>
+                <Image style={{ flex: 1, justifyContent: 'flex-end' }} source={{ uri: data.image }}>
                     <Text style={styles.text}>{data.title}</Text>
                 </Image>
             </View>
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     } as ViewStyle,
     container: {
-        flexGrow: 1,
+        height: 255,
         alignItems: 'center',
         justifyContent: 'center'
     } as ViewStyle,

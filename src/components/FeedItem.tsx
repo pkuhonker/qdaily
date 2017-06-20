@@ -2,33 +2,13 @@ import * as React from 'react';
 import moment from 'moment';
 import { StyleSheet, Text, View, Image, ViewStyle, TextStyle, ImageStyle, TouchableNativeFeedback } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
-export interface FeedCategory {
-    id: number;
-    title: string;
-    [key: string]: any;
-}
-
-export interface FeedPost {
-    id: number;
-    title: string;
-    publish_time: number;
-    comment_count: number;
-    praise_count: number;
-    category: FeedCategory;
-}
-
-export interface IFeed {
-    image: string;
-    type: 1 | 2 | 3;
-    post: FeedPost;
-}
+import { Feed } from '../interfaces';
 
 export interface FeedProp {
-    feed: IFeed;
+    feed: Feed;
 }
 
-export default class Feed extends React.Component<FeedProp, any> {
+export default class FeedItem extends React.Component<FeedProp, any> {
 
     private parseTime(time: number) {
         return moment(time * 1000, undefined, 'zh-cn').fromNow();

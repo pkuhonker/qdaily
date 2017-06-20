@@ -2,12 +2,12 @@ import * as React from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
 import { View, Tabs, WhiteSpace } from 'antd-mobile';
 import Banners from '../components/Banners';
-import HeadLine from '../components/HeadLine';
-import Feed from '../components/Feed';
+import HeadLineCard from '../components/HeadLineCard';
+import FeedItem from '../components/FeedItem';
 import { AppState } from '../reducers';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
 
-const data = require('../../data.json');
+const data = require('../../data.json').response;
 
 const TabPane = Tabs.TabPane;
 
@@ -28,15 +28,15 @@ class Home extends React.Component<Props, any> {
                 <Tabs defaultActiveKey='news'>
                     <TabPane tab='NEWS' key='news'>
                         <ScrollView>
-                            <Banners />
+                            <Banners banners={data.banners}/>
                             <WhiteSpace />
-                            <HeadLine />
+                            <HeadLineCard headline={data.headline} />
                             {
-                                data.response.feeds.map(feed => {
+                                data.feeds.map(feed => {
                                     return (
                                         <View key={feed.post.id}>
                                             <WhiteSpace />
-                                            <Feed feed={feed}/>
+                                            <FeedItem feed={feed}/>
                                         </View>
                                     );
                                 })

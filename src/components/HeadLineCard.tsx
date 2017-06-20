@@ -2,14 +2,13 @@ import * as React from 'react';
 import { StyleSheet, Text, View, ViewStyle, TextStyle, TouchableNativeFeedback } from 'react-native';
 import { Card } from 'antd-mobile';
 import MiniCalendar from './base/MiniCalendar';
+import { HeadLine } from '../interfaces';
 
-export default class HeadLine extends React.Component<any, any> {
+export interface HeadLineProp {
+    headline: HeadLine;
+}
 
-    private content: string[] = [
-        '顺丰和阿里巴巴旗下物流服务菜鸟物流相互切断对方数据接口，国家邮政局将出面与双方高层沟通。',
-        '欧盟调查认为 Google 购物服务涉嫌垄断，计划罚款 90 亿美元，最快 8 月知道结果。',
-        '中信出版社发了招股书，拟在深交所上市，募资 9.6 亿元，估值大约 40 亿元人民币。'
-    ];
+export default class HeadLineCard extends React.Component<HeadLineProp, any> {
 
     private renderTitle() {
         return (
@@ -27,13 +26,14 @@ export default class HeadLine extends React.Component<any, any> {
     }
 
     private renderContent() {
-        return this.content.map((text, index) => {
+        const list = this.props.headline.list;
+        return list.map((content, index) => {
             const isFirst = index === 0;
-            const isLast = index === (this.content.length - 1);
+            const isLast = index === (list.length - 1);
             return (
-                <View key={text} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View key={content.description} style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <View style={{ backgroundColor: '#ffe38f', borderRadius: 7, width: 7, height: 7 }} />
-                    <Text style={[styles.cardContentText, isFirst ? { paddingTop: 0 } : null, isLast ? { borderBottomWidth: 0 } : null ]}>{text}</Text>
+                    <Text style={[styles.cardContentText, isFirst ? { paddingTop: 0 } : null, isLast ? { borderBottomWidth: 0 } : null ]}>{content.description}</Text>
                 </View>
             );
         });

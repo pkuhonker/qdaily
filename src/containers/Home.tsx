@@ -3,7 +3,7 @@ import { StyleSheet, ScrollView } from 'react-native';
 import { View, Tabs, WhiteSpace } from 'antd-mobile';
 import Banners from '../components/Banners';
 import HeadLineCard from '../components/HeadLineCard';
-import FeedItem from '../components/FeedItem';
+import FeedsListView from '../components/FeedsListView';
 import { AppState } from '../reducers';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
 
@@ -31,16 +31,8 @@ class Home extends React.Component<Props, any> {
                             <Banners banners={data.banners}/>
                             <WhiteSpace />
                             <HeadLineCard headline={data.headline} />
-                            {
-                                data.feeds.map(feed => {
-                                    return (
-                                        <View key={feed.post.id}>
-                                            <WhiteSpace />
-                                            <FeedItem feed={feed}/>
-                                        </View>
-                                    );
-                                })
-                            }
+                            <WhiteSpace />
+                            <FeedsListView feeds={data.feeds} />
                         </ScrollView>
                     </TabPane>
                     <TabPane tab='LABS' key='labs'>

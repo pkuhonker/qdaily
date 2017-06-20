@@ -18,13 +18,13 @@ export default class FeedItem extends React.Component<FeedProp, any> {
         const { feed } = this.props;
 
         const comment = feed.post.comment_count ? [
-            <Icon style={[styles.postDetailText]} name='comment-o' />,
-            <Text style={[styles.postDetailText]}>{feed.post.comment_count}</Text>
+            <Icon key='icon' style={[styles.postDetailText]} name='comment-o' />,
+            <Text key='text' style={[styles.postDetailText]}>{feed.post.comment_count}</Text>
         ] : null;
 
         const praise = feed.post.praise_count ? [
-            <Icon style={[styles.postDetailText, { fontSize: 10 }]} name='heart-o' />,
-            <Text style={[styles.postDetailText]}>{feed.post.praise_count}</Text>
+            <Icon key='icon' style={[styles.postDetailText, { fontSize: 10 }]} name='heart-o' />,
+            <Text key='text' style={[styles.postDetailText]}>{feed.post.praise_count}</Text>
         ] : null;
 
         return (

@@ -26,14 +26,14 @@ export default class HeadLineCard extends React.Component<HeadLineProp, any> {
     }
 
     private renderContent() {
-        const list = this.props.headline.list;
+        const { list = [] } = this.props.headline;
         return list.map((content, index) => {
             const isFirst = index === 0;
             const isLast = index === (list.length - 1);
             return (
                 <View key={content.description} style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <View style={{ backgroundColor: '#ffe38f', borderRadius: 7, width: 7, height: 7 }} />
-                    <Text style={[styles.cardContentText, isFirst ? { paddingTop: 0 } : null, isLast ? { borderBottomWidth: 0 } : null ]}>{content.description}</Text>
+                    <Text style={[styles.cardContentText, isFirst ? { paddingTop: 0 } : null, isLast ? { borderBottomWidth: 0 } : null]}>{content.description}</Text>
                 </View>
             );
         });

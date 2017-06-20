@@ -44,3 +44,15 @@ export interface HeadLine extends Feed {
         keywords: string[];
     }[];
 }
+
+
+/////////
+
+export interface PromiseMeta {
+    sequence: PromiseMetaSequence;
+}
+
+export interface PromiseMetaSequence {
+    id: string;
+    type: 'start' | 'next';
+}

@@ -48,7 +48,7 @@ export default class FeedItem extends React.Component<FeedProp, any> {
             <TouchableNativeFeedback>
                 <View style={styles.container}>
                     <View style={styles.content}>
-                        <Text style={styles.postTitle}>{feed.post.title}</Text>
+                        <Text ellipsizeMode='tail' numberOfLines={3} style={styles.postTitle}>{feed.post.title}</Text>
                         {this.renderFooter()}
                     </View>
                     <Image style={styles.image} source={{ uri: feed.image }}>
@@ -128,12 +128,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     } as ViewStyle,
     content: {
-        flex: 11,
+        flex: 8,
         padding: 12,
         justifyContent: 'space-between'
     } as ViewStyle,
     image: {
-        flex: 9,
+        flex: 7,
         height: 120
     } as ImageStyle,
     postTitle: {

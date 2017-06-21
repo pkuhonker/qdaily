@@ -59,6 +59,7 @@ export interface HeadLine extends Feed {
 
 export interface PromiseMeta {
     sequence: PromiseMetaSequence;
+    [key: string]: any;
 }
 
 export interface PromiseMetaSequence {

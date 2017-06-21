@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { View, Text, ListView, ListViewDataSource } from 'react-native';
-import { WhiteSpace } from 'antd-mobile';
+import { View, ListView, ListViewDataSource } from 'react-native';
+import { WhiteSpace, ActivityIndicator } from 'antd-mobile';
 import Banners from '../components/Banners';
 import HeadLineCard from '../components/HeadLineCard';
 import { Feed, Banner, HeadLine } from '../interfaces';
@@ -57,9 +57,9 @@ export default class NewsView extends React.Component<NewsViewProp, NewsViewStat
 
     private renderFooter() {
         return (
-            <Text style={[{ padding: 10, textAlign: 'center' }]}>
-                正在加载...
-            </Text>
+            <View style={{ padding: 20 }}>
+                <ActivityIndicator text="正在加载" />
+            </View>
         );
     }
 

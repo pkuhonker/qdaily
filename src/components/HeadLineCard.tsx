@@ -21,7 +21,7 @@ export default class HeadLineCard extends React.Component<HeadLineProp, any> {
 
     private renderFooter() {
         return (
-            <Text style={{ textAlign: 'right', fontSize: 12 }}>查看详情 ≫</Text>
+            <Text style={{ textAlign: 'right', fontSize: 13 }}>查看详情 ≫</Text>
         );
     }
 
@@ -71,16 +71,17 @@ const styles = StyleSheet.create({
     cardTitleText: {
         marginLeft: 10,
         fontWeight: 'bold',
-        color: 'black'
+        color: 'black',
+        fontSize: 15
     } as TextStyle,
     cardBody: {
-        marginHorizontal: 10,
+        marginHorizontal: 15,
         borderTopWidth: 0
     } as ViewStyle,
     cardContentText: {
         color: '#2a2a2a',
         marginHorizontal: 14,
-        fontSize: 12,
+        fontSize: 14,
         paddingVertical: 8,
         borderBottomWidth: 1,
         borderColor: '#ececec'

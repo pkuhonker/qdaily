@@ -30,12 +30,9 @@ export default function (state = initialState, action: FSA<HomeState, PromiseMet
             return (!error && !pending) ? {
                 ...state,
                 ...payload,
-                feeds: state.feeds.concat(payload.feeds),
-                banners: state.banners.concat(payload.banners),
-                headline: {
-                    ...state.headline,
-                    list: state.headline.list.concat(payload.headline.list)
-                }
+                feeds: payload.feeds.length > 0 ? state.feeds.concat(payload.feeds) : state.feeds,
+                banners: payload.banners.length > 0 ? payload.banners : state.banners,
+                headline: payload.headline.list.length > 0 ? payload.headline : state.headline
             } : state;
         default:
             return state;

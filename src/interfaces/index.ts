@@ -1,6 +1,7 @@
 export interface PostCategory {
     id: number;
     title: string;
+    image_lab?: string;
     [key: string]: any;
 }
 
@@ -21,6 +22,7 @@ export interface PostColumn {
 export interface Post {
     id: number;
     title: string;
+    description: string;
     publish_time: number;
     comment_count: number;
     praise_count: number;
@@ -28,9 +30,14 @@ export interface Post {
     column?: PostColumn;
 }
 
+export enum FeedType {
+    COLUMN = 0,
+    NORMAL = 1
+}
+
 export interface Feed {
     image: string;
-    type: number;
+    type: FeedType;
     post: Post;
 }
 

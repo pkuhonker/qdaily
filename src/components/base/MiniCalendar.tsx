@@ -25,10 +25,10 @@ export default class MiniCalendar extends React.Component<MiniCalendarProps, any
         return (
             <View style={styles.container}>
                 <View style={styles.monthContainer}>
-                    <Text style={[styles.text, { fontSize: 8 }]}>{month}</Text>
+                    <Text style={[styles.text, { fontSize: 9 }]}>{month}</Text>
                 </View>
                 <View style={styles.dayContainer}>
-                    <Text style={[styles.text, { fontSize: 12, color: 'black' }]}>{day}</Text>
+                    <Text style={[styles.text, { fontSize: 13, color: 'black' }]}>{day}</Text>
                 </View>
             </View>
         );

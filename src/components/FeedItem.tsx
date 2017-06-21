@@ -18,7 +18,7 @@ export default class FeedItem extends React.Component<FeedProp, any> {
         return moment(time * 1000, undefined, 'zh-cn').fromNow();
     }
 
-    private renderNormal() {
+    private renderFooter() {
         const { feed } = this.props;
 
         const comment = feed.post.comment_count ? [
@@ -32,16 +32,24 @@ export default class FeedItem extends React.Component<FeedProp, any> {
         ] : null;
 
         return (
+            <View style={styles.postDetail}>
+                <Text style={[styles.postDetailText]}>{feed.post.category.title}</Text>
+                {comment}
+                {praise}
+                <Text style={[styles.postDetailText]}>{this.parseTime(feed.post.publish_time)}</Text>
+            </View>
+        );
+    }
+
+    private renderNormal() {
+        const { feed } = this.props;
+
+        return (
             <TouchableNativeFeedback>
                 <View style={styles.container}>
                     <View style={styles.content}>
                         <Text style={styles.postTitle}>{feed.post.title}</Text>
-                        <View style={styles.postDetail}>
-                            <Text style={[styles.postDetailText]}>{feed.post.category.title}</Text>
-                            {comment}
-                            {praise}
-                            <Text style={[styles.postDetailText]}>{this.parseTime(feed.post.publish_time)}</Text>
-                        </View>
+                        {this.renderFooter()}
                     </View>
                     <Image style={styles.image} source={{ uri: feed.image }}>
                     </Image>
@@ -52,6 +60,8 @@ export default class FeedItem extends React.Component<FeedProp, any> {
 
     private renderColumn() {
         const { feed } = this.props;
+        const isNew = moment.duration(Date.now()).subtract(moment.duration(feed.post.publish_time * 1000)).days() < 1;
+        const lab_vote = isNew ? require('../../res/imgs/lab_vote_new.png') : require('../../res/imgs/lab_vote_join.png');
 
         return (
             <TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()}>
@@ -64,11 +74,31 @@ export default class FeedItem extends React.Component<FeedProp, any> {
                     <View>
                         <Image style={{ height: 200 }} source={{ uri: feed.image }}>
                             <Image style={{ position: 'absolute', height: 36, width: 36, bottom: 20, left: 20 }} source={{ uri: feed.post.category.image_lab }}></Image>
+                            <Image style={{ position: 'absolute', height: 95 * 0.5, width: 114 * 0.5, top: 17, right: 17 }} source={lab_vote}>
+                                {isNew ? null : (<Text style={{ fontFamily: 'dincondensed_bold', fontSize: 20 , color: '#ffc81f', textAlign: 'center' }}>{feed.post.record_count}</Text>)}
+                            </Image>
                         </Image>
-                        <View style={{ padding: 15 }}>
+                        <View style={{ padding: 16 }}>
                             <Text style={styles.postTitle}>{feed.post.title}</Text>
-                            <Text style={{ fontSize: 13 }}>{feed.post.description}</Text>
+                            <Text style={{ fontSize: 13, paddingTop: 4 }}>{feed.post.description}</Text>
                         </View>
+                    </View>
+                </View>
+            </TouchableNativeFeedback>
+        );
+    }
+
+    private renderLarge() {
+        const { feed } = this.props;
+
+        return (
+            <TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()}>
+                <View style={{ backgroundColor: '#fff' }}>
+                    <Image style={{ height: 200 }} source={{ uri: feed.image }} />
+                    <View style={{ padding: 16 }}>
+                        <Text style={styles.postTitle}>{feed.post.title}</Text>
+                        <Text style={{ fontSize: 13, paddingVertical: 4 }}>{feed.post.description}</Text>
+                        {this.renderFooter()}
                     </View>
                 </View>
             </TouchableNativeFeedback>
@@ -82,6 +112,8 @@ export default class FeedItem extends React.Component<FeedProp, any> {
             return this.renderNormal();
         } else if (feed.type === FeedType.COLUMN) {
             return this.renderColumn();
+        } else if (feed.type === FeedType.LARGE) {
+            return this.renderLarge();
         } else {
             return this.renderNormal();
         }

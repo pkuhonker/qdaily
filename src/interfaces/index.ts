@@ -27,12 +27,14 @@ export interface Post {
     comment_count: number;
     praise_count: number;
     category: PostCategory;
+    record_count: number;
     column?: PostColumn;
 }
 
 export enum FeedType {
     COLUMN = 0,
-    NORMAL = 1
+    NORMAL = 1,
+    LARGE = 2
 }
 
 export interface Feed {

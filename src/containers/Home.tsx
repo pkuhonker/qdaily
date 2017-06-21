@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-import { View, Tabs } from 'antd-mobile';
+import { View, Tabs, ActivityIndicator } from 'antd-mobile';
 import NewsView from '../components/NewsView';
 import { AppState } from '../reducers';
 import { HomeState } from '../reducers/home';
 import { HomeViewState } from '../reducers/homeView';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
+import SplashScreen from 'react-native-smart-splash-screen';
 
 const TabPane = Tabs.TabPane;
 
@@ -22,8 +23,22 @@ type Props = HomeProps & StateProps & ConnectComponentProps;
 
 class Home extends React.Component<Props, any> {
 
+    private splashClosed: boolean = false;
+
     public componentDidMount() {
         this.refreshHome();
+    }
+
+    public componentWillReceiveProps(nextProps: Props) {
+        if (!this.splashClosed && !nextProps.homeView.pullRefreshPending) {
+            SplashScreen.close({
+                animationType: SplashScreen.animationType.fade,
+                duration: 500,
+                delay: 4000
+            });
+
+            this.splashClosed = true;
+        }
     }
 
     private refreshHome(key?: string) {
@@ -39,6 +54,13 @@ class Home extends React.Component<Props, any> {
 
     public render(): JSX.Element {
         const { home, homeView } = this.props;
+        if (!this.splashClosed) {
+            return (
+                <View style={{ flex: 1, justifyContent: 'center' }}>
+                    <ActivityIndicator size='large' text='正在加载' />
+                </View>
+            );
+        }
         return (
             <View style={styles.container}>
                 <Tabs defaultActiveKey='news'>

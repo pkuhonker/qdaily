@@ -4,6 +4,7 @@ import { View, Tabs } from 'antd-mobile';
 import NewsView from '../components/NewsView';
 import { AppState } from '../reducers';
 import { HomeState } from '../reducers/home';
+import { HomeViewState } from '../reducers/homeView';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
 
 const TabPane = Tabs.TabPane;
@@ -14,6 +15,7 @@ interface HomeProps {
 
 interface StateProps {
     home: HomeState;
+    homeView: HomeViewState;
 }
 
 type Props = HomeProps & StateProps & ConnectComponentProps;
@@ -21,32 +23,34 @@ type Props = HomeProps & StateProps & ConnectComponentProps;
 class Home extends React.Component<Props, any> {
 
     public componentDidMount() {
-        const { actions } = this.props;
-        actions.getHome();
+        this.refreshHome();
     }
 
-    private refreshHome() {
-        const { actions, home } = this.props;
-        if (home.feeds.length) {
-            actions.getHome(home.last_key);
+    private refreshHome(key?: string) {
+        const { actions, home, homeView } = this.props;
+        if (key) {
+            if (!homeView.pullRefreshPending && home.feeds.length) {
+                actions.getHome(key);
+            }
+        } else {
+            actions.getHome();
         }
     }
 
     public render(): JSX.Element {
-        const { home } = this.props;
+        const { home, homeView } = this.props;
         return (
             <View style={styles.container}>
                 <Tabs defaultActiveKey='news'>
                     <TabPane tab='NEWS' key='news'>
-                        {/*<ScrollView>*/}
-                        
                         <NewsView
                             feeds={home.feeds}
                             banners={home.banners}
                             headline={home.headline}
-                            onEndReached={this.refreshHome.bind(this)}>
+                            pullRefreshPending={homeView.pullRefreshPending}
+                            onRefresh={() => this.refreshHome()}
+                            onEndReached={() => this.refreshHome(home.last_key)}>
                         </NewsView>
-                        {/*</ScrollView>*/}
                     </TabPane>
                     <TabPane tab='LABS' key='labs'>
                     </TabPane>
@@ -65,7 +69,8 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state: AppState, ownProps?: HomeProps): StateProps {
     return {
-        home: state.home
+        home: state.home,
+        homeView: state.homeView
     };
 }
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, ListView, ListViewDataSource } from 'react-native';
+import { View, ListView, ListViewDataSource, RefreshControl } from 'react-native';
 import { WhiteSpace, ActivityIndicator } from 'antd-mobile';
 import Banners from '../components/Banners';
 import HeadLineCard from '../components/HeadLineCard';
@@ -10,7 +10,9 @@ export interface NewsViewProp {
     feeds: Feed[];
     banners: Banner[];
     headline?: HeadLine;
+    pullRefreshPending?: boolean;
     onEndReached?: () => void;
+    onRefresh?: () => void;
 }
 
 export interface NewsViewState {
@@ -75,7 +77,14 @@ export default class NewsView extends React.Component<NewsViewProp, NewsViewStat
         }
     }
 
+    private onRefresh() {
+        if (this.props.onRefresh) {
+            this.props.onRefresh();
+        }
+    }
+
     public render() {
+        const { pullRefreshPending = false } = this.props;
 
         return (
             <ListView
@@ -91,9 +100,14 @@ export default class NewsView extends React.Component<NewsViewProp, NewsViewStat
                 initialListSize={28}
                 onEndReachedThreshold={30}
                 onEndReached={this.onEndReached.bind(this)}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={pullRefreshPending}
+                        onRefresh={this.onRefresh.bind(this)}
+                    />
+                }
             >
             </ListView>
         );
     }
-
 }

@@ -1,2 +1,2 @@
-// home
-export const GET_HOME = 'GET_HOME';
+// news
+export const GET_NEWS = 'GET_NEWS';

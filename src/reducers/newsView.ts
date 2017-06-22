@@ -2,22 +2,22 @@ import { PromiseMeta, PromiseMetaSequence } from '../interfaces';
 import { FSA } from 'flux-standard-action';
 import * as types from '../constants/actionTypes';
 
-export interface HomeViewState {
+export interface NewsViewState {
     pullRefreshPending: boolean;
 }
 
-const initialState: HomeViewState = {
+const initialState: NewsViewState = {
     pullRefreshPending: false
 };
 
-export default function (state = initialState, action: FSA<HomeViewState, PromiseMeta>): HomeViewState {
+export default function (state = initialState, action: FSA<NewsViewState, PromiseMeta>): NewsViewState {
     const { type, meta = {} as PromiseMeta } = action;
-    const { sequence = {} as PromiseMetaSequence, home = true } = meta;
+    const { sequence = {} as PromiseMetaSequence, root = true } = meta;
     const pending = sequence.type === 'start';
 
     switch (type) {
-        case types.GET_HOME:
-            return home ? {
+        case types.GET_NEWS:
+            return root ? {
                 pullRefreshPending: pending
             } : state;
         default:

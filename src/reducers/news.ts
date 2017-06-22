@@ -2,7 +2,7 @@ import { Feed, Banner, HeadLine, PromiseMeta, PromiseMetaSequence } from '../int
 import { FSA } from 'flux-standard-action';
 import * as types from '../constants/actionTypes';
 
-export interface HomeState {
+export interface NewsState {
     has_more: boolean;
     last_key: string;
     feeds: Feed[];
@@ -10,7 +10,7 @@ export interface HomeState {
     headline: HeadLine;
 }
 
-const initialState: HomeState = {
+const initialState: NewsState = {
     has_more: true,
     last_key: '',
     feeds: [],
@@ -20,15 +20,15 @@ const initialState: HomeState = {
     } as HeadLine
 };
 
-export default function (state = initialState, action: FSA<HomeState, PromiseMeta>): HomeState {
+export default function (state = initialState, action: FSA<NewsState, PromiseMeta>): NewsState {
     const { type, payload, error, meta = {} as PromiseMeta } = action;
-    const { sequence = {} as PromiseMetaSequence, home = true } = meta;
+    const { sequence = {} as PromiseMetaSequence, root = true } = meta;
     const pending = sequence.type === 'start';
 
     switch (type) {
-        case types.GET_HOME:
+        case types.GET_NEWS:
             if (!error && !pending) {
-                if (home) {
+                if (root) {
                     return { ...state, ...payload };
                 } else {
                     return {

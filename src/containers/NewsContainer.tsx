@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, ViewStyle, Dimensions } from 'react-native';
+import { StyleSheet, ViewStyle } from 'react-native';
 import { View, Tabs, ActivityIndicator } from 'antd-mobile';
 import NewsView from '../components/NewsView';
 import { AppState } from '../reducers';
@@ -90,7 +90,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#F2F2F2',
     } as ViewStyle,
     tabContent: {
-        // height: Dimensions.get('window').height - 100
     } as ViewStyle
 });
 

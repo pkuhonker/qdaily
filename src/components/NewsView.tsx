@@ -16,6 +16,7 @@ export interface NewsViewProp {
 }
 
 export interface NewsViewState {
+    pageSize: number;
     ds: ListViewDataSource;
 }
 
@@ -25,24 +26,31 @@ export default class NewsView extends React.Component<NewsViewProp, NewsViewStat
         super(props);
         const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this.state = {
-            ds: ds.cloneWithRows(props.feeds)
+            pageSize: 28,
+            ds: ds.cloneWithRows<Feed[]>(props.feeds)
         };
     }
 
     public componentWillReceiveProps(nextProps: NewsViewProp) {
         if (nextProps.feeds !== this.props.feeds) {
-            this.updateData(nextProps.feeds);
+            // optimize pageSize
+            this.updateData(nextProps.feeds, nextProps.feeds.length - this.props.feeds.length - 1);
         }
     }
 
-    private updateData(data) {
+    private updateData(data: Feed[], size: number) {
         this.setState({
-            ds: this.state.ds.cloneWithRows(data)
+            ds: this.state.ds.cloneWithRows<Feed[]>(data),
+            pageSize: size > 0 ? size : 1
         });
     }
 
-    private renderRow(feed: Feed) {
-        return (<FeedItem key={feed.post.id} feed={feed} />);
+    private renderRow(feed: Feed, sectionID: string, rowID: string) {
+        return (
+            <View key={rowID} style={rowID !== '0' ? { paddingTop: 10 } : null} >
+                <FeedItem feed={feed} />
+            </View>
+        );
     }
 
     private renderHeader() {
@@ -62,12 +70,6 @@ export default class NewsView extends React.Component<NewsViewProp, NewsViewStat
             <View style={{ padding: 20 }}>
                 <ActivityIndicator text="正在加载" />
             </View>
-        );
-    }
-
-    private renderSeparator(sectionID: string, rowID: string) {
-        return (
-            <WhiteSpace key={`${sectionID}-${rowID}`} />
         );
     }
 
@@ -92,12 +94,9 @@ export default class NewsView extends React.Component<NewsViewProp, NewsViewStat
                 renderRow={this.renderRow.bind(this)}
                 renderHeader={this.renderHeader.bind(this)}
                 renderFooter={this.renderFooter.bind(this)}
-                renderSeparator={this.renderSeparator.bind(this)}
                 removeClippedSubviews={true}
-                enableEmptySections
-                pagingEnabled={false}
-                pageSize={28}
-                initialListSize={28}
+                pageSize={this.state.pageSize}
+                scrollRenderAheadDistance={2000}
                 onEndReachedThreshold={50}
                 onEndReached={this.onEndReached.bind(this)}
                 refreshControl={

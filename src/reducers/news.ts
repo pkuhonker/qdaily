@@ -33,6 +33,8 @@ export default function (state = initialState, action: FSA<NewsState, PromiseMet
                 } else {
                     return {
                         ...state,
+                        has_more: payload.has_more,
+                        last_key: payload.last_key,
                         feeds: state.feeds.concat(payload.feeds)
                     };
                 }

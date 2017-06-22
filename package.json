@@ -14,7 +14,7 @@
     "moment": "^2.18.1",
     "query-string": "^4.3.4",
     "react": "16.0.0-alpha.6",
-    "react-native": "0.44.3",
+    "react-native": "~0.44.3",
     "react-native-navigation-redux-helpers": "^0.5.0",
     "react-native-router-flux": "3.39.2",
     "react-native-smart-splash-screen": "^2.3.4",

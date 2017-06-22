@@ -98,7 +98,7 @@ export default class NewsView extends React.Component<NewsViewProp, NewsViewStat
                 pagingEnabled={false}
                 pageSize={28}
                 initialListSize={28}
-                onEndReachedThreshold={30}
+                onEndReachedThreshold={50}
                 onEndReached={this.onEndReached.bind(this)}
                 refreshControl={
                     <RefreshControl

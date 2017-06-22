@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, ViewStyle, Dimensions } from 'react-native';
 import { View, Tabs, ActivityIndicator } from 'antd-mobile';
 import NewsView from '../components/NewsView';
 import { AppState } from '../reducers';
@@ -65,14 +65,16 @@ class News extends React.Component<Props, any> {
             <View style={styles.container}>
                 <Tabs defaultActiveKey='news'>
                     <TabPane tab='NEWS' key='news'>
-                        <NewsView
-                            feeds={news.feeds}
-                            banners={news.banners}
-                            headline={news.headline}
-                            pullRefreshPending={newsView.pullRefreshPending}
-                            onRefresh={() => this.refresh()}
-                            onEndReached={() => this.refresh(news.last_key)}>
-                        </NewsView>
+                        <View style={styles.tabContent}>
+                            <NewsView
+                                feeds={news.feeds}
+                                banners={news.banners}
+                                headline={news.headline}
+                                pullRefreshPending={newsView.pullRefreshPending}
+                                onRefresh={() => this.refresh()}
+                                onEndReached={() => this.refresh(news.last_key)}>
+                            </NewsView>
+                        </View>
                     </TabPane>
                     <TabPane tab='LABS' key='labs'>
                     </TabPane>
@@ -86,7 +88,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#F2F2F2',
-    }
+    } as ViewStyle,
+    tabContent: {
+        // height: Dimensions.get('window').height - 100
+    } as ViewStyle
 });
 
 function mapStateToProps(state: AppState, ownProps?: NewsProps): StateProps {

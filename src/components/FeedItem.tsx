@@ -60,7 +60,7 @@ export default class FeedItem extends React.Component<FeedProp, any> {
 
     private renderColumn() {
         const { feed } = this.props;
-        const isNew = moment.duration(Date.now()).subtract(moment.duration(feed.post.publish_time * 1000)).days() < 1;
+        const isNew = moment(Date.now()).isSame(feed.post.publish_time * 1000, 'day');
         const lab_vote = isNew ? require('../../res/imgs/lab_vote_new.png') : require('../../res/imgs/lab_vote_join.png');
 
         return (

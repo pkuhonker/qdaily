@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { View, ListView, ListViewDataSource, RefreshControl } from 'react-native';
-import { ActivityIndicator } from 'antd-mobile';
+import { View, ListView, Image, ListViewDataSource, RefreshControl } from 'react-native';
 import { Feed } from '../interfaces';
 import FeedItem from './FeedItem';
 
@@ -58,8 +57,8 @@ export default class FeedList extends React.Component<FeedListProp, FeedListStat
 
     private renderFooter() {
         return (
-            <View style={{ padding: 20 }}>
-                <ActivityIndicator text="正在加载" />
+            <View style={{ height: 120, backgroundColor: '#fff', marginTop: 10 }}>
+                <Image style={{ flex: 1 }} source={require('../../res/imgs/icon_loadmore.gif')}></Image>
             </View>
         );
     }

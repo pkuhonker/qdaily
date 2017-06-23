@@ -43,7 +43,7 @@ export default class FeedList extends React.Component<FeedListProp, FeedListStat
 
     private renderRow(feed: Feed, sectionID: string, rowID: string) {
         return (
-            <View key={rowID} style={rowID !== '0' ? { paddingTop: 10 } : null} >
+            <View key={rowID} style={rowID !== '0' ? { marginTop: 10 } : null} >
                 <FeedItem feed={feed} />
             </View>
         );
@@ -57,7 +57,7 @@ export default class FeedList extends React.Component<FeedListProp, FeedListStat
 
     private renderFooter() {
         return (
-            <View style={{ height: 120, backgroundColor: '#fff', marginTop: 10 }}>
+            <View style={{ height: 120, backgroundColor: '#fff', marginTop: 10, alignItems: 'center' }}>
                 <Image style={{ flex: 1 }} source={require('../../res/imgs/icon_loadmore.gif')}></Image>
             </View>
         );

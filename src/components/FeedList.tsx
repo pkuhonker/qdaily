@@ -34,6 +34,18 @@ export default class FeedList extends React.Component<FeedListProp, FeedListStat
         }
     }
 
+    // performance optimization
+    public shouldComponentUpdate(nextProps: FeedListProp, nextState: FeedListState) {
+        if (this.state !== nextState ||
+            this.props.feeds !== nextProps.feeds ||
+            this.props.pullRefreshPending !== nextProps.pullRefreshPending
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private updateData(data: Feed[], size: number) {
         this.setState({
             ds: this.state.ds.cloneWithRows<Feed[]>(data),
@@ -84,10 +96,11 @@ export default class FeedList extends React.Component<FeedListProp, FeedListStat
                 renderRow={this.renderRow.bind(this)}
                 renderHeader={this.renderHeader.bind(this)}
                 renderFooter={this.renderFooter.bind(this)}
+                enableEmptySections
                 removeClippedSubviews={true}
                 pageSize={this.state.pageSize}
                 scrollRenderAheadDistance={2000}
-                onEndReachedThreshold={50}
+                onEndReachedThreshold={300}
                 onEndReached={this.onEndReached.bind(this)}
                 refreshControl={
                     <RefreshControl

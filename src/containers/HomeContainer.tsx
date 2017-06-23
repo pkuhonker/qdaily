@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, ViewStyle } from 'react-native';
-import { View, Tabs, WhiteSpace, ActivityIndicator } from 'antd-mobile';
+import { View, WhiteSpace, ActivityIndicator } from 'antd-mobile';
 import FeedList from '../components/FeedList';
 import Banners from '../components/Banners';
 import HeadLineCard from '../components/HeadLineCard';
@@ -8,8 +8,7 @@ import { AppState } from '../reducers';
 import { HomeState } from '../reducers/home';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
 import SplashScreen from 'react-native-smart-splash-screen';
-
-const TabPane = Tabs.TabPane;
+import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 
 interface HomeContainerProps {
 
@@ -19,7 +18,11 @@ interface StateProps extends HomeState {
 }
 
 interface HomeContainerState {
-    tab: string;
+    index: number;
+    routes: {
+        key: string;
+        title: string;
+    }[];
 }
 
 type Props = HomeContainerProps & StateProps & ConnectComponentProps;
@@ -31,7 +34,11 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
     constructor(props) {
         super(props);
         this.state = {
-            tab: 'news'
+            index: 0,
+            routes: [
+                { key: 'news', title: 'NEWS' },
+                { key: 'labs', title: 'LABS' }
+            ]
         };
     }
 
@@ -86,8 +93,45 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
         );
     }
 
+    private renderNewsList() {
+        const { news, news_pullRefreshPending } = this.props;
+        return (
+            <FeedList
+                feeds={news.feeds}
+                pullRefreshPending={news_pullRefreshPending}
+                renderHeader={this.renderNewsHeader.bind(this)}
+                onRefresh={this.refreshNews.bind(this)}
+                onEndReached={() => this.refreshNews(news.last_key)}>
+            </FeedList>
+        );
+    }
+
+    private renderLabsList() {
+        const { papers, papers_pullRefreshPending } = this.props;
+        return (
+            <FeedList
+                feeds={papers.feeds}
+                pullRefreshPending={papers_pullRefreshPending}
+                onRefresh={this.refreshNews.bind(this)}
+                onEndReached={() => this.refreshPapers(papers.last_key)}>
+            </FeedList>
+        );
+    }
+
+    private renderScene({ route }) {
+        switch(route.key) {
+            case 'news':
+                return this.renderNewsList();
+            case 'labs':
+                return this.renderLabsList();
+            default:
+                return null;
+        }
+    };
+
+    private renderHeader = props => <TabBar {...props} />;
+
     public render(): JSX.Element {
-        const { news, papers, news_pullRefreshPending, papers_pullRefreshPending } = this.props;
         if (!this.splashClosed) {
             return (
                 <View style={{ flex: 1, justifyContent: 'center' }}>
@@ -95,35 +139,16 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
                 </View>
             );
         }
+
         return (
             <View style={styles.container}>
-                <Tabs
-                    defaultActiveKey='news'
-                    activeKey={this.state.tab}
-                    onChange={tab => { this.setState({ tab }); }}
-                >
-                    <TabPane tab='NEWS' key='news'>
-                        <View style={styles.tabContent}>
-                            <FeedList
-                                feeds={news.feeds}
-                                pullRefreshPending={news_pullRefreshPending}
-                                renderHeader={this.renderNewsHeader.bind(this)}
-                                onRefresh={() => this.refreshNews()}
-                                onEndReached={() => this.refreshNews(news.last_key)}>
-                            </FeedList>
-                        </View>
-                    </TabPane>
-                    <TabPane tab='LABS' key='labs'>
-                        <View style={styles.tabContent}>
-                            <FeedList
-                                feeds={papers.feeds}
-                                pullRefreshPending={papers_pullRefreshPending}
-                                onRefresh={() => this.refreshPapers()}
-                                onEndReached={() => this.refreshPapers(papers.last_key)}>
-                            </FeedList>
-                        </View>
-                    </TabPane>
-                </Tabs>
+                <TabViewAnimated
+                    style={styles.container}
+                    navigationState={this.state}
+                    renderScene={this.renderScene.bind(this)}
+                    renderHeader={this.renderHeader.bind(this)}
+                    onRequestChangeTab={index => this.setState({ index })}
+                />
             </View>
         );
     }

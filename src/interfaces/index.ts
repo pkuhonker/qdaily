@@ -32,7 +32,7 @@ export interface Post {
 }
 
 export enum FeedType {
-    COLUMN = 0,
+    PAPER = 0,
     NORMAL = 1,
     LARGE = 2
 }

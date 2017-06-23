@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { StyleSheet, ViewStyle } from 'react-native';
-import { View, Tabs, ActivityIndicator } from 'antd-mobile';
-import NewsView from '../components/NewsView';
+import { View, Tabs, WhiteSpace, ActivityIndicator } from 'antd-mobile';
+import FeedList from '../components/FeedList';
+import Banners from '../components/Banners';
+import HeadLineCard from '../components/HeadLineCard';
 import { AppState } from '../reducers';
 import { HomeState } from '../reducers/home';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
@@ -16,11 +18,22 @@ interface HomeContainerProps {
 interface StateProps extends HomeState {
 }
 
+interface HomeContainerState {
+    tab: string;
+}
+
 type Props = HomeContainerProps & StateProps & ConnectComponentProps;
 
-class HomeContainer extends React.Component<Props, any> {
+class HomeContainer extends React.Component<Props, HomeContainerState> {
 
     private splashClosed: boolean = false;
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            tab: 'news'
+        };
+    }
 
     public componentDidMount() {
         this.refreshNews();
@@ -61,8 +74,20 @@ class HomeContainer extends React.Component<Props, any> {
         }
     }
 
+    private renderNewsHeader() {
+        const { banners, headline = Object.create(null) } = this.props.news;
+        return (
+            <View>
+                <Banners banners={banners} />
+                <WhiteSpace />
+                <HeadLineCard headline={headline} />
+                <WhiteSpace />
+            </View>
+        );
+    }
+
     public render(): JSX.Element {
-        const { news, news_pullRefreshPending } = this.props;
+        const { news, papers, news_pullRefreshPending, papers_pullRefreshPending } = this.props;
         if (!this.splashClosed) {
             return (
                 <View style={{ flex: 1, justifyContent: 'center' }}>
@@ -72,20 +97,31 @@ class HomeContainer extends React.Component<Props, any> {
         }
         return (
             <View style={styles.container}>
-                <Tabs defaultActiveKey='news'>
+                <Tabs
+                    defaultActiveKey='news'
+                    activeKey={this.state.tab}
+                    onChange={tab => { this.setState({ tab }); }}
+                >
                     <TabPane tab='NEWS' key='news'>
                         <View style={styles.tabContent}>
-                            <NewsView
+                            <FeedList
                                 feeds={news.feeds}
-                                banners={news.banners}
-                                headline={news.headline}
                                 pullRefreshPending={news_pullRefreshPending}
+                                renderHeader={this.renderNewsHeader.bind(this)}
                                 onRefresh={() => this.refreshNews()}
                                 onEndReached={() => this.refreshNews(news.last_key)}>
-                            </NewsView>
+                            </FeedList>
                         </View>
                     </TabPane>
                     <TabPane tab='LABS' key='labs'>
+                        <View style={styles.tabContent}>
+                            <FeedList
+                                feeds={papers.feeds}
+                                pullRefreshPending={papers_pullRefreshPending}
+                                onRefresh={() => this.refreshPapers()}
+                                onEndReached={() => this.refreshPapers(papers.last_key)}>
+                            </FeedList>
+                        </View>
                     </TabPane>
                 </Tabs>
             </View>

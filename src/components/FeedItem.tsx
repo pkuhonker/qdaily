@@ -58,7 +58,7 @@ export default class FeedItem extends React.Component<FeedProp, any> {
         );
     }
 
-    private renderColumn() {
+    private renderPaper() {
         const { feed } = this.props;
         const isNew = moment(Date.now()).isSame(feed.post.publish_time * 1000, 'day');
         const lab_vote = isNew ? require('../../res/imgs/lab_vote_new.png') : require('../../res/imgs/lab_vote_join.png');
@@ -110,8 +110,8 @@ export default class FeedItem extends React.Component<FeedProp, any> {
 
         if (feed.type === FeedType.NORMAL) {
             return this.renderNormal();
-        } else if (feed.type === FeedType.COLUMN) {
-            return this.renderColumn();
+        } else if (feed.type === FeedType.PAPER) {
+            return this.renderPaper();
         } else if (feed.type === FeedType.LARGE) {
             return this.renderLarge();
         } else {

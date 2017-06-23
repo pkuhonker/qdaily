@@ -23,6 +23,7 @@ export default class Banners extends React.Component<BannersProp, any> {
         return (
             <View>
                 <Carousel
+                    selectedIndex={0}
                     style={styles.wrapper}
                     autoplayInterval={5000}
                     autoplay

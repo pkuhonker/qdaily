@@ -1,26 +1,23 @@
 import * as React from 'react';
 import { View, ListView, ListViewDataSource, RefreshControl } from 'react-native';
-import { WhiteSpace, ActivityIndicator } from 'antd-mobile';
-import Banners from '../components/Banners';
-import HeadLineCard from '../components/HeadLineCard';
-import { Feed, Banner, HeadLine } from '../interfaces';
+import { ActivityIndicator } from 'antd-mobile';
+import { Feed } from '../interfaces';
 import FeedItem from './FeedItem';
 
-export interface NewsViewProp {
+export interface FeedListProp {
     feeds: Feed[];
-    banners: Banner[];
-    headline?: HeadLine;
     pullRefreshPending?: boolean;
+    renderHeader?: () => JSX.Element;
     onEndReached?: () => void;
     onRefresh?: () => void;
 }
 
-export interface NewsViewState {
+export interface FeedListState {
     pageSize: number;
     ds: ListViewDataSource;
 }
 
-export default class NewsView extends React.Component<NewsViewProp, NewsViewState> {
+export default class FeedList extends React.Component<FeedListProp, FeedListState> {
 
     constructor(props) {
         super(props);
@@ -31,7 +28,7 @@ export default class NewsView extends React.Component<NewsViewProp, NewsViewStat
         };
     }
 
-    public componentWillReceiveProps(nextProps: NewsViewProp) {
+    public componentWillReceiveProps(nextProps: FeedListProp) {
         if (nextProps.feeds !== this.props.feeds) {
             // optimize pageSize
             this.updateData(nextProps.feeds, nextProps.feeds.length - this.props.feeds.length - 1);
@@ -54,15 +51,9 @@ export default class NewsView extends React.Component<NewsViewProp, NewsViewStat
     }
 
     private renderHeader() {
-        const { banners, headline = Object.create(null) } = this.props;
-        return (
-            <View>
-                <Banners banners={banners} />
-                <WhiteSpace />
-                <HeadLineCard headline={headline} />
-                <WhiteSpace />
-            </View>
-        );
+        if (this.props.renderHeader) {
+            return this.props.renderHeader();
+        }
     }
 
     private renderFooter() {

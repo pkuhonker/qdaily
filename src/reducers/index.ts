@@ -1,16 +1,13 @@
 import { combineReducers } from 'redux';
-import news, { NewsState } from './news';
-import newsView, { NewsViewState } from './newsView';
+import home, { HomeState } from './home';
 import routes, { RoutesState } from './routes';
 
 export interface AppState {
-    news: NewsState;
-    newsView: NewsViewState;
+    home: HomeState;
     routes: RoutesState;
 }
 
 export default combineReducers<AppState>({
-    news,
-    newsView,
+    home,
     routes
 });

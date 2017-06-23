@@ -54,6 +54,34 @@ export interface HeadLine extends Feed {
     }[];
 }
 
+export interface PaperTopicContent {
+    id: string;
+    icon: string;
+    title: string;
+    description: string;
+    image: string;
+}
+
+export interface PaperTopic {
+    id: string;
+    insert_location: number;
+    insert_content: PaperTopicContent;
+}
+
+export interface News {
+    has_more: boolean;
+    last_key: string;
+    feeds: Feed[];
+    banners: Banner[];
+    headline: HeadLine;
+}
+
+export interface Papers {
+    has_more: boolean;
+    last_key: string;
+    feeds: Feed[];
+    paper_topics: PaperTopic[];
+}
 
 /////////
 

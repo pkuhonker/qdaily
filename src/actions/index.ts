@@ -1,5 +1,5 @@
-import * as news from './news';
+import * as home from './home';
 
 export default {
-    ...news
+    ...home
 };

@@ -3,34 +3,32 @@ import { StyleSheet, ViewStyle } from 'react-native';
 import { View, Tabs, ActivityIndicator } from 'antd-mobile';
 import NewsView from '../components/NewsView';
 import { AppState } from '../reducers';
-import { NewsState } from '../reducers/news';
-import { NewsViewState } from '../reducers/newsView';
+import { HomeState } from '../reducers/home';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
 import SplashScreen from 'react-native-smart-splash-screen';
 
 const TabPane = Tabs.TabPane;
 
-interface NewsProps {
+interface HomeContainerProps {
 
 }
 
-interface StateProps {
-    news: NewsState;
-    newsView: NewsViewState;
+interface StateProps extends HomeState {
 }
 
-type Props = NewsProps & StateProps & ConnectComponentProps;
+type Props = HomeContainerProps & StateProps & ConnectComponentProps;
 
-class News extends React.Component<Props, any> {
+class HomeContainer extends React.Component<Props, any> {
 
     private splashClosed: boolean = false;
 
     public componentDidMount() {
-        this.refresh();
+        this.refreshNews();
+        this.refreshPapers();
     }
 
     public componentWillReceiveProps(nextProps: Props) {
-        if (!this.splashClosed && !nextProps.newsView.pullRefreshPending) {
+        if (!this.splashClosed && !nextProps.news_pullRefreshPending) {
             SplashScreen.close({
                 animationType: SplashScreen.animationType.fade,
                 duration: 500,
@@ -41,10 +39,10 @@ class News extends React.Component<Props, any> {
         }
     }
 
-    private refresh(key?: string) {
-        const { actions, news, newsView } = this.props;
+    private refreshNews(key?: string) {
+        const { actions, news, news_pullRefreshPending } = this.props;
         if (key) {
-            if (!newsView.pullRefreshPending && news.feeds.length) {
+            if (!news_pullRefreshPending && news.feeds.length) {
                 actions.getNews(key);
             }
         } else {
@@ -52,8 +50,19 @@ class News extends React.Component<Props, any> {
         }
     }
 
+    private refreshPapers(key?: string) {
+        const { actions, papers, papers_pullRefreshPending } = this.props;
+        if (key) {
+            if (!papers_pullRefreshPending && papers.feeds.length) {
+                actions.getPapers(key);
+            }
+        } else {
+            actions.getPapers();
+        }
+    }
+
     public render(): JSX.Element {
-        const { news, newsView } = this.props;
+        const { news, news_pullRefreshPending } = this.props;
         if (!this.splashClosed) {
             return (
                 <View style={{ flex: 1, justifyContent: 'center' }}>
@@ -70,9 +79,9 @@ class News extends React.Component<Props, any> {
                                 feeds={news.feeds}
                                 banners={news.banners}
                                 headline={news.headline}
-                                pullRefreshPending={newsView.pullRefreshPending}
-                                onRefresh={() => this.refresh()}
-                                onEndReached={() => this.refresh(news.last_key)}>
+                                pullRefreshPending={news_pullRefreshPending}
+                                onRefresh={() => this.refreshNews()}
+                                onEndReached={() => this.refreshNews(news.last_key)}>
                             </NewsView>
                         </View>
                     </TabPane>
@@ -93,14 +102,13 @@ const styles = StyleSheet.create({
     } as ViewStyle
 });
 
-function mapStateToProps(state: AppState, ownProps?: NewsProps): StateProps {
+function mapStateToProps(state: AppState, ownProps?: HomeContainerProps): StateProps {
     return {
-        news: state.news,
-        newsView: state.newsView
+        ...state.home
     };
 }
 
 export default connectComponent({
-    LayoutComponent: News,
+    LayoutComponent: HomeContainer,
     mapStateToProps: mapStateToProps
 });

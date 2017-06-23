@@ -157,11 +157,12 @@ export default class TabBar<T extends Route<any>> extends React.PureComponent<Pr
         return (
             <Animated.View
                 style={[
-                    styles.indicator,
+                    styles.indicatorContainer,
                     { width, transform: [{ translateX }] },
-                    this.props.indicatorStyle,
                 ]}
-            />
+            >
+                <View style={[styles.indicator, this.props.indicatorStyle]}></View>
+            </Animated.View>
         );
     };
 
@@ -517,7 +518,7 @@ const styles = StyleSheet.create({
         top: 0,
         left: 0,
         right: 0,
-        bottom: 0,
+        bottom: 0
     } as ViewStyle,
     indicator: {
         backgroundColor: '#ffeb3b',
@@ -525,6 +526,6 @@ const styles = StyleSheet.create({
         left: 0,
         bottom: 0,
         right: 0,
-        height: 2,
+        height: 2
     } as ViewStyle,
 });

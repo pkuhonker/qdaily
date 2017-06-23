@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { StyleSheet, ViewStyle, TextStyle, Dimensions } from 'react-native';
 import { View, WhiteSpace, ActivityIndicator } from 'antd-mobile';
 import FeedList from '../components/FeedList';
 import Banners from '../components/Banners';
@@ -182,6 +182,7 @@ const tabBarStyles = StyleSheet.create({
     } as TextStyle,
     indicator: {
         backgroundColor: '#faca00',
+        marginHorizontal: Dimensions.get('window').width / 6,
         height: 3
     } as ViewStyle
 });

@@ -1,14 +1,15 @@
 import * as React from 'react';
-import { StyleSheet, ViewStyle } from 'react-native';
+import { StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import { View, WhiteSpace, ActivityIndicator } from 'antd-mobile';
 import FeedList from '../components/FeedList';
 import Banners from '../components/Banners';
 import HeadLineCard from '../components/HeadLineCard';
+import CustomTabBar from '../components/base/CustomTabBar';
 import { AppState } from '../reducers';
 import { HomeState } from '../reducers/home';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
 import SplashScreen from 'react-native-smart-splash-screen';
-import { TabViewAnimated, TabBar } from 'react-native-tab-view';
+import { TabViewAnimated } from 'react-native-tab-view';
 
 interface HomeContainerProps {
 
@@ -119,7 +120,7 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
     }
 
     private renderScene({ route }) {
-        switch(route.key) {
+        switch (route.key) {
             case 'news':
                 return this.renderNewsList();
             case 'labs':
@@ -129,7 +130,16 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
         }
     };
 
-    private renderHeader = props => <TabBar {...props} />;
+    private renderTabBar(props) {
+        return (
+            <CustomTabBar
+                style={tabBarStyles.container}
+                labelStyle={tabBarStyles.label}
+                tabStyle={tabBarStyles.tab}
+                indicatorStyle={tabBarStyles.indicator}
+                {...props} >
+            </CustomTabBar>);
+    }
 
     public render(): JSX.Element {
         if (!this.splashClosed) {
@@ -143,10 +153,9 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
         return (
             <View style={styles.container}>
                 <TabViewAnimated
-                    style={styles.container}
                     navigationState={this.state}
                     renderScene={this.renderScene.bind(this)}
-                    renderHeader={this.renderHeader.bind(this)}
+                    renderHeader={this.renderTabBar.bind(this)}
                     onRequestChangeTab={index => this.setState({ index })}
                 />
             </View>
@@ -158,8 +167,22 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#F2F2F2',
+    } as ViewStyle
+});
+
+const tabBarStyles = StyleSheet.create({
+    container: {
+        backgroundColor: '#fff',
     } as ViewStyle,
-    tabContent: {
+    tab: {
+        padding: 4
+    } as ViewStyle,
+    label: {
+        color: '#000'
+    } as TextStyle,
+    indicator: {
+        backgroundColor: '#faca00',
+        height: 3
     } as ViewStyle
 });
 

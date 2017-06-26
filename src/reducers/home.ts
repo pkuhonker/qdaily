@@ -47,12 +47,14 @@ function getNews(state: HomeState, action: FSA<News, PromiseMeta>): HomeState {
 
     if (!error && !pending) {
         if (root) {
-            const filterFirst = payload.feeds.length > 0 && payload.headline.post.id === payload.feeds[0].post.id;
+            const filterFeeds = payload.feeds.filter(feed => {
+                return feed.post.id !== payload.headline.post.id;
+            });
             return {
                 ...newState, news: {
                     ...newState.news,
                     ...payload,
-                    feeds: filterFirst ? payload.feeds.slice(1) : payload.feeds
+                    feeds: filterFeeds
                 }
             };
         } else {

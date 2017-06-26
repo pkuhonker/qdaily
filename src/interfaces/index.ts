@@ -83,6 +83,14 @@ export interface Papers {
     paper_topics: PaperTopic[];
 }
 
+export interface Article {
+    id: number;
+    body: string;
+    js: string[];
+    css: string[];
+    image: string[];
+}
+
 /////////
 
 export interface PromiseMeta {

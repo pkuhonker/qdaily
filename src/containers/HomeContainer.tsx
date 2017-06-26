@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, ViewStyle, TextStyle, Dimensions } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 import { View, WhiteSpace, ActivityIndicator } from 'antd-mobile';
 import FeedList from '../components/FeedList';
 import Banners from '../components/Banners';
@@ -7,6 +8,7 @@ import HeadLineCard from '../components/HeadLineCard';
 import CustomTabBar from '../components/base/CustomTabBar';
 import { AppState } from '../reducers';
 import { HomeState } from '../reducers/home';
+import { Feed } from '../interfaces';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
 import SplashScreen from 'react-native-smart-splash-screen';
 import { TabViewAnimated } from 'react-native-tab-view';
@@ -60,6 +62,10 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
         }
     }
 
+    private toArticle(feed: Feed) {
+        Actions['article']({ articleId: feed.post.id });
+    }
+
     private refreshNews(key?: string) {
         const { actions, news, news_pullRefreshPending } = this.props;
         if (key) {
@@ -102,7 +108,8 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
                 pullRefreshPending={news_pullRefreshPending}
                 renderHeader={this.renderNewsHeader.bind(this)}
                 onRefresh={this.refreshNews.bind(this)}
-                onEndReached={() => this.refreshNews(news.last_key)}>
+                onEndReached={() => this.refreshNews(news.last_key)}
+                onItemPress={feed => this.toArticle(feed)}>
             </FeedList>
         );
     }

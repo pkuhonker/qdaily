@@ -9,6 +9,7 @@ export interface FeedListProp {
     renderHeader?: () => JSX.Element;
     onEndReached?: () => void;
     onRefresh?: () => void;
+    onItemPress?: (feed: Feed) => void;
 }
 
 export interface FeedListState {
@@ -25,6 +26,12 @@ export default class FeedList extends React.Component<FeedListProp, FeedListStat
             pageSize: 28,
             ds: ds.cloneWithRows<Feed[]>(props.feeds)
         };
+    }
+
+    private onItemPress(feed: Feed) {
+        if (this.props.onItemPress) {
+            this.props.onItemPress(feed);
+        }
     }
 
     public componentWillReceiveProps(nextProps: FeedListProp) {
@@ -56,7 +63,7 @@ export default class FeedList extends React.Component<FeedListProp, FeedListStat
     private renderRow(feed: Feed, sectionID: string, rowID: string) {
         return (
             <View key={rowID} style={rowID !== '0' ? { marginTop: 10 } : null} >
-                <FeedItem feed={feed} />
+                <FeedItem feed={feed} onPress={() => this.onItemPress(feed)} />
             </View>
         );
     }

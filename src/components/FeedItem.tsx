@@ -10,9 +10,16 @@ import { Feed, FeedType } from '../interfaces';
 
 export interface FeedProp {
     feed: Feed;
+    onPress?: () => void;
 }
 
 export default class FeedItem extends React.Component<FeedProp, any> {
+
+    private onPress() {
+        if (this.props.onPress) {
+            this.props.onPress();
+        }
+    }
 
     private parseTime(time: number) {
         return moment(time * 1000, undefined, 'zh-cn').fromNow();
@@ -45,16 +52,14 @@ export default class FeedItem extends React.Component<FeedProp, any> {
         const { feed } = this.props;
 
         return (
-            <TouchableNativeFeedback>
-                <View style={styles.container}>
-                    <View style={styles.content}>
-                        <Text ellipsizeMode='tail' numberOfLines={3} style={styles.postTitle}>{feed.post.title}</Text>
-                        {this.renderFooter()}
-                    </View>
-                    <Image style={styles.image} source={{ uri: feed.image }}>
-                    </Image>
+            <View style={styles.container}>
+                <View style={styles.content}>
+                    <Text ellipsizeMode='tail' numberOfLines={3} style={styles.postTitle}>{feed.post.title}</Text>
+                    {this.renderFooter()}
                 </View>
-            </TouchableNativeFeedback>
+                <Image style={styles.image} source={{ uri: feed.image }}>
+                </Image>
+            </View>
         );
     }
 
@@ -64,27 +69,25 @@ export default class FeedItem extends React.Component<FeedProp, any> {
         const lab_vote = isNew ? require('../../res/imgs/lab_vote_new.png') : require('../../res/imgs/lab_vote_join.png');
 
         return (
-            <TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()}>
-                <View style={{ backgroundColor: '#fff' }}>
-                    <View style={{ height: 50, marginHorizontal: 20, flexDirection: 'row', alignItems: 'center' }}>
-                        <Image style={{ height: 20, width: 20, borderRadius: 10 }} source={{ uri: feed.post.column.icon }} />
-                        <Text style={[styles.postTitle, { marginLeft: 10 }]}>{feed.post.column.name}</Text>
-                        <Icon style={{ fontSize: 24, position: 'absolute', right: 0 }} name='share-apple' />
-                    </View>
-                    <View>
-                        <Image style={{ height: 200 }} source={{ uri: feed.image }}>
-                            <Image style={{ position: 'absolute', height: 36, width: 36, bottom: 20, left: 20 }} source={{ uri: feed.post.category.image_lab }}></Image>
-                            <Image style={{ position: 'absolute', height: 95 * 0.5, width: 114 * 0.5, top: 17, right: 17 }} source={lab_vote}>
-                                {isNew ? null : (<Text style={{ fontFamily: 'dincondensed_bold', fontSize: 20 , color: '#ffc81f', textAlign: 'center' }}>{feed.post.record_count}</Text>)}
-                            </Image>
+            <View style={{ backgroundColor: '#fff' }}>
+                <View style={{ height: 50, marginHorizontal: 20, flexDirection: 'row', alignItems: 'center' }}>
+                    <Image style={{ height: 20, width: 20, borderRadius: 10 }} source={{ uri: feed.post.column.icon }} />
+                    <Text style={[styles.postTitle, { marginLeft: 10 }]}>{feed.post.column.name}</Text>
+                    <Icon style={{ fontSize: 24, position: 'absolute', right: 0 }} name='share-apple' />
+                </View>
+                <View>
+                    <Image style={{ height: 200 }} source={{ uri: feed.image }}>
+                        <Image style={{ position: 'absolute', height: 36, width: 36, bottom: 20, left: 20 }} source={{ uri: feed.post.category.image_lab }}></Image>
+                        <Image style={{ position: 'absolute', height: 95 * 0.5, width: 114 * 0.5, top: 17, right: 17 }} source={lab_vote}>
+                            {isNew ? null : (<Text style={{ fontFamily: 'dincondensed_bold', fontSize: 20, color: '#ffc81f', textAlign: 'center' }}>{feed.post.record_count}</Text>)}
                         </Image>
-                        <View style={{ padding: 16 }}>
-                            <Text style={styles.postTitle}>{feed.post.title}</Text>
-                            <Text style={{ fontSize: 13, paddingTop: 4 }}>{feed.post.description}</Text>
-                        </View>
+                    </Image>
+                    <View style={{ padding: 16 }}>
+                        <Text style={styles.postTitle}>{feed.post.title}</Text>
+                        <Text style={{ fontSize: 13, paddingTop: 4 }}>{feed.post.description}</Text>
                     </View>
                 </View>
-            </TouchableNativeFeedback>
+            </View>
         );
     }
 
@@ -92,31 +95,37 @@ export default class FeedItem extends React.Component<FeedProp, any> {
         const { feed } = this.props;
 
         return (
-            <TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()}>
-                <View style={{ backgroundColor: '#fff' }}>
-                    <Image style={{ height: 200 }} source={{ uri: feed.image }} />
-                    <View style={{ padding: 16 }}>
-                        <Text style={styles.postTitle}>{feed.post.title}</Text>
-                        <Text style={{ fontSize: 13, paddingVertical: 4 }}>{feed.post.description}</Text>
-                        {this.renderFooter()}
-                    </View>
+            <View style={{ backgroundColor: '#fff' }}>
+                <Image style={{ height: 200 }} source={{ uri: feed.image }} />
+                <View style={{ padding: 16 }}>
+                    <Text style={styles.postTitle}>{feed.post.title}</Text>
+                    <Text style={{ fontSize: 13, paddingVertical: 4 }}>{feed.post.description}</Text>
+                    {this.renderFooter()}
                 </View>
-            </TouchableNativeFeedback>
+            </View>
         );
     }
 
     public render() {
         const { feed } = this.props;
 
+        let content: JSX.Element;
+
         if (feed.type === FeedType.NORMAL) {
-            return this.renderNormal();
+            content = this.renderNormal();
         } else if (feed.type === FeedType.PAPER) {
-            return this.renderPaper();
+            content = this.renderPaper();
         } else if (feed.type === FeedType.LARGE) {
-            return this.renderLarge();
+            content = this.renderLarge();
         } else {
-            return this.renderNormal();
+            content = this.renderNormal();
         }
+
+        return (
+            <TouchableNativeFeedback onPress={this.onPress.bind(this)} background={TouchableNativeFeedback.SelectableBackground()}>
+                {content}
+            </TouchableNativeFeedback>
+        );
     }
 }
 

@@ -4,6 +4,7 @@ import { Router, Scene } from 'react-native-router-flux';
 import { AppState } from '../reducers';
 import connectComponent from '../utils/connectComponent';
 import HomeContainer from './HomeContainer';
+import ArticleContainer from './ArticleContainer';
 import Dash from './Dash';
 
 const RouterWithRedux = connect()(Router as any);
@@ -28,6 +29,7 @@ class Navigation extends React.Component<NavigationProps, any> {
                 <Scene key="root">
                     <Scene key="home" component={HomeContainer} hideNavBar initial={true} />
                     <Scene key="dash" component={Dash} />
+                    <Scene key="article" component={ArticleContainer} />
                 </Scene>
             </RouterWithRedux>
         );

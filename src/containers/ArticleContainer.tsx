@@ -6,7 +6,7 @@ import { domain } from '../constants/config';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
 
 interface ArticleContainerProps {
-    articleId: number;
+    id: number;
 }
 
 interface StateProps {
@@ -29,8 +29,8 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
     }
 
     public componentDidMount() {
-        if (this.props.article) {
-            this.props.actions.getArticleById(this.props.articleId);
+        if (!this.props.article) {
+            this.props.actions.getArticleById(this.props.id);
         }
     }
 
@@ -69,8 +69,8 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
 }
 
 function mapStateToProps(state: AppState, ownProps?: ArticleContainerProps): StateProps {
-    const { articleId } = ownProps;
-    const article = state.article.articles[articleId];
+    const { id } = ownProps;
+    const article = state.article.articles[id];
 
     return {
         article: article

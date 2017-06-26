@@ -5,18 +5,20 @@ export interface PostCategory {
     [key: string]: any;
 }
 
+export interface Share {
+    url: string;
+    title: string;
+    text: string;
+    image: string;
+}
+
 export interface PostColumn {
     id: number;
     name: string;
     description: string;
     icon: string;
     image: string;
-    share: {
-        url: string;
-        title: string;
-        text: string;
-        image: string;
-    };
+    share: Share;
 }
 
 export interface Post {
@@ -41,6 +43,26 @@ export interface Feed {
     image: string;
     type: FeedType;
     post: Post;
+}
+
+export interface PaperOption {
+    id: string;
+    content: string;
+    image: string;
+    praise_count: number;
+    perfect: number;
+    author: {
+        id: number;
+        description: string;
+        avatar: string;
+        name: string;
+        background_image: string;
+    };
+}
+
+export interface Paper extends Feed {
+    options: PaperOption[];
+    share: Share;
 }
 
 export interface Banner extends Feed {

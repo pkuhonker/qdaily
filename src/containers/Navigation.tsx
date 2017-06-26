@@ -5,6 +5,7 @@ import { AppState } from '../reducers';
 import connectComponent from '../utils/connectComponent';
 import HomeContainer from './HomeContainer';
 import ArticleContainer from './ArticleContainer';
+import PaperContainer from './PaperContainer';
 import Dash from './Dash';
 
 const RouterWithRedux = connect()(Router as any);
@@ -30,6 +31,7 @@ class Navigation extends React.Component<NavigationProps, any> {
                     <Scene key="home" component={HomeContainer} hideNavBar initial={true} />
                     <Scene key="dash" component={Dash} />
                     <Scene key="article" component={ArticleContainer} />
+                    <Scene key="paper" component={PaperContainer} />
                 </Scene>
             </RouterWithRedux>
         );

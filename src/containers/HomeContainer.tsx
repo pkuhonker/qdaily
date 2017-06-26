@@ -8,7 +8,7 @@ import HeadLineCard from '../components/HeadLineCard';
 import CustomTabBar from '../components/base/CustomTabBar';
 import { AppState } from '../reducers';
 import { HomeState } from '../reducers/home';
-import { Feed } from '../interfaces';
+import { Feed, FeedType } from '../interfaces';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
 import SplashScreen from 'react-native-smart-splash-screen';
 import { TabViewAnimated } from 'react-native-tab-view';
@@ -62,8 +62,12 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
         }
     }
 
-    private toArticle(feed: Feed) {
-        Actions['article']({ articleId: feed.post.id });
+    private toDetail(feed: Feed) {
+        if (feed.type === FeedType.PAPER) {
+            Actions['paper']({ id: feed.post.id });
+        } else {
+            Actions['article']({ id: feed.post.id });
+        }
     }
 
     private refreshNews(key?: string) {
@@ -109,7 +113,7 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
                 renderHeader={this.renderNewsHeader.bind(this)}
                 onRefresh={this.refreshNews.bind(this)}
                 onEndReached={() => this.refreshNews(news.last_key)}
-                onItemPress={feed => this.toArticle(feed)}>
+                onItemPress={feed => this.toDetail(feed)}>
             </FeedList>
         );
     }

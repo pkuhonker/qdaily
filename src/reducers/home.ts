@@ -15,6 +15,7 @@ const initialNewsState: News = {
     feeds: [],
     banners: [],
     headline: {
+        post: {},
         list: []
     } as HeadLine
 };
@@ -46,10 +47,12 @@ function getNews(state: HomeState, action: FSA<News, PromiseMeta>): HomeState {
 
     if (!error && !pending) {
         if (root) {
+            const filterFirst = payload.feeds.length > 0 && payload.headline.post.id === payload.feeds[0].post.id;
             return {
                 ...newState, news: {
                     ...newState.news,
-                    ...payload
+                    ...payload,
+                    feeds: filterFirst ? payload.feeds.slice(1) : payload.feeds
                 }
             };
         } else {

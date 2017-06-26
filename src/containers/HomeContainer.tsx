@@ -8,7 +8,7 @@ import HeadLineCard from '../components/HeadLineCard';
 import CustomTabBar from '../components/base/CustomTabBar';
 import { AppState } from '../reducers';
 import { HomeState } from '../reducers/home';
-import { Feed, FeedType } from '../interfaces';
+import { Feed, FeedType, HeadLine } from '../interfaces';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
 import SplashScreen from 'react-native-smart-splash-screen';
 import { TabViewAnimated } from 'react-native-tab-view';
@@ -93,12 +93,12 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
     }
 
     private renderNewsHeader() {
-        const { banners, headline = Object.create(null) } = this.props.news;
+        const { banners, headline = Object.create(null) as HeadLine } = this.props.news;
         return (
             <View>
-                <Banners banners={banners} />
+                <Banners banners={banners} onPress={banner => this.toDetail(banner)} />
                 <WhiteSpace />
-                <HeadLineCard headline={headline} />
+                <HeadLineCard headline={headline} onPress={() => this.toDetail(headline)} />
                 <WhiteSpace />
             </View>
         );
@@ -113,7 +113,8 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
                 renderHeader={this.renderNewsHeader.bind(this)}
                 onRefresh={this.refreshNews.bind(this)}
                 onEndReached={() => this.refreshNews(news.last_key)}
-                onItemPress={feed => this.toDetail(feed)}>
+                onItemPress={feed => this.toDetail(feed)}
+            >
             </FeedList>
         );
     }
@@ -125,7 +126,9 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
                 feeds={papers.feeds}
                 pullRefreshPending={papers_pullRefreshPending}
                 onRefresh={this.refreshNews.bind(this)}
-                onEndReached={() => this.refreshPapers(papers.last_key)}>
+                onEndReached={() => this.refreshPapers(papers.last_key)}
+                onItemPress={feed => this.toDetail(feed)}
+            >
             </FeedList>
         );
     }

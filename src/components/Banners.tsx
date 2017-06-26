@@ -1,21 +1,37 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, ViewStyle, TextStyle, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableNativeFeedback, ViewStyle, TextStyle, Image } from 'react-native';
 import { Carousel } from 'antd-mobile';
 import { Banner } from '../interfaces';
 
 export interface BannersProp {
     banners: Banner[];
+    onPress?: (banner: Banner) => void;
 }
 
-export default class Banners extends React.Component<BannersProp, any> {
+export interface BannersState {
+}
+
+export default class Banners extends React.Component<BannersProp, BannersState> {
+
+    constructor(props) {
+        super(props);
+    }
+
+    private onPress(banner) {
+        if (this.props.onPress) {
+            this.props.onPress(banner);
+        }
+    }
 
     private renderPage(data: Banner): JSX.Element {
         return (
-            <View key={data.image} style={[styles.container, { backgroundColor: 'red' }]}>
-                <Image style={{ flex: 1, justifyContent: 'flex-end' }} source={{ uri: data.image }}>
-                    <Text style={styles.text}>{data.post.title}</Text>
-                </Image>
-            </View>
+            <TouchableNativeFeedback key={data.image} onPress={() => this.onPress(data)}>
+                <View style={[styles.container, { backgroundColor: 'red' }]}>
+                    <Image style={{ flex: 1, justifyContent: 'flex-end' }} source={{ uri: data.image }}>
+                        <Text style={styles.text}>{data.post.title}</Text>
+                    </Image>
+                </View>
+            </TouchableNativeFeedback>
         );
     }
 

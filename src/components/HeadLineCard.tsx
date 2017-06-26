@@ -6,9 +6,16 @@ import { HeadLine } from '../interfaces';
 
 export interface HeadLineProp {
     headline: HeadLine;
+    onPress?: () => void;
 }
 
 export default class HeadLineCard extends React.Component<HeadLineProp, any> {
+
+    private onPress() {
+        if (this.props.onPress) {
+            this.props.onPress();
+        }
+    }
 
     private renderTitle() {
         return (
@@ -41,7 +48,11 @@ export default class HeadLineCard extends React.Component<HeadLineProp, any> {
 
     public render(): JSX.Element {
         return (
-            <TouchableNativeFeedback style={styles.container} background={TouchableNativeFeedback.Ripple('#f2f2f2')}>
+            <TouchableNativeFeedback
+                style={styles.container}
+                background={TouchableNativeFeedback.Ripple('#f2f2f2')}
+                onPress={this.onPress.bind(this)}
+            >
                 <Card style={styles.card} >
                     <Card.Header title={this.renderTitle()} />
                     <Card.Body style={styles.cardBody}>

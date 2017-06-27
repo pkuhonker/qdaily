@@ -24,9 +24,6 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
 
     constructor(props) {
         super(props);
-        this.state = {
-            loaded: false
-        };
     }
 
     public componentDidMount() {
@@ -56,7 +53,7 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
         if (articleId) {
             Actions['article']({ id: articleId });
         } else {
-            console.log('onLinkPress', url);
+            Actions['ad']({ url });
         }
     }
 
@@ -74,7 +71,7 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
             return this.renderLoading();
         }
         return (
-            <View style={{ flex: 1, justifyContent: 'center' }}>
+            <View style={{ flex: 1 }}>
                 <WebViewBridge
                     startInLoadingState={true}
                     renderLoading={() => this.renderLoading()}

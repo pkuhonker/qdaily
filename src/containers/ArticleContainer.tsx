@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { View, WebView, Image, NavState } from 'react-native';
+import { View, Image, NavState } from 'react-native';
+import { Actions } from 'react-native-router-flux';
+import WebViewBridge, { WebViewMessge } from '../components/base/WebViewBridge';
 import { AppState } from '../reducers';
 import { Article } from '../interfaces';
 import { domain } from '../constants/config';
@@ -14,7 +16,6 @@ interface StateProps {
 }
 
 interface ArticleContainerState {
-    loaded: boolean;
 }
 
 type Props = ArticleContainerProps & StateProps & ConnectComponentProps;
@@ -35,34 +36,54 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
     }
 
     private onLoadEnd() {
-        setTimeout(() => {
-            this.setState({ loaded: true });
-        }, 1000);
     }
 
     private onLoadError(nav: NavState) {
         console.log('webview load error');
     }
 
+    private onBridgeMessage(data: WebViewMessge) {
+        if (data.name === 'qdaily::picsPreview') {
+            console.log('pics', data.options);
+        } else {
+            console.log('onBridgeMessage', data);
+        }
+    }
+
+    private onLinkPress(url: string) {
+        const match = url.match(/http:\/\/m.qdaily.com\/mobile\/articles\/(.*).html/);
+        const articleId = match && match[1];
+        if (articleId) {
+            Actions['article']({ id: articleId });
+        } else {
+            console.log('onLinkPress', url);
+        }
+    }
+
+    private renderLoading() {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center' }}>
+                <Image style={{ width: 180, height: 120, alignSelf: 'center' }} source={require('../../res/imgs/pen_pageloading.gif')} />
+            </View>
+        );
+    }
+
     public render() {
         const { article } = this.props;
-        let { loaded } = this.state;
         if (!article) {
-            return (
-                <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <Image style={{ width: 180, height: 120, alignSelf: 'center' }} source={require('../../res/imgs/pen_pageloading.gif')} />
-                </View>
-            );
+            return this.renderLoading();
         }
         return (
             <View style={{ flex: 1, justifyContent: 'center' }}>
-                <WebView
-                    style={loaded ? null : { opacity: 0 }}
+                <WebViewBridge
+                    startInLoadingState={true}
+                    renderLoading={() => this.renderLoading()}
                     onLoadEnd={this.onLoadEnd.bind(this)}
                     onError={this.onLoadError.bind(this)}
+                    onBridgeMessage={this.onBridgeMessage.bind(this)}
+                    onLinkPress={this.onLinkPress.bind(this)}
                     source={{ html: article.body, baseUrl: domain }}
                 />
-                {loaded ? null : <Image style={{ position: 'absolute', width: 180, height: 120, alignSelf: 'center' }} source={require('../../res/imgs/pen_pageloading.gif')} />}
             </View>
         );
     }

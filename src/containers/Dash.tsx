@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { View, Button } from 'react-native';
-import { Actions } from 'react-native-router-flux';
 import { AppState } from '../reducers';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
 
@@ -15,7 +14,6 @@ type Props = DashProps & StateProps & ConnectComponentProps;
 class Dash extends React.Component<Props, any> {
 
     private onPress() {
-        Actions.pop();
     }
 
     public render(): JSX.Element {

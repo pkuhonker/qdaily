@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { View, Image, WebView, StyleSheet, ViewStyle, TextStyle, NavState } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Actions } from 'react-native-router-flux';
+import { NavigationScreenProps } from 'react-navigation';
 import { AppState } from '../reducers';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
 
-interface ADContainerProps {
+type ADContainerProps = NavigationScreenProps<{
     url: string;
-}
+}>;
 
 interface StateProps {
 }
@@ -45,7 +45,8 @@ class ADContainer extends React.Component<Props, ADContainerState> {
     }
 
     private onReturn() {
-        Actions.pop();
+        const { goBack } = this.props.navigation;
+        goBack();
     }
 
     private onShare() {
@@ -61,6 +62,7 @@ class ADContainer extends React.Component<Props, ADContainerState> {
     }
 
     public render() {
+        const { params } = this.props.navigation.state;
         return (
             <View style={{ flex: 1, justifyContent: 'center' }}>
                 <WebView
@@ -70,7 +72,7 @@ class ADContainer extends React.Component<Props, ADContainerState> {
                     renderLoading={() => this.renderLoading()}
                     onLoadEnd={this.onLoadEnd.bind(this)}
                     onError={this.onLoadError.bind(this)}
-                    source={{ uri: this.props.url }}
+                    source={{ uri: params.url }}
                 />
                 <View style={styles.bottomBar}>
                     <Icon onPress={this.onReturn.bind(this)} style={[styles.icon, { left: 20, position: 'absolute' }]} name='chevron-left' />

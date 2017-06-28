@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { View, Text, Image } from 'react-native';
+import { NavigationScreenProps } from 'react-navigation';
 import { AppState } from '../reducers';
 import { Paper } from '../interfaces';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
 
-interface PaperContainerProps {
+type PaperContainerProps = NavigationScreenProps<{
     id: number;
-}
+}>;
 
 interface StateProps {
     paper?: Paper;
@@ -24,8 +25,9 @@ class PaperContainer extends React.Component<Props, PaperContainerState> {
     }
 
     public componentDidMount() {
+        const { params } = this.props.navigation.state;
         if (!this.props.paper) {
-            this.props.actions.getPaperById(this.props.id);
+            this.props.actions.getPaperById(params.id);
         }
     }
 
@@ -47,8 +49,8 @@ class PaperContainer extends React.Component<Props, PaperContainerState> {
 }
 
 function mapStateToProps(state: AppState, ownProps?: PaperContainerProps): StateProps {
-    const { id } = ownProps;
-    const paper = state.paper.papers[id];
+    const { params } = ownProps.navigation.state;
+    const paper = state.paper.papers[params.id];
 
     return {
         paper: paper

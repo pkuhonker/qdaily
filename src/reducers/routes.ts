@@ -1,30 +1,16 @@
-import { ActionConst } from 'react-native-router-flux';
+import { NavigationState } from 'react-navigation';
+import { Navigator } from '../containers/Navigation';
 
-interface Scene {
-    index: number;
-    name: string;
-    sceneKey: string;
-    parent: string;
-    type: string;
-}
+export type NavigationState = NavigationState;
 
-export interface RoutesState {
-    scene: Scene;
-}
-
-const initialState: RoutesState = {
-    scene: Object.create(null),
-};
+const firstAction = Navigator.router.getActionForPathAndParams('home');
+const initialState: NavigationState = Navigator.router.getStateForAction(firstAction, null);
 
 export default function reducer(state = initialState, action: any) {
-    switch (action.type) {
-        // focus action is dispatched when a new screen comes into focus
-        case ActionConst.FOCUS:
-            return {
-                ...state,
-                scene: action.scene,
-            };
-        default:
-            return state;
+    if (typeof action.type === 'string' && action.type.startsWith('Navigation/')) {
+        const nextState = Navigator.router.getStateForAction(action, state);
+        return nextState || state;
+    } else {
+        return state;
     }
 };

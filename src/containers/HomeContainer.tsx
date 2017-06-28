@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, ViewStyle, TextStyle, Dimensions } from 'react-native';
-import { Actions } from 'react-native-router-flux';
+import { NavigationScreenProps } from 'react-navigation';
 import { View, WhiteSpace, ActivityIndicator } from 'antd-mobile';
 import FeedList from '../components/FeedList';
 import Banners from '../components/Banners';
@@ -13,9 +13,8 @@ import connectComponent, { ConnectComponentProps } from '../utils/connectCompone
 import SplashScreen from 'react-native-smart-splash-screen';
 import { TabViewAnimated } from 'react-native-tab-view';
 
-interface HomeContainerProps {
-
-}
+type HomeContainerProps = NavigationScreenProps<{
+}>;
 
 interface StateProps extends HomeState {
 }
@@ -28,7 +27,7 @@ interface HomeContainerState {
     }[];
 }
 
-type Props = HomeContainerProps & StateProps & ConnectComponentProps;
+type Props = HomeContainerProps & StateProps & ConnectComponentProps & HomeContainerProps;
 
 class HomeContainer extends React.Component<Props, HomeContainerState> {
 
@@ -63,10 +62,11 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
     }
 
     private toDetail(feed: Feed) {
+        const { navigate } = this.props.navigation;
         if (feed.type === FeedType.PAPER) {
-            Actions['paper']({ id: feed.post.id });
+            navigate('paper', { id: feed.post.id });
         } else {
-            Actions['article']({ id: feed.post.id });
+            navigate('article', { id: feed.post.id });
         }
     }
 

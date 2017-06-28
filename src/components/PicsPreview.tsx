@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { View, Image, Text, Dimensions } from 'react-native';
+import { NavigationScreenProps } from 'react-navigation';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import Swiper, { SwiperState } from 'react-native-swiper';
 
@@ -8,11 +9,11 @@ export interface Pic {
     url: string;
 }
 
-export interface PicsPreviewProps {
+export type PicsPreviewProps = NavigationScreenProps<{
     defaultActiveIndex?: number;
     pics: Pic[];
     onBack?: () => void;
-}
+}>;
 
 export interface PicsPreviewState {
     activeIndex: number;
@@ -23,7 +24,7 @@ export default class PicsPreview extends React.Component<PicsPreviewProps, PicsP
     constructor(props: PicsPreviewProps) {
         super(props);
         this.state = {
-            activeIndex: props.defaultActiveIndex || 0
+            activeIndex: props.navigation.state.params.defaultActiveIndex || 0
         };
     }
 
@@ -32,13 +33,14 @@ export default class PicsPreview extends React.Component<PicsPreviewProps, PicsP
     }
 
     private onBack() {
-        if (this.props.onBack) {
-            this.props.onBack();
+        const { params } = this.props.navigation.state;
+        if (params.onBack) {
+            params.onBack();
         }
     }
 
     public render() {
-        const { pics } = this.props;
+        const { pics } = this.props.navigation.state.params;
         const { activeIndex } = this.state;
         const swiperHeight = Dimensions.get('window').height - 110;
 

@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { View, Image, NavState } from 'react-native';
-import { Actions } from 'react-native-router-flux';
+import { NavigationScreenProps } from 'react-navigation';
 import WebViewBridge, { WebViewMessge } from '../components/base/WebViewBridge';
 import { AppState } from '../reducers';
 import { Article } from '../interfaces';
 import { domain } from '../constants/config';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
 
-interface ArticleContainerProps {
-    id: number;
-}
+type ArticleContainerProps = NavigationScreenProps<{
+    id: number
+}>;
 
 interface StateProps {
     article?: Article;
@@ -18,7 +18,7 @@ interface StateProps {
 interface ArticleContainerState {
 }
 
-type Props = ArticleContainerProps & StateProps & ConnectComponentProps;
+type Props = StateProps & ConnectComponentProps & ArticleContainerProps;
 
 class ArticleContainer extends React.Component<Props, ArticleContainerState> {
 
@@ -27,8 +27,9 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
     }
 
     public componentDidMount() {
+        const { params } = this.props.navigation.state;
         if (!this.props.article) {
-            this.props.actions.getArticleById(this.props.id);
+            this.props.actions.getArticleById(params.id);
         }
     }
 
@@ -40,12 +41,13 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
     }
 
     private onBridgeMessage(data: WebViewMessge) {
+        const { goBack, navigate } = this.props.navigation;
         if (data.name === 'qdaily::picsPreview') {
-            Actions['picsPreview']({
+            navigate('picsPreview', {
                 defaultActiveIndex: data.options.cur,
                 pics: data.options.pics,
                 onBack: () => {
-                    Actions.pop();
+                    goBack();
                 }
             });
         } else {
@@ -54,12 +56,13 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
     }
 
     private onLinkPress(url: string) {
+        const { navigate } = this.props.navigation;
         const match = url.match(/http:\/\/m.qdaily.com\/mobile\/articles\/(.*).html/);
         const articleId = match && match[1];
         if (articleId) {
-            Actions['article']({ id: articleId });
+            navigate('article', { id: articleId });
         } else {
-            Actions['ad']({ url });
+            navigate('ad', { url });
         }
     }
 
@@ -77,7 +80,7 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
             return this.renderLoading();
         }
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: '#ffffff' }}>
                 <WebViewBridge
                     startInLoadingState={true}
                     renderLoading={() => this.renderLoading()}
@@ -93,8 +96,8 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
 }
 
 function mapStateToProps(state: AppState, ownProps?: ArticleContainerProps): StateProps {
-    const { id } = ownProps;
-    const article = state.article.articles[id];
+    const { params } = ownProps.navigation.state;
+    const article = state.article.articles[params.id];
 
     return {
         article: article

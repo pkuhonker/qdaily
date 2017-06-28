@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { Router, Scene } from 'react-native-router-flux';
+import { Platform, BackHandler, ToastAndroid, Easing, Animated } from 'react-native';
+import { connect, DispatchProp } from 'react-redux';
+import { addNavigationHelpers, StackNavigator, NavigationActions, NavigationScreenOptions, NavigationState } from 'react-navigation';
+import CardStackStyleInterpolator from 'react-navigation/src/views/CardStackStyleInterpolator';
 import { AppState } from '../reducers';
-import connectComponent from '../utils/connectComponent';
 import HomeContainer from './HomeContainer';
 import ArticleContainer from './ArticleContainer';
 import PaperContainer from './PaperContainer';
@@ -10,44 +11,99 @@ import ADContainer from './ADContainer';
 import PicsPreview from '../components/PicsPreview';
 import Dash from './Dash';
 
-const RouterWithRedux = connect()(Router as any);
-
-interface NavigationProps {
-}
+export const Navigator = StackNavigator({
+    home: {
+        screen: HomeContainer,
+        navigationOptions: {
+        } as NavigationScreenOptions
+    },
+    dash: {
+        screen: Dash
+    },
+    article: {
+        screen: ArticleContainer
+    },
+    paper: {
+        screen: PaperContainer
+    },
+    ad: {
+        screen: ADContainer
+    },
+    picsPreview: {
+        screen: PicsPreview
+    },
+}, {
+        initialRouteName: 'home',
+        headerMode: 'none',
+        transitionConfig: () => ({
+            transitionSpec: {
+                easing: Easing.inOut(Easing.ease),
+                timing: Animated.timing,
+                duration: 200
+            },
+            screenInterpolator: sceneProps => {
+                const { scene } = sceneProps;
+                switch (scene.route.routeName) {
+                    case 'picsPreview':
+                        return CardStackStyleInterpolator.forFadeFromBottomAndroid(sceneProps);
+                    default:
+                        return CardStackStyleInterpolator.forHorizontal(sceneProps);
+                }
+            }
+        })
+    });
 
 interface StateProps {
+    nav?: NavigationState;
 }
 
-type Props = NavigationProps & StateProps;
+class Navigation extends React.Component<DispatchProp<any> & StateProps, any> {
 
-class Navigation extends React.Component<NavigationProps, any> {
+    private lastBackPressed: number = 0;
 
-    constructor(props: any) {
+    constructor(props) {
         super(props);
     }
 
+    private onBackAndroid() {
+        const { dispatch, nav } = this.props;
+        if (nav.routes.length > 1) {
+            dispatch(NavigationActions.back() as any);
+            return true;
+        } else {
+            if (Date.now() - this.lastBackPressed < 2000) {
+                return false;
+            }
+            this.lastBackPressed = Date.now();
+            ToastAndroid.showWithGravity('再按一次退出程序', ToastAndroid.SHORT, ToastAndroid.CENTER);
+            return true;
+        }
+    }
+
+    public componentDidMount() {
+        if (Platform.OS === 'android') {
+            BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid.bind(this));
+        }
+    }
+
+    public componentWillUnmount() {
+        if (Platform.OS === 'android') {
+            BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid.bind(this));
+        }
+    }
+
     public render() {
+        const { dispatch, nav } = this.props;
         return (
-            <RouterWithRedux>
-                <Scene key="root">
-                    <Scene key="home" component={HomeContainer} hideNavBar initial={true} />
-                    <Scene key="dash" component={Dash} />
-                    <Scene key="article" clone component={ArticleContainer} />
-                    <Scene key="paper" clone component={PaperContainer} />
-                    <Scene key="ad" clone component={ADContainer} />
-                    <Scene key="picsPreview" clone animation='fade' duration={100} component={PicsPreview} />
-                </Scene>
-            </RouterWithRedux>
+            <Navigator navigation={addNavigationHelpers({ state: nav, dispatch })} />
         );
     }
 }
 
-function mapStateToProps(state: AppState, ownProps?: NavigationProps): StateProps {
+function mapStateToProps(state: AppState, ownProps?: any): StateProps {
     return {
+        nav: state.nav
     };
 }
 
-export default connectComponent({
-    LayoutComponent: Navigation,
-    mapStateToProps: mapStateToProps
-});
+export default connect(mapStateToProps)(Navigation as any);

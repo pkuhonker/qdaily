@@ -7,6 +7,7 @@ import HomeContainer from './HomeContainer';
 import ArticleContainer from './ArticleContainer';
 import PaperContainer from './PaperContainer';
 import ADContainer from './ADContainer';
+import PicsPreview from '../components/PicsPreview';
 import Dash from './Dash';
 
 const RouterWithRedux = connect()(Router as any);
@@ -34,6 +35,7 @@ class Navigation extends React.Component<NavigationProps, any> {
                     <Scene key="article" clone component={ArticleContainer} />
                     <Scene key="paper" clone component={PaperContainer} />
                     <Scene key="ad" clone component={ADContainer} />
+                    <Scene key="picsPreview" clone animation='fade' duration={100} component={PicsPreview} />
                 </Scene>
             </RouterWithRedux>
         );

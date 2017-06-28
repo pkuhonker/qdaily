@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Image, Text, WebView, StyleSheet, ViewStyle, TextStyle, NavState } from 'react-native';
+import { View, Image, WebView, StyleSheet, ViewStyle, TextStyle, NavState } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Actions } from 'react-native-router-flux';
 import { AppState } from '../reducers';

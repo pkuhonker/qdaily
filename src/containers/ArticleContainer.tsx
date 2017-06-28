@@ -41,6 +41,7 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
 
     private onBridgeMessage(data: WebViewMessge) {
         if (data.name === 'qdaily::picsPreview') {
+            //TODO
             console.log('pics', data.options);
         } else {
             console.log('onBridgeMessage', data);

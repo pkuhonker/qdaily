@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, Text, View, TouchableNativeFeedback, ViewStyle, TextStyle, Image } from 'react-native';
-import { Carousel } from 'antd-mobile';
+import Swiper from 'react-native-swiper';
 import { Banner } from '../interfaces';
 
 export interface BannersProp {
@@ -9,12 +9,27 @@ export interface BannersProp {
 }
 
 export interface BannersState {
+    swiperShow: boolean;
 }
+
+const BannerHeight = 260;
 
 export default class Banners extends React.Component<BannersProp, BannersState> {
 
     constructor(props) {
         super(props);
+        this.state = {
+            swiperShow: false
+        };
+    }
+
+    public componentDidMount() {
+        // see https://github.com/leecade/react-native-swiper/issues/389
+        setTimeout(() => {
+            this.setState({
+                swiperShow: true
+            });
+        }, 0);
     }
 
     private onPress(banner) {
@@ -36,17 +51,25 @@ export default class Banners extends React.Component<BannersProp, BannersState> 
     }
 
     public render(): JSX.Element {
+        if (!this.state.swiperShow) {
+            return (
+                <View style={{ height: BannerHeight, backgroundColor: '#ffffff' }}></View>
+            );
+        }
         return (
             <View>
-                <Carousel
-                    selectedIndex={0}
-                    style={styles.wrapper}
-                    autoplayInterval={5000}
-                    autoplay
-                    infinite
+                <Swiper
+                    height={BannerHeight}
+                    index={0}
+                    autoplayTimeout={5}
+                    paginationStyle={{ bottom: 5 }}
+                    dotStyle={{ width: 6, height: 6, borderRadius: 3 }}
+                    activeDotStyle={{ width: 6, height: 6, borderRadius: 3 }}
+                    activeDotColor='#ffc81f'
+                    dotColor='rgba(0,0,0,.4)'
                 >
                     {this.props.banners.map(banner => { return this.renderPage(banner); })}
-                </Carousel>
+                </Swiper>
             </View>
         );
     }
@@ -54,10 +77,9 @@ export default class Banners extends React.Component<BannersProp, BannersState> 
 
 const styles = StyleSheet.create({
     wrapper: {
-        backgroundColor: '#fff',
     } as ViewStyle,
     container: {
-        height: 255,
+        flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
     } as ViewStyle,

@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { StyleSheet, ViewStyle, TextStyle, Dimensions } from 'react-native';
+import { View, ActivityIndicator, StyleSheet, ViewStyle, TextStyle, Dimensions } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
-import { View, WhiteSpace, ActivityIndicator } from 'antd-mobile';
 import FeedList from '../components/FeedList';
 import Banners from '../components/Banners';
 import HeadLineCard from '../components/HeadLineCard';
@@ -97,9 +96,9 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
         return (
             <View>
                 <Banners banners={banners} onPress={banner => this.toDetail(banner)} />
-                <WhiteSpace />
+                <View style={{ height: 10 }}/>
                 <HeadLineCard headline={headline} onPress={() => this.toDetail(headline)} />
-                <WhiteSpace />
+                <View style={{ height: 10 }}/>
             </View>
         );
     }
@@ -159,7 +158,7 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
         if (!this.splashClosed) {
             return (
                 <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <ActivityIndicator size='large' text='正在加载' />
+                    <ActivityIndicator size='large' />
                 </View>
             );
         }
@@ -180,13 +179,13 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F2F2F2',
+        backgroundColor: '#f2f2f2'
     } as ViewStyle
 });
 
 const tabBarStyles = StyleSheet.create({
     container: {
-        backgroundColor: '#fff',
+        backgroundColor: '#ffffff',
     } as ViewStyle,
     tab: {
         padding: 4

@@ -68,7 +68,7 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
 
     private renderLoading() {
         return (
-            <View style={{ flex: 1, justifyContent: 'center' }}>
+            <View style={{ flex: 1, justifyContent: 'center', backgroundColor: '#ffffff' }}>
                 <Image style={{ width: 180, height: 120, alignSelf: 'center' }} source={require('../../res/imgs/pen_pageloading.gif')} />
             </View>
         );

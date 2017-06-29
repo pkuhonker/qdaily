@@ -41,9 +41,11 @@ export default class Banners extends React.Component<BannersProp, BannersState> 
     private renderPage(data: Banner): JSX.Element {
         return (
             <TouchableNativeFeedback key={data.image} onPress={() => this.onPress(data)}>
-                <View style={[styles.container, { backgroundColor: 'red' }]}>
-                    <Image style={{ flex: 1, justifyContent: 'flex-end' }} source={{ uri: data.image }}>
-                        <Text style={styles.text}>{data.post.title}</Text>
+                <View style={styles.container}>
+                    <Image style={{ flex: 1 }} source={{ uri: data.image }}>
+                        <View style={{ flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0, 0, 0, 0.2)' }}>
+                            <Text style={styles.text}>{data.post.title}</Text>
+                        </View>
                     </Image>
                 </View>
             </TouchableNativeFeedback>
@@ -64,7 +66,7 @@ export default class Banners extends React.Component<BannersProp, BannersState> 
                     autoplayTimeout={5}
                     autoplay
                     loop
-                    paginationStyle={{ bottom: 5 }}
+                    paginationStyle={{ bottom: 8 }}
                     dotStyle={{ width: 6, height: 6, borderRadius: 3 }}
                     activeDotStyle={{ width: 6, height: 6, borderRadius: 3 }}
                     activeDotColor='#ffc81f'
@@ -89,7 +91,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: '#fff',
         fontWeight: 'bold',
-        marginHorizontal: 30,
+        marginHorizontal: 40,
         marginVertical: 30
     } as TextStyle,
 });

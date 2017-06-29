@@ -57,15 +57,15 @@ export default class PicsPreview extends React.Component<PicsPreviewProps, PicsP
                         pics.map(pic => {
                             return (
                                 <View key={pic.url} style={{}}>
-                                    <Image resizeMode='center' style={{ height: swiperHeight }} source={{ uri: pic.url }}></Image>
-                                    <Text style={{ position: 'absolute', left: 20, bottom: 100 , color: '#ffffff' }}>{pic.text}</Text>
+                                    <Image resizeMode='contain' style={{ height: swiperHeight }} source={{ uri: pic.url }}></Image>
+                                    <Text style={{ position: 'absolute', left: 20, right: 0, bottom: 100 , color: '#ffffff' }}>{pic.text}</Text>
                                 </View>
                             );
                         })
                     }
                 </Swiper>
                 <View style={{ height: 60, justifyContent: 'center', alignItems: 'center' }}>
-                    <Icon style={{ color: '#ffffff', fontSize: 30 }} name='share-apple' />
+                    <Icon style={{ color: 'rgba(255, 255, 255, 0.2)', fontSize: 30 }} name='share-apple' />
                 </View>
             </View>
         );

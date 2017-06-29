@@ -36,6 +36,8 @@ export default class PicsPreview extends React.Component<PicsPreviewProps, PicsP
         const { params } = this.props.navigation.state;
         if (params.onBack) {
             params.onBack();
+        } else {
+            this.props.navigation.goBack();
         }
     }
 

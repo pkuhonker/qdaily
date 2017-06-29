@@ -3,6 +3,7 @@ import { Platform, BackHandler, ToastAndroid, Easing, Animated } from 'react-nat
 import { connect, DispatchProp } from 'react-redux';
 import { addNavigationHelpers, StackNavigator, NavigationActions, NavigationScreenOptions, NavigationState } from 'react-navigation';
 import CardStackStyleInterpolator from 'react-navigation/src/views/CardStackStyleInterpolator';
+import * as transitions from '../utils/transitions';
 import { AppState } from '../reducers';
 import HomeContainer from './HomeContainer';
 import ArticleContainer from './ArticleContainer';
@@ -37,17 +38,17 @@ export const Navigator = StackNavigator({
         headerMode: 'none',
         transitionConfig: () => ({
             transitionSpec: {
-                easing: Easing.inOut(Easing.ease),
+                easing: Easing.out(Easing.ease),
                 timing: Animated.timing,
-                duration: 200
+                duration: 300
             },
             screenInterpolator: sceneProps => {
                 const { scene } = sceneProps;
                 switch (scene.route.routeName) {
                     case 'picsPreview':
-                        return CardStackStyleInterpolator.forFadeFromBottomAndroid(sceneProps);
+                        return transitions.crossFade(sceneProps);
                     default:
-                        return CardStackStyleInterpolator.forHorizontal(sceneProps);
+                        return transitions.horizontalCover(sceneProps);
                 }
             }
         })

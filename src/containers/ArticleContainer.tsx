@@ -50,14 +50,11 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
     }
 
     private onBridgeMessage(data: WebViewMessge) {
-        const { goBack, navigate } = this.props.navigation;
+        const { navigate } = this.props.navigation;
         if (data.name === 'qdaily::picsPreview') {
             navigate('picsPreview', {
                 defaultActiveIndex: data.options.cur,
-                pics: data.options.pics,
-                onBack: () => {
-                    goBack();
-                }
+                pics: data.options.pics
             });
         } else {
             console.log('onBridgeMessage', data);

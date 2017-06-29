@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Platform, BackHandler, ToastAndroid, Easing, Animated } from 'react-native';
 import { connect, DispatchProp } from 'react-redux';
 import { addNavigationHelpers, StackNavigator, NavigationActions, NavigationScreenOptions, NavigationState } from 'react-navigation';
-import CardStackStyleInterpolator from 'react-navigation/src/views/CardStackStyleInterpolator';
 import * as transitions from '../utils/transitions';
 import { AppState } from '../reducers';
 import HomeContainer from './HomeContainer';

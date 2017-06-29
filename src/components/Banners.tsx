@@ -62,6 +62,8 @@ export default class Banners extends React.Component<BannersProp, BannersState> 
                     height={BannerHeight}
                     index={0}
                     autoplayTimeout={5}
+                    autoplay
+                    loop
                     paginationStyle={{ bottom: 5 }}
                     dotStyle={{ width: 6, height: 6, borderRadius: 3 }}
                     activeDotStyle={{ width: 6, height: 6, borderRadius: 3 }}

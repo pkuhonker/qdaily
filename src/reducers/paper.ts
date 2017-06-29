@@ -16,7 +16,7 @@ export default function (state = initialState, action: FSA<Paper, PromiseMeta>):
     const pending = sequence.type === 'start';
 
     switch (type) {
-        case types.GET_PAPER_BY_ID:
+        case types.GET_PAPER_DETAIL_BY_ID:
             return (!error && !pending) ? {
                 ...state,
                 papers: {

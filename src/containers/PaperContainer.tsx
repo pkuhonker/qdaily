@@ -27,7 +27,7 @@ class PaperContainer extends React.Component<Props, PaperContainerState> {
     public componentDidMount() {
         const { params } = this.props.navigation.state;
         if (!this.props.paper) {
-            this.props.actions.getPaperById(params.id);
+            this.props.actions.getPaperDetailById(params.id);
         }
     }
 

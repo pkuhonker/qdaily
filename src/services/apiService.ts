@@ -1,5 +1,5 @@
 import * as requestService from './requestService';
-import { News, Papers, Article, Paper } from '../interfaces';
+import { News, Papers, Article, Paper, Feed } from '../interfaces';
 
 
 export function getNews(key?: string): Promise<News> {
@@ -14,13 +14,19 @@ export function getPapers(key?: string): Promise<Papers> {
     });
 }
 
-export function getArticleById(id: number): Promise<Article> {
+export function getArticleDetailById(id: number): Promise<Article> {
     return requestService.get(`/articles/detail/${id}.json`).then(result => {
         return result.response.article as Article;
     });
 }
 
-export function getPaperById(id: number): Promise<Paper> {
+export function getArticleInfoById(id: number): Promise<Feed> {
+    return requestService.get(`/articles/info/${id}.json`).then(result => {
+        return result.response as Feed;
+    });
+}
+
+export function getPaperDetailById(id: number): Promise<Paper> {
     return requestService.get(`/papers/detail/${id}.json`).then(result => {
         return result.response as Paper;
     });

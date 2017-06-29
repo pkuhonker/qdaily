@@ -16,6 +16,7 @@ interface StateProps {
 }
 
 interface ArticleContainerState {
+    loaded: boolean;
 }
 
 type Props = StateProps & ConnectComponentProps & ArticleContainerProps;
@@ -24,6 +25,9 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
 
     constructor(props) {
         super(props);
+        this.state = {
+            loaded: false
+        };
     }
 
     public componentDidMount() {
@@ -34,6 +38,11 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
     }
 
     private onLoadEnd() {
+        if (!this.state.loaded) {
+            setTimeout(() => {
+                this.setState({ loaded: true });
+            }, 300);
+        }
     }
 
     private onLoadError(nav: NavState) {
@@ -68,28 +77,36 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
 
     private renderLoading() {
         return (
-            <View style={{ flex: 1, justifyContent: 'center', backgroundColor: '#ffffff' }}>
+            <View style={{
+                position: 'absolute', top: 0, bottom: 0, left: 0, right: 0,
+                justifyContent: 'center', backgroundColor: '#ffffff'
+            }}>
                 <Image style={{ width: 180, height: 120, alignSelf: 'center' }} source={require('../../res/imgs/pen_pageloading.gif')} />
             </View>
         );
     }
 
-    public render() {
+    private renderWebView() {
         const { article } = this.props;
         if (!article) {
-            return this.renderLoading();
+            return null;
         }
         return (
+            <WebViewBridge
+                onLoadEnd={this.onLoadEnd.bind(this)}
+                onError={this.onLoadError.bind(this)}
+                onBridgeMessage={this.onBridgeMessage.bind(this)}
+                onLinkPress={this.onLinkPress.bind(this)}
+                source={{ html: article.body, baseUrl: domain }}
+            />
+        );
+    }
+
+    public render() {
+        return (
             <View style={{ flex: 1, backgroundColor: '#ffffff' }}>
-                <WebViewBridge
-                    startInLoadingState={true}
-                    renderLoading={() => this.renderLoading()}
-                    onLoadEnd={this.onLoadEnd.bind(this)}
-                    onError={this.onLoadError.bind(this)}
-                    onBridgeMessage={this.onBridgeMessage.bind(this)}
-                    onLinkPress={this.onLinkPress.bind(this)}
-                    source={{ html: article.body, baseUrl: domain }}
-                />
+                {this.renderWebView()}
+                {this.state.loaded ? null : this.renderLoading()}
             </View>
         );
     }

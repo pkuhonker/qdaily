@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { WebView, WebViewProperties, NativeSyntheticEvent, WebViewMessageEventData } from 'react-native';
 
-const injectedJavaScript = require('../../../res/other/bridge.js');
+const bridgeScript = require('../../../res/other/bridge.js');
 
 export interface WebViewMessge {
     name: string;
@@ -36,14 +36,14 @@ export default class WebViewBridge extends React.Component<WebViewBridgeProperti
     }
 
     public render() {
-        const { ...props } = this.props;
+        const { injectedJavaScript = '', ...props } = this.props;
 
         return (
             <WebView
-                ref={ref => this.webview = ref as any}
-                injectedJavaScript={injectedJavaScript}
-                onMessage={this.onMessage.bind(this)}
                 {...props}
+                ref={ref => this.webview = ref as any}
+                injectedJavaScript={bridgeScript + injectedJavaScript}
+                onMessage={this.onMessage.bind(this)}
             >
             </WebView>
         );

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Image, Text, NavState, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { View, Image, Text, Animated, Easing, NavState, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import WebViewBridge, { WebViewMessge } from '../components/base/WebViewBridge';
@@ -18,16 +18,20 @@ interface StateProps {
 }
 
 interface ArticleContainerState {
+    bottomBarBottom: Animated.Value;
     loaded: boolean;
 }
 
 type Props = StateProps & ConnectComponentProps & ArticleContainerProps;
+
+const scrollScript = require('../../res/other/scroll.js');
 
 class ArticleContainer extends React.Component<Props, ArticleContainerState> {
 
     constructor(props) {
         super(props);
         this.state = {
+            bottomBarBottom: new Animated.Value(0),
             loaded: false
         };
     }
@@ -56,7 +60,18 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
 
     private onBridgeMessage(data: WebViewMessge) {
         const { navigate } = this.props.navigation;
-        if (data.name === 'qdaily::picsPreview') {
+        if (data.name === '_toNative::onScroll') {
+            const direction = data.options;
+            if (direction === 'down') {
+                this.state.bottomBarBottom.setValue(48);
+            } else {
+                Animated.timing(this.state.bottomBarBottom, {
+                    duration: 100,
+                    toValue: 0,
+                    easing: Easing.in(Easing.ease)
+                }).start();;
+            }
+        } else if (data.name === 'qdaily::picsPreview') {
             navigate('picsPreview', {
                 defaultActiveIndex: data.options.cur,
                 pics: data.options.pics
@@ -96,6 +111,7 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
                 onError={this.onLoadError.bind(this)}
                 onBridgeMessage={this.onBridgeMessage.bind(this)}
                 onLinkPress={this.onLinkPress.bind(this)}
+                injectedJavaScript={scrollScript}
                 source={{ html: detail.body, baseUrl: domain }}
             />
         );
@@ -117,12 +133,12 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
         const { info = {} } = this.props;
         const { post = {} as Post } = info as Feed;
         return (
-            <View style={styles.bottomBar}>
+            <Animated.View style={[styles.bottomBar, { transform: [{ translateY: this.state.bottomBarBottom }] }]}>
                 <Icon style={styles.backIcon} name='chevron-left' onPress={() => this.props.navigation.goBack()} />
                 {this.renderBadgeIcon('comment', post.comment_count)}
                 {this.renderBadgeIcon('heart', post.praise_count)}
                 {this.renderBadgeIcon('share-apple')}
-            </View>
+            </Animated.View>
         );
     }
 
@@ -149,6 +165,8 @@ const styles = StyleSheet.create({
     } as ViewStyle,
     bottomBar: {
         position: 'absolute',
+        borderTopColor: '#eeeeee',
+        borderTopWidth: 1,
         bottom: 0,
         left: 0,
         right: 0,

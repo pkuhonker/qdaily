@@ -28,6 +28,8 @@ interface HomeContainerState {
 
 type Props = HomeContainerProps & StateProps & ConnectComponentProps & HomeContainerProps;
 
+const windowWidth = Dimensions.get('window').width;
+
 class HomeContainer extends React.Component<Props, HomeContainerState> {
 
     private splashClosed: boolean = false;
@@ -107,6 +109,7 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
         const { news, news_pullRefreshPending } = this.props;
         return (
             <FeedList
+                style={{ width: windowWidth }}
                 feeds={news.feeds}
                 pullRefreshPending={news_pullRefreshPending}
                 renderHeader={this.renderNewsHeader.bind(this)}
@@ -122,6 +125,7 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
         const { papers, papers_pullRefreshPending } = this.props;
         return (
             <FeedList
+                style={{ width: windowWidth }}
                 feeds={papers.feeds}
                 pullRefreshPending={papers_pullRefreshPending}
                 onRefresh={this.refreshNews.bind(this)}

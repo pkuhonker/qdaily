@@ -43,7 +43,7 @@ export default class Banners extends React.Component<BannersProp, BannersState> 
         return (
             <Touchable key={data.image} onPress={() => this.onPress(data)}>
                 <View style={styles.container}>
-                    <Image style={{ flex: 1 }} source={{ uri: data.image }}>
+                    <Image style={{ height: BannerHeight }} source={{ uri: data.image }}>
                         <View style={{ flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0, 0, 0, 0.2)' }}>
                             <Text style={styles.text}>{data.post.title}</Text>
                         </View>
@@ -84,9 +84,7 @@ const styles = StyleSheet.create({
     wrapper: {
     } as ViewStyle,
     container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
+        flex: 1
     } as ViewStyle,
     text: {
         fontSize: 18,

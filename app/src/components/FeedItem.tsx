@@ -134,7 +134,6 @@ export default class FeedItem extends React.Component<FeedProp, any> {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         backgroundColor: '#fff',
         flexDirection: 'row'
     } as ViewStyle,

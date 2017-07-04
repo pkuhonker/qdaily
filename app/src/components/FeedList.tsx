@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { View, ListView, Image, ListViewDataSource, RefreshControl } from 'react-native';
+import { View, ListView, Image, ListViewDataSource, RefreshControl, ViewStyle } from 'react-native';
 import { Feed } from '../interfaces';
 import FeedItem from './FeedItem';
 
 export interface FeedListProp {
     feeds: Feed[];
+    style?: ViewStyle;
     pullRefreshPending?: boolean;
     renderHeader?: () => JSX.Element;
     onEndReached?: () => void;
@@ -99,6 +100,7 @@ export default class FeedList extends React.Component<FeedListProp, FeedListStat
 
         return (
             <ListView
+                style={this.props.style}
                 dataSource={this.state.ds}
                 renderRow={this.renderRow.bind(this)}
                 renderHeader={this.renderHeader.bind(this)}

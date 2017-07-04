@@ -1,7 +1,14 @@
 import * as React from 'react';
-import { WebView, WebViewProperties, NativeSyntheticEvent, WebViewMessageEventData } from 'react-native';
+import { WebView, WebViewProperties, NativeSyntheticEvent, WebViewMessageEventData, Platform } from 'react-native';
 
-const bridgeScript = require('../../../res/other/bridge.js');
+let bridgeScript = require('../../../res/other/bridge.js');
+
+const native = `
+window.native = {};
+window.native.platform = "${Platform.OS}";
+window.native.dev = ${__DEV__}
+`;
+bridgeScript = native + bridgeScript;
 
 export interface WebViewMessge {
     name: string;

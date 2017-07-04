@@ -4,17 +4,20 @@ window.bridge = window.bridge || {};
 
 // https://github.com/facebook/react-native/issues/10865
 (function() {
-  var originalPostMessage = window.postMessage;
+    if (!window.native || window.native.platform === 'android' || !window.native.dev) {
+        return;
+    }
+    var originalPostMessage = window.postMessage;
 
-  var patchedPostMessage = function(message, targetOrigin, transfer) { 
+    var patchedPostMessage = function(message, targetOrigin, transfer) { 
     originalPostMessage(message, targetOrigin, transfer);
-  };
+    };
 
-  patchedPostMessage.toString = function() { 
+    patchedPostMessage.toString = function() { 
     return String(Object.hasOwnProperty).replace('hasOwnProperty', 'postMessage'); 
-  };
+    };
 
-  window.postMessage = patchedPostMessage;
+    window.postMessage = patchedPostMessage;
 })();
 
 function sendToNative(name, options) {
@@ -56,4 +59,8 @@ if (document.readyState !== 'complete') {
 } else {
     registeLinkPress();
 }
+
+setTimeout(function(){
+    sendToNative('_toNative::user', window.navigator.userAgent)
+}, 1000);
 `;

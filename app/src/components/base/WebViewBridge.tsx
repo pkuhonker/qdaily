@@ -3,12 +3,30 @@ import { WebView, WebViewProperties, NativeSyntheticEvent, WebViewMessageEventDa
 
 let bridgeScript = require('../../../res/other/bridge.js');
 
-const native = `
+// https://github.com/facebook/react-native/issues/10865
+const fixPostMessage = `
 window.native = {};
 window.native.platform = "${Platform.OS}";
-window.native.dev = ${__DEV__}
+window.native.dev = ${__DEV__};
+
+(function() {
+    if (!window.native || window.native.platform === 'android' || !window.native.dev) {
+        return;
+    }
+    var originalPostMessage = window.postMessage;
+
+    var patchedPostMessage = function(message, targetOrigin, transfer) { 
+    originalPostMessage(message, targetOrigin, transfer);
+    };
+
+    patchedPostMessage.toString = function() { 
+    return String(Object.hasOwnProperty).replace('hasOwnProperty', 'postMessage'); 
+    };
+
+    window.postMessage = patchedPostMessage;
+})();
 `;
-bridgeScript = native + bridgeScript;
+bridgeScript = fixPostMessage + bridgeScript;
 
 export interface WebViewMessge {
     name: string;

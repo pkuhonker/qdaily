@@ -20,7 +20,7 @@ function scroll(fn) {
             fn('top');
             return;
         }
-        if (Math.abs(delta) < 5) {
+        if (Math.abs(delta) < 3) {
             return false;
         }
         fn(delta > 0 ? "down" : "up");

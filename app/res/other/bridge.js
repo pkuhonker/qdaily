@@ -2,9 +2,20 @@ module.exports = `
 var handlers = {};
 window.bridge = window.bridge || {};
 
-if (window.postMessage && window.postMessage.length === 2) {
-    window.postMessage = function (data) { };
-}
+// https://github.com/facebook/react-native/issues/10865
+(function() {
+  var originalPostMessage = window.postMessage;
+
+  var patchedPostMessage = function(message, targetOrigin, transfer) { 
+    originalPostMessage(message, targetOrigin, transfer);
+  };
+
+  patchedPostMessage.toString = function() { 
+    return String(Object.hasOwnProperty).replace('hasOwnProperty', 'postMessage'); 
+  };
+
+  window.postMessage = patchedPostMessage;
+})();
 
 function sendToNative(name, options) {
     window.postMessage(JSON.stringify({ name: name, options: options }));

@@ -80,7 +80,7 @@ export default class FeedItem extends React.Component<FeedProp, any> {
                     <Image style={{ height: 200 }} source={{ uri: feed.image }}>
                         <Image style={{ position: 'absolute', height: 36, width: 36, bottom: 20, left: 20 }} source={{ uri: feed.post.category.image_lab }}></Image>
                         <Image style={{ position: 'absolute', height: 95 * 0.5, width: 114 * 0.5, top: 17, right: 17 }} source={lab_vote}>
-                            {isNew ? null : (<Text style={{ fontFamily: Platform.OS === 'android' ? 'dincondensed_bold' : 'DINCondensedC', fontSize: 20, color: '#ffc81f', textAlign: 'center' }}>{feed.post.record_count}</Text>)}
+                            {isNew ? null : (<Text style={styles.paperJoinText}>{feed.post.record_count}</Text>)}
                         </Image>
                     </Image>
                     <View style={{ padding: 16 }}>
@@ -162,5 +162,13 @@ const styles = StyleSheet.create({
     postDetailIcon: {
         fontSize: 14,
         marginRight: 5
+    } as TextStyle,
+    paperJoinText: {
+        backgroundColor: 'rgba(0,0,0,0)',
+        fontFamily: Platform.OS === 'android' ? 'dincondensed_bold' : 'DINCondensedC',
+        fontSize: 20,
+        color: '#ffc81f',
+        top: Platform.OS === 'android' ? 2 : 5,
+        textAlign: 'center'
     } as TextStyle
 });

@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, ViewStyle, TextStyle, TouchableNativeFeedback } from 'react-native';
+import { StyleSheet, Text, View, ViewStyle, TextStyle } from 'react-native';
 import { Card } from 'antd-mobile';
+import Touchable from './base/Touchable';
 import MiniCalendar from './base/MiniCalendar';
 import { HeadLine } from '../interfaces';
 
@@ -48,9 +49,9 @@ export default class HeadLineCard extends React.Component<HeadLineProp, any> {
 
     public render(): JSX.Element {
         return (
-            <TouchableNativeFeedback
+            <Touchable
                 style={styles.container}
-                background={TouchableNativeFeedback.Ripple('#f2f2f2')}
+                androidRippleColor='#f2f2f2'
                 onPress={this.onPress.bind(this)}
             >
                 <Card style={styles.card} >
@@ -60,7 +61,7 @@ export default class HeadLineCard extends React.Component<HeadLineProp, any> {
                     </Card.Body>
                     <Card.Footer extra={this.renderFooter()} />
                 </Card>
-            </TouchableNativeFeedback>
+            </Touchable>
         );
     }
 }

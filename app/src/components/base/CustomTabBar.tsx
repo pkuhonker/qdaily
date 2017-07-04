@@ -7,7 +7,6 @@ import {
     View,
     Text,
     ScrollView,
-    TouchableNativeFeedback,
     I18nManager,
     ViewStyle
 } from 'react-native';
@@ -17,6 +16,7 @@ import {
     Route,
     Style,
 } from 'react-native-tab-view/src/TabViewTypeDefinitions';
+import Touchable from './Touchable';
 
 type IndicatorProps<T> = SceneRendererProps<T> & {
     width: Animated.Value,
@@ -430,13 +430,13 @@ export default class TabBar<T extends Route<any>> extends React.PureComponent<Pr
                                 route.accessibilityLabel || route.title;
 
                             return (
-                                <TouchableNativeFeedback
+                                <Touchable
                                     key={route.key}
                                     accessible={route.accessible}
                                     accessibilityLabel={accessibilityLabel}
                                     accessibilityTraits="button"
                                     delayPressIn={0}
-                                    background={TouchableNativeFeedback.SelectableBackground()}
+                                    androidSelectableBackground
                                     onPress={() => {
                                         const { onTabPress, jumpToIndex } = this.props;
                                         jumpToIndex(i);
@@ -469,7 +469,7 @@ export default class TabBar<T extends Route<any>> extends React.PureComponent<Pr
                                             </Animated.View>
                                             : null}
                                     </View>
-                                </TouchableNativeFeedback>
+                                </Touchable>
                             );
                         })}
                     </ScrollView>

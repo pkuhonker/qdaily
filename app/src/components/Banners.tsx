@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, TouchableNativeFeedback, ViewStyle, TextStyle, Image } from 'react-native';
+import { StyleSheet, Text, View, ViewStyle, TextStyle, Image } from 'react-native';
+import Touchable from './base/Touchable';
 import Swiper from 'react-native-swiper';
 import { Banner } from '../interfaces';
 
@@ -40,7 +41,7 @@ export default class Banners extends React.Component<BannersProp, BannersState> 
 
     private renderPage(data: Banner): JSX.Element {
         return (
-            <TouchableNativeFeedback key={data.image} onPress={() => this.onPress(data)}>
+            <Touchable key={data.image} onPress={() => this.onPress(data)}>
                 <View style={styles.container}>
                     <Image style={{ flex: 1 }} source={{ uri: data.image }}>
                         <View style={{ flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0, 0, 0, 0.2)' }}>
@@ -48,7 +49,7 @@ export default class Banners extends React.Component<BannersProp, BannersState> 
                         </View>
                     </Image>
                 </View>
-            </TouchableNativeFeedback>
+            </Touchable>
         );
     }
 

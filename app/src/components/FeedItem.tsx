@@ -1,10 +1,11 @@
 import * as React from 'react';
 import moment from 'moment';
 import {
-    StyleSheet, Text, View, Image, TouchableNativeFeedback,
+    StyleSheet, Text, View, Image, Platform,
     ViewStyle, TextStyle, ImageStyle
 } from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
+import Touchable from './base/Touchable';
 
 import { Feed, FeedType } from '../interfaces';
 
@@ -79,7 +80,7 @@ export default class FeedItem extends React.Component<FeedProp, any> {
                     <Image style={{ height: 200 }} source={{ uri: feed.image }}>
                         <Image style={{ position: 'absolute', height: 36, width: 36, bottom: 20, left: 20 }} source={{ uri: feed.post.category.image_lab }}></Image>
                         <Image style={{ position: 'absolute', height: 95 * 0.5, width: 114 * 0.5, top: 17, right: 17 }} source={lab_vote}>
-                            {isNew ? null : (<Text style={{ fontFamily: 'dincondensed_bold', fontSize: 20, color: '#ffc81f', textAlign: 'center' }}>{feed.post.record_count}</Text>)}
+                            {isNew ? null : (<Text style={{ fontFamily: Platform.OS === 'android' ? 'dincondensed_bold' : 'DINCondensedC', fontSize: 20, color: '#ffc81f', textAlign: 'center' }}>{feed.post.record_count}</Text>)}
                         </Image>
                     </Image>
                     <View style={{ padding: 16 }}>
@@ -122,9 +123,9 @@ export default class FeedItem extends React.Component<FeedProp, any> {
         }
 
         return (
-            <TouchableNativeFeedback onPress={this.onPress.bind(this)} background={TouchableNativeFeedback.SelectableBackground()}>
+            <Touchable onPress={this.onPress.bind(this)} androidSelectableBackground>
                 {content}
-            </TouchableNativeFeedback>
+            </Touchable>
         );
     }
 }
@@ -133,6 +134,7 @@ export default class FeedItem extends React.Component<FeedProp, any> {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         backgroundColor: '#fff',
         flexDirection: 'row'
     } as ViewStyle,

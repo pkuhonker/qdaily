@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, ActivityIndicator, StyleSheet, ViewStyle, TextStyle, Dimensions } from 'react-native';
+import { View, ActivityIndicator, StatusBar, StyleSheet, ViewStyle, TextStyle, Dimensions, Platform } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import FeedList from '../components/FeedList';
 import Banners from '../components/Banners';
@@ -169,6 +169,7 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
 
         return (
             <View style={styles.container}>
+                <StatusBar hidden={false} animated={true} backgroundColor='#ffffff' barStyle='default' />
                 <TabViewAnimated
                     navigationState={this.state}
                     renderScene={this.renderScene.bind(this)}
@@ -183,6 +184,7 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        top: Platform.OS === 'android' ? 0 : 20, 
         backgroundColor: '#f2f2f2'
     } as ViewStyle
 });

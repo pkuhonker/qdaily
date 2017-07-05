@@ -34,6 +34,9 @@ export const Navigator = StackNavigator({
     },
 }, {
         initialRouteName: 'home',
+        cardStyle: {
+            backgroundColor: '#fff'
+        },
         headerMode: 'none',
         transitionConfig: () => ({
             transitionSpec: {

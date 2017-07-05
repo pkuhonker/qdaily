@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { View, Image, Text, Animated, Easing, NavState, StyleSheet, ViewStyle, TextStyle, Platform,
+import {
+    View, Image, Text, Animated, Easing, NavState, StyleSheet, ViewStyle, TextStyle, Platform,
     PanResponder, PanResponderInstance, GestureResponderEvent, PanResponderGestureState
 } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
@@ -31,7 +32,7 @@ const scrollScript = require('../../res/other/scroll.js');
 class ArticleContainer extends React.Component<Props, ArticleContainerState> {
 
     private panResponder: PanResponderInstance;
-    private bottomBarVisible = true;
+    private panDirection = '';
 
     constructor(props) {
         super(props);
@@ -58,23 +59,17 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
 
     private onPanResponderMove(e: GestureResponderEvent, gestureState: PanResponderGestureState) {
         if (gestureState.dy > 0) {
-            this.showBottomBar(true);
+            this.updateBar('up');
         } else {
-            this.showBottomBar(false);
+            this.updateBar('down');
         }
     }
 
-    private showBottomBar(visible?: boolean) {
-        if (visible === this.bottomBarVisible) {
+    private updateBar(direction: string) {
+        if (direction === this.panDirection) {
             return;
         }
-        if (visible) {
-            Animated.timing(this.state.bottomBarBottom, {
-                duration: 100,
-                toValue: 0,
-                easing: Easing.in(Easing.ease)
-            }).start();
-        } else {
+        if (direction === 'down') {
             if (Platform.OS === 'android') {
                 this.state.bottomBarBottom.setValue(48);
             } else {
@@ -84,8 +79,28 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
                     easing: Easing.in(Easing.ease)
                 }).start();
             }
+            this.updateStautsBar(false);
+        } else {
+            Animated.timing(this.state.bottomBarBottom, {
+                duration: 100,
+                toValue: 0,
+                easing: Easing.in(Easing.ease)
+            }).start();
+            if (direction === 'bottom') {
+                this.updateStautsBar(false);
+            } else {
+                this.updateStautsBar(true);
+            }
         }
-        this.bottomBarVisible = visible;
+        this.panDirection = direction;
+    }
+
+    private updateStautsBar(visible: boolean) {
+        // if (Platform.OS === 'android') {
+        //     StatusBar.setTranslucent(!visible);
+        // } else {
+        //     StatusBar.setHidden(!visible, 'slide');
+        // }
     }
 
     private onLoadEnd() {
@@ -104,11 +119,7 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
         const { navigate } = this.props.navigation;
         if (data.name === '_toNative::onScroll') {
             const direction = data.options;
-            if (direction === 'down') {
-                this.showBottomBar(false);
-            } else {
-                this.showBottomBar(true);
-            }
+            this.updateBar(direction);
         } else if (data.name === 'qdaily::picsPreview') {
             navigate('picsPreview', {
                 defaultActiveIndex: data.options.cur,
@@ -143,16 +154,24 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
         if (!detail) {
             return null;
         }
+        let panProps;
+        if (Platform.OS === 'ios') {
+            panProps = this.panResponder.panHandlers;
+        } else {
+            panProps = Object.create(null);
+        }
         return (
-            <WebViewBridge
-                onLoadEnd={this.onLoadEnd.bind(this)}
-                onError={this.onLoadError.bind(this)}
-                onBridgeMessage={this.onBridgeMessage.bind(this)}
-                onLinkPress={this.onLinkPress.bind(this)}
-                injectedJavaScript={scrollScript}
-                decelerationRate='normal'
-                source={{ html: detail.body, baseUrl: domain }}
-            />
+            <View style={{ flex: 1 }} {...panProps}>
+                <WebViewBridge
+                    onLoadEnd={this.onLoadEnd.bind(this)}
+                    onError={this.onLoadError.bind(this)}
+                    onBridgeMessage={this.onBridgeMessage.bind(this)}
+                    onLinkPress={this.onLinkPress.bind(this)}
+                    injectedJavaScript={scrollScript}
+                    decelerationRate='normal'
+                    source={{ html: detail.body, baseUrl: domain }}
+                />
+            </View>
         );
     }
 
@@ -182,14 +201,8 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
     }
 
     public render() {
-        let panProps;
-        if (Platform.OS === 'ios') {
-            panProps = this.panResponder.panHandlers;
-        } else {
-            panProps = Object.create(null);
-        }
         return (
-            <View {...panProps} style={{ flex: 1, backgroundColor: '#ffffff' }}>
+            <View style={{ flex: 1, backgroundColor: '#ffffff' }}>
                 {this.renderWebView()}
                 {this.renderBottomBar()}
                 {this.state.loaded ? null : this.renderLoading()}

@@ -3,6 +3,24 @@ module.exports = `
 function scroll(fn) {
     var beforeScrollTop = document.body.scrollTop;
     fn = fn || function () { };
+
+    if (window.native && window.native.platform === 'ios') {
+        var lastTouchY;
+        window.document.addEventListener('touchstart', function(e) {
+            lastTouchY = e.touches[0].clientY
+        });
+
+        window.document.addEventListener('touchmove', function(e) {
+            var currentY = e.touches[0].clientY;
+            if (currentY > lastTouchY) {
+                fn('down');
+            } else if (currentY < lastTouchY) {
+                fn('up')
+            }
+            lastTouchY = currentY;
+        });
+    }
+
     window.addEventListener("scroll", function (event) {
         event = event || window.event;
 
@@ -29,6 +47,12 @@ function scroll(fn) {
 
 var last_direction = '';
 scroll(function(direction) {
+    if (last_direction === 'bottom' && direction === 'down') {
+        return;
+    }
+    if (last_direction === 'top' && direction === 'up') {
+        return;
+    }
     if (last_direction !== direction) {
         last_direction = direction;
         window.bridge.callHandler('_toNative::onScroll', direction);

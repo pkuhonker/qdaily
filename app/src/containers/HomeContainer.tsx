@@ -169,7 +169,7 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
 
         return (
             <View style={styles.container}>
-                <StatusBar hidden={false} animated={true} backgroundColor='#ffffff' barStyle='default' />
+                <StatusBar hidden={false} animated={true} />
                 <TabViewAnimated
                     navigationState={this.state}
                     renderScene={this.renderScene.bind(this)}

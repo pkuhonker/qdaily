@@ -5,7 +5,8 @@
   "scripts": {
     "start": "adb reverse tcp:8081 tcp:8081 && node scripts/custom-rn-theme && node node_modules/react-native/local-cli/cli.js start",
     "android": "node node_modules/react-native/local-cli/cli.js run-android",
-    "ios": "node node_modules/react-native/local-cli/cli.js run-ios"
+    "ios": "node node_modules/react-native/local-cli/cli.js run-ios",
+    "release-android": "tsc && cd android && gradlew assembleRelease"
   },
   "dependencies": {
     "antd-mobile": "^1.3.0",

@@ -11,9 +11,14 @@ export interface TouchableProps extends TouchableWithoutFeedbackProperties {
     androidSelectableBackgroundBorderless?: boolean;
     androidRippleColor?: string;
     androidRippleBorderless?: boolean;
+    iosActiveOpacity?: number;
 }
 
 export default class Touchable extends React.Component<TouchableProps, any> {
+
+    static defaultProps: TouchableProps = {
+        iosActiveOpacity: 1
+    };
 
     public render() {
         if (Platform.OS === 'android') {
@@ -46,6 +51,7 @@ export default class Touchable extends React.Component<TouchableProps, any> {
             return (
                 <TouchableOpacity
                     {...this.props}
+                    activeOpacity={this.props.iosActiveOpacity}
                 >
                     {this.props.children}
                 </TouchableOpacity>

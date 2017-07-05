@@ -500,7 +500,7 @@ const styles = StyleSheet.create({
     tabLabel: {
         backgroundColor: 'transparent',
         color: 'white',
-        margin: 8,
+        margin: 3,
     },
     tabItem: {
         flexGrow: 1,

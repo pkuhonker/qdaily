@@ -41,8 +41,4 @@ if (document.readyState !== 'complete') {
 } else {
     registeLinkPress();
 }
-
-setTimeout(function(){
-    sendToNative('_toNative::user', window.navigator.userAgent)
-}, 1000);
 `;

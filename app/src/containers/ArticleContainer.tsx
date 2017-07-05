@@ -73,9 +73,17 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
                 duration: 100,
                 toValue: 0,
                 easing: Easing.in(Easing.ease)
-            }).start();;
+            }).start();
         } else {
-            this.state.bottomBarBottom.setValue(48);
+            if (Platform.OS === 'android') {
+                this.state.bottomBarBottom.setValue(48);
+            } else {
+                Animated.timing(this.state.bottomBarBottom, {
+                    duration: 100,
+                    toValue: 48,
+                    easing: Easing.in(Easing.ease)
+                }).start();
+            }
         }
         this.bottomBarVisible = visible;
     }

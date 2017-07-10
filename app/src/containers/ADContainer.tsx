@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { View, Image, WebView, StyleSheet, ViewStyle, TextStyle, NavState } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { NavigationScreenProps } from 'react-navigation';
 import { AppState } from '../reducers';
+import Icon from '../components/base/Icon';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
 
 type ADContainerProps = NavigationScreenProps<{
@@ -75,11 +75,11 @@ class ADContainer extends React.Component<Props, ADContainerState> {
                     source={{ uri: params.url }}
                 />
                 <View style={styles.bottomBar}>
-                    <Icon onPress={this.onReturn.bind(this)} style={[styles.icon, { left: 20, position: 'absolute' }]} name='chevron-left' />
-                    <Icon onPress={this.onReload.bind(this)} style={styles.icon} name='refresh' />
-                    <Icon onPress={this.onBack.bind(this)} style={styles.icon} name='arrow-left' />
-                    <Icon onPress={this.onForward.bind(this)} style={styles.icon} name='arrow-right' />
-                    <Icon onPress={this.onShare.bind(this)} style={[styles.icon, { marginRight: 0 }]} name='share-square-o' />
+                    <Icon onPress={this.onReturn.bind(this)} style={[styles.icon, { left: 20, position: 'absolute' }]} type='FontAwesome' name='chevron-left' />
+                    <Icon onPress={this.onReload.bind(this)} style={styles.icon} type='FontAwesome' name='refresh' />
+                    <Icon onPress={this.onBack.bind(this)} style={styles.icon} type='FontAwesome' name='arrow-left' />
+                    <Icon onPress={this.onForward.bind(this)} style={styles.icon} type='FontAwesome' name='arrow-right' />
+                    <Icon onPress={this.onShare.bind(this)} style={[styles.icon, { marginRight: 0 }]} type='FontAwesome' name='share-square-o' />
                 </View>
             </View>
         );

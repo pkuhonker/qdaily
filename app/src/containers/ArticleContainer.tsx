@@ -4,7 +4,7 @@ import {
     PanResponder, PanResponderInstance, GestureResponderEvent, PanResponderGestureState
 } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
-import Icon from 'react-native-vector-icons/EvilIcons';
+import Icon from '../components/base/Icon';
 import WebViewBridge, { WebViewMessge } from '../components/base/WebViewBridge';
 import { AppState } from '../reducers';
 import { Article, Feed, Post } from '../interfaces';
@@ -181,7 +181,7 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
         }
         return (
             <View style={styles.badge}>
-                <Icon style={styles.badgeIcon} name={name} />
+                <Icon style={styles.badgeIcon} type='EvilIcons' name={name} />
                 <Text style={styles.badgeText}>{badge}</Text>
             </View>
         );
@@ -192,7 +192,7 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
         const { post = {} as Post } = info as Feed;
         return (
             <Animated.View style={[styles.bottomBar, { transform: [{ translateY: this.state.bottomBarBottom }] }]}>
-                <Icon style={styles.backIcon} name='chevron-left' onPress={() => this.props.navigation.goBack()} />
+                <Icon style={styles.backIcon} type='EvilIcons' name='chevron-left' onPress={() => this.props.navigation.goBack()} />
                 {this.renderBadgeIcon('comment', post.comment_count)}
                 {this.renderBadgeIcon('heart', post.praise_count)}
                 {this.renderBadgeIcon('share-apple')}

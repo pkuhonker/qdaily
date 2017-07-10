@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Image, Text, Dimensions } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
-import Icon from 'react-native-vector-icons/EvilIcons';
+import Icon from './base/Icon';
 import Swiper, { SwiperState } from 'react-native-swiper';
 
 export interface Pic {
@@ -49,7 +49,7 @@ export default class PicsPreview extends React.Component<PicsPreviewProps, PicsP
         return (
             <View style={{ flex: 1, backgroundColor: '#000' }}>
                 <View style={{ height: 40, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                    <Icon style={{ position: 'absolute', left: 10, color: '#ffffff', fontSize: 40 }} onPress={this.onBack.bind(this)} name='chevron-left' />
+                    <Icon style={{ position: 'absolute', left: 10, color: '#ffffff', fontSize: 40 }} onPress={this.onBack.bind(this)} type='EvilIcons' name='chevron-left' />
                     <Text style={{ color: '#ffffff', fontSize: 20 }}>{`${activeIndex + 1}/${pics.length}`}</Text>
                 </View>
                 <Swiper index={activeIndex} showsPagination={false} height={swiperHeight} onMomentumScrollEnd={this.onChange.bind(this)} >
@@ -65,7 +65,7 @@ export default class PicsPreview extends React.Component<PicsPreviewProps, PicsP
                     }
                 </Swiper>
                 <View style={{ height: 60, justifyContent: 'center', alignItems: 'center' }}>
-                    <Icon style={{ color: 'rgba(255, 255, 255, 0.2)', fontSize: 30 }} name='share-apple' />
+                    <Icon style={{ color: 'rgba(255, 255, 255, 0.2)', fontSize: 30 }} type='EvilIcons' name='share-apple' />
                 </View>
             </View>
         );

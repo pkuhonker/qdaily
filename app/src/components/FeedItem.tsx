@@ -4,7 +4,7 @@ import {
     StyleSheet, Text, View, Image, Platform,
     ViewStyle, TextStyle, ImageStyle
 } from 'react-native';
-import Icon from 'react-native-vector-icons/EvilIcons';
+import Icon from './base/Icon';
 import Touchable from './base/Touchable';
 
 import { Feed, FeedType } from '../interfaces';
@@ -30,12 +30,12 @@ export default class FeedItem extends React.Component<FeedProp, any> {
         const { feed } = this.props;
 
         const comment = feed.post.comment_count ? [
-            <Icon key='icon' style={[styles.postDetailIcon]} name='comment' />,
+            <Icon key='icon' type='EvilIcons' style={[styles.postDetailIcon]} name='comment' />,
             <Text key='text' style={[styles.postDetailText]}>{feed.post.comment_count}</Text>
         ] : null;
 
         const praise = feed.post.praise_count ? [
-            <Icon key='icon' style={[styles.postDetailIcon]} name='heart' />,
+            <Icon key='icon' type='EvilIcons' style={[styles.postDetailIcon]} name='heart' />,
             <Text key='text' style={[styles.postDetailText]}>{feed.post.praise_count}</Text>
         ] : null;
 
@@ -74,7 +74,7 @@ export default class FeedItem extends React.Component<FeedProp, any> {
                 <View style={{ height: 50, marginHorizontal: 20, flexDirection: 'row', alignItems: 'center' }}>
                     <Image style={{ height: 20, width: 20, borderRadius: 10 }} source={{ uri: feed.post.column.icon }} />
                     <Text style={[styles.postTitle, { marginLeft: 10 }]}>{feed.post.column.name}</Text>
-                    <Icon style={{ fontSize: 24, position: 'absolute', right: 0 }} name='share-apple' />
+                    <Icon style={{ fontSize: 24, position: 'absolute', right: 0 }} type='EvilIcons' name='share-apple' />
                 </View>
                 <View>
                     <Image style={{ height: 200 }} source={{ uri: feed.image }}>

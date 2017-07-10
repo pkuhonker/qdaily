@@ -9,7 +9,7 @@ import ArticleContainer from './ArticleContainer';
 import PaperContainer from './PaperContainer';
 import ADContainer from './ADContainer';
 import PicsPreview from '../components/PicsPreview';
-import Dash from './Dash';
+import DashContainer from './DashContainer';
 
 export const Navigator = StackNavigator({
     home: {
@@ -18,7 +18,7 @@ export const Navigator = StackNavigator({
         } as NavigationScreenOptions
     },
     dash: {
-        screen: Dash
+        screen: DashContainer
     },
     article: {
         screen: ArticleContainer
@@ -42,12 +42,14 @@ export const Navigator = StackNavigator({
             transitionSpec: {
                 easing: Easing.out(Easing.ease),
                 timing: Animated.timing,
-                duration: 300
+                duration: 3000
             },
             screenInterpolator: sceneProps => {
                 const { scene } = sceneProps;
                 switch (scene.route.routeName) {
                     case 'picsPreview':
+                        return transitions.crossFade(sceneProps);
+                    case 'dash':
                         return transitions.crossFade(sceneProps);
                     default:
                         return transitions.horizontalCover(sceneProps);

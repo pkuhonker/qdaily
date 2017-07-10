@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    View, ActivityIndicator, StatusBar, Image, Animated, NativeSyntheticEvent, NativeScrollEvent,
+    View, ActivityIndicator, Image, Animated, NativeSyntheticEvent, NativeScrollEvent,
     StyleSheet, ViewStyle, TextStyle, Dimensions, Platform } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import FeedList from '../components/FeedList';
@@ -79,6 +79,11 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
         }
     }
 
+    private toDash() {
+        const { navigate } = this.props.navigation;
+        navigate('dash');
+    }
+
     private onScroll(e: NativeSyntheticEvent<NativeScrollEvent>) {
         if (this.scrollStarted) {
             if (e.nativeEvent.contentOffset.y > this.lastScrollPosition) {
@@ -96,17 +101,17 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
 
     private onMomentumScrollEnd() {
         this.scrollStarted = false;
-        setTimeout(() => this.showOverlay(), 300);
+        this.showOverlay(1000);
     }
 
-    private showOverlay() {
+    private showOverlay(delay?: number) {
         if (this.overlayVisible) {
             return;
         }
         this.overlayVisible = true;
         Animated.timing(this.state.overlayOpacity, {
             toValue: 1,
-            delay: 50,
+            delay: delay || 50,
             duration: 100
         }).start();
     }
@@ -235,7 +240,7 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
                     renderHeader={this.renderTabBar.bind(this)}
                     onRequestChangeTab={index => this.setState({ index })}
                 />
-                <OverlayButton>
+                <OverlayButton onPress={() => this.toDash()}>
                     <Animated.View style={{ opacity: overlayOpacity }}>
                         <Image style={{ width: 50, height: 50 }} source={require('../../res/imgs/icon_round_logo.png')}>
                         </Image>

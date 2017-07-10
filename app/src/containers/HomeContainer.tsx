@@ -1,10 +1,13 @@
 import * as React from 'react';
-import { View, ActivityIndicator, StatusBar, StyleSheet, ViewStyle, TextStyle, Dimensions, Platform } from 'react-native';
+import {
+    View, ActivityIndicator, StatusBar, Image, Animated, NativeSyntheticEvent, NativeScrollEvent,
+    StyleSheet, ViewStyle, TextStyle, Dimensions, Platform } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import FeedList from '../components/FeedList';
 import Banners from '../components/Banners';
 import HeadLineCard from '../components/HeadLineCard';
 import CustomTabBar from '../components/base/CustomTabBar';
+import OverlayButton from '../components/base/OverlayButton';
 import { AppState } from '../reducers';
 import { HomeState } from '../reducers/home';
 import { Feed, FeedType, HeadLine } from '../interfaces';
@@ -24,6 +27,7 @@ interface HomeContainerState {
         key: string;
         title: string;
     }[];
+    overlayOpacity: Animated.Value;
 }
 
 type Props = HomeContainerProps & StateProps & ConnectComponentProps & HomeContainerProps;
@@ -32,7 +36,10 @@ const windowWidth = Dimensions.get('window').width;
 
 class HomeContainer extends React.Component<Props, HomeContainerState> {
 
-    private splashClosed: boolean = false;
+    private splashClosed = false;
+    private lastScrollPosition = 0;
+    private overlayVisible = true;
+    private scrollStarted = false;
 
     constructor(props) {
         super(props);
@@ -41,7 +48,8 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
             routes: [
                 { key: 'news', title: 'NEWS' },
                 { key: 'labs', title: 'LABS' }
-            ]
+            ],
+            overlayOpacity: new Animated.Value(1)
         };
     }
 
@@ -69,6 +77,50 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
         } else {
             navigate('article', { id: feed.post.id });
         }
+    }
+
+    private onScroll(e: NativeSyntheticEvent<NativeScrollEvent>) {
+        if (this.scrollStarted) {
+            if (e.nativeEvent.contentOffset.y > this.lastScrollPosition) {
+                this.hideOverlay();
+            } else if (e.nativeEvent.contentOffset.y < this.lastScrollPosition) {
+                this.showOverlay();
+            }
+        }
+        this.lastScrollPosition = e.nativeEvent.contentOffset.y;
+    }
+
+    private onMomentumScrollBegin() {
+        this.scrollStarted = true;
+    }
+
+    private onMomentumScrollEnd() {
+        this.scrollStarted = false;
+        setTimeout(() => this.showOverlay(), 300);
+    }
+
+    private showOverlay() {
+        if (this.overlayVisible) {
+            return;
+        }
+        this.overlayVisible = true;
+        Animated.timing(this.state.overlayOpacity, {
+            toValue: 1,
+            delay: 50,
+            duration: 100
+        }).start();
+    }
+
+    private hideOverlay() {
+        if (!this.overlayVisible) {
+            return;
+        }
+        this.overlayVisible = false;
+        Animated.timing(this.state.overlayOpacity, {
+            toValue: 0,
+            delay: 50,
+            duration: 100
+        }).start();
     }
 
     private refreshNews(key?: string) {
@@ -116,6 +168,9 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
                 onRefresh={this.refreshNews.bind(this)}
                 onEndReached={() => this.refreshNews(news.last_key)}
                 onItemPress={feed => this.toDetail(feed)}
+                onScroll={this.onScroll.bind(this)}
+                onMomentumScrollBegin={this.onMomentumScrollBegin.bind(this)}
+                onMomentumScrollEnd={this.onMomentumScrollEnd.bind(this)}
             >
             </FeedList>
         );
@@ -131,6 +186,9 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
                 onRefresh={this.refreshNews.bind(this)}
                 onEndReached={() => this.refreshPapers(papers.last_key)}
                 onItemPress={feed => this.toDetail(feed)}
+                onScroll={this.onScroll.bind(this)}
+                onMomentumScrollBegin={this.onMomentumScrollBegin.bind(this)}
+                onMomentumScrollEnd={this.onMomentumScrollEnd.bind(this)}
             >
             </FeedList>
         );
@@ -167,17 +225,24 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
             );
         }
 
+        const { overlayOpacity, ...state } = this.state;
+
         return (
             <View style={styles.container}>
-                <StatusBar hidden={false} animated={true} />
                 <TabViewAnimated
-                    navigationState={this.state}
+                    navigationState={state}
                     renderScene={this.renderScene.bind(this)}
                     renderHeader={this.renderTabBar.bind(this)}
                     onRequestChangeTab={index => this.setState({ index })}
                 />
+                <OverlayButton>
+                    <Animated.View style={{ opacity: overlayOpacity }}>
+                        <Image style={{ width: 50, height: 50 }} source={require('../../res/imgs/icon_round_logo.png')}>
+                        </Image>
+                    </Animated.View>
+                </OverlayButton>
             </View>
-        );
+        ); 
     }
 }
 
@@ -194,14 +259,14 @@ const tabBarStyles = StyleSheet.create({
         backgroundColor: '#ffffff',
     } as ViewStyle,
     tab: {
-        padding: 4
+        padding: Platform.OS === 'android' ? 6 : 4,
     } as ViewStyle,
     label: {
         color: '#000'
     } as TextStyle,
     indicator: {
         backgroundColor: '#faca00',
-        marginHorizontal: Dimensions.get('window').width / 6,
+        marginHorizontal: windowWidth / 6,
         height: 3
     } as ViewStyle
 });

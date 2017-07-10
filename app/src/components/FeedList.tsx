@@ -1,5 +1,8 @@
 import * as React from 'react';
-import { View, ListView, Image, ListViewDataSource, RefreshControl, ViewStyle } from 'react-native';
+import {
+    View, ListView, Image, ListViewDataSource, NativeSyntheticEvent, NativeScrollEvent,
+    RefreshControl, ViewStyle
+} from 'react-native';
 import { Feed } from '../interfaces';
 import FeedItem from './FeedItem';
 
@@ -10,6 +13,9 @@ export interface FeedListProp {
     renderHeader?: () => JSX.Element;
     onEndReached?: () => void;
     onRefresh?: () => void;
+    onScroll?: (e: NativeSyntheticEvent<NativeScrollEvent>) => void;
+    onMomentumScrollEnd?: () => void;
+    onMomentumScrollBegin?: () => void;
     onItemPress?: (feed: Feed) => void;
 }
 
@@ -19,6 +25,8 @@ export interface FeedListState {
 }
 
 export default class FeedList extends React.Component<FeedListProp, FeedListState> {
+
+    private list: ListView;
 
     constructor(props) {
         super(props);
@@ -100,6 +108,7 @@ export default class FeedList extends React.Component<FeedListProp, FeedListStat
 
         return (
             <ListView
+                ref={ref => this.list = ref as any}
                 style={this.props.style}
                 dataSource={this.state.ds}
                 renderRow={this.renderRow.bind(this)}
@@ -111,6 +120,9 @@ export default class FeedList extends React.Component<FeedListProp, FeedListStat
                 scrollRenderAheadDistance={2000}
                 onEndReachedThreshold={300}
                 onEndReached={this.onEndReached.bind(this)}
+                onScroll={e => this.props.onScroll && this.props.onScroll(e)}
+                onMomentumScrollBegin={() => this.props.onMomentumScrollBegin && this.props.onMomentumScrollBegin()}
+                onMomentumScrollEnd={() => this.props.onMomentumScrollEnd && this.props.onMomentumScrollEnd()}
                 refreshControl={
                     <RefreshControl
                         refreshing={pullRefreshPending}

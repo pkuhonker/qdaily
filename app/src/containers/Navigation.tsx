@@ -10,6 +10,7 @@ import PaperContainer from './PaperContainer';
 import CategoryContainer from './CategoryContainer';
 import ADContainer from './ADContainer';
 import PicsPreview from '../components/PicsPreview';
+import Share from '../components/Share';
 import DashContainer from './DashContainer';
 
 export const Navigator = StackNavigator({
@@ -34,10 +35,13 @@ export const Navigator = StackNavigator({
     picsPreview: {
         screen: PicsPreview
     },
+    share: {
+        screen: Share
+    }
 }, {
         initialRouteName: 'home',
         cardStyle: {
-            backgroundColor: '#fff'
+            backgroundColor: 'rgba(0,0,0,0)'
         },
         headerMode: 'none',
         transitionConfig: () => ({
@@ -49,9 +53,11 @@ export const Navigator = StackNavigator({
             screenInterpolator: sceneProps => {
                 const { scene } = sceneProps;
                 switch (scene.route.routeName) {
+                    case 'dash':
+                        return transitions.crossFade(sceneProps);
                     case 'picsPreview':
                         return transitions.crossFade(sceneProps);
-                    case 'dash':
+                    case 'share':
                         return transitions.crossFade(sceneProps);
                     default:
                         return transitions.horizontalCover(sceneProps);

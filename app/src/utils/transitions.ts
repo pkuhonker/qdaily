@@ -13,23 +13,21 @@ export function crossFade(sceneProps: NavigationSceneRendererProps) {
 export function horizontal(sceneProps: NavigationSceneRendererProps) {
     const { position, scene, layout } = sceneProps;
     const { index } = scene;
-    const translateY = 0;
     const translateX = position.interpolate({
         inputRange: [index - 1, index, index + 1],
         outputRange: [layout.initWidth, 0, -layout.initWidth]
     });
 
-    return { transform: [{ translateX }, { translateY }] };
+    return { transform: [{ translateX }] };
 }
 
 export function horizontalCover(sceneProps: NavigationSceneRendererProps) {
     const { position, scene, layout } = sceneProps;
     const { index } = scene;
-    const translateY = 0;
     const translateX = position.interpolate({
         inputRange: [index - 1, index, index + 1],
         outputRange: [layout.initWidth, 0, 0]
     });
 
-    return { transform: [{ translateX }, { translateY }] };
+    return { transform: [{ translateX }] };
 }

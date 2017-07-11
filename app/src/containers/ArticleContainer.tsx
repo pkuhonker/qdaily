@@ -9,6 +9,7 @@ import WebViewBridge, { WebViewMessge } from '../components/base/WebViewBridge';
 import { AppState } from '../reducers';
 import { Article, Feed, Post } from '../interfaces';
 import { domain } from '../constants/config';
+import { defaultItems } from '../constants/shareItem';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
 
 type ArticleContainerProps = NavigationScreenProps<{
@@ -141,6 +142,19 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
         }
     }
 
+    private toShare() {
+        this.props.navigation.navigate('share', {
+            items: [
+                defaultItems.wechat,
+                defaultItems.wechatfriends,
+                defaultItems.qq,
+                defaultItems.weibo,
+                defaultItems.evernote,
+                defaultItems.more
+            ]
+        });
+    }
+
     private renderLoading() {
         return (
             <View style={styles.loading}>
@@ -175,13 +189,13 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
         );
     }
 
-    private renderBadgeIcon(name: string, badge?: number) {
+    private renderBadgeIcon(name: string, onPress: () => void, badge?: number) {
         if (badge === 0) {
             badge = undefined;
         }
         return (
             <View style={styles.badge}>
-                <Icon style={styles.badgeIcon} type='EvilIcons' name={name} />
+                <Icon style={styles.badgeIcon} type='EvilIcons' name={name} onPress={onPress.bind(this)} />
                 <Text style={styles.badgeText}>{badge}</Text>
             </View>
         );
@@ -193,9 +207,9 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
         return (
             <Animated.View style={[styles.bottomBar, { transform: [{ translateY: this.state.bottomBarBottom }] }]}>
                 <Icon style={styles.backIcon} type='EvilIcons' name='chevron-left' onPress={() => this.props.navigation.goBack()} />
-                {this.renderBadgeIcon('comment', post.comment_count)}
-                {this.renderBadgeIcon('heart', post.praise_count)}
-                {this.renderBadgeIcon('share-apple')}
+                {this.renderBadgeIcon('comment', () => {}, post.comment_count)}
+                {this.renderBadgeIcon('heart', () => {}, post.praise_count)}
+                {this.renderBadgeIcon('share-apple', () => this.toShare())}
             </Animated.View>
         );
     }

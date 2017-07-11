@@ -57,7 +57,7 @@ class CategoryContainer extends React.Component<Props, CategoryContainerState> {
 
         if (!category.feeds) {
             return (
-                <View style={{ flex: 1, justifyContent: 'center' }}>
+                <View style={{ flex: 1, justifyContent: 'center', backgroundColor: '#f2f2f2' }}>
                     <ActivityIndicator size='large' />
                 </View>
             ); 

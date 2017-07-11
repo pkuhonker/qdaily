@@ -28,6 +28,8 @@ const windowWidth = Dimensions.get('window').width;
 
 class DashContainer extends React.Component<Props, DashContainerState> {
 
+    private topicCategoryVisible: boolean;
+
     constructor(props) {
         super(props);
         this.state = {
@@ -51,7 +53,11 @@ class DashContainer extends React.Component<Props, DashContainerState> {
 
     // http://facebook.github.io/react-native/docs/backhandler.html
     private onBackAndroid = () => {
-        this.goBack();
+        if (this.topicCategoryVisible) {
+            this.showCategory(false);
+        } else {
+            this.goBack();
+        }
         return true;
     }
 
@@ -66,6 +72,10 @@ class DashContainer extends React.Component<Props, DashContainerState> {
     }
 
     private showCategory(value: boolean) {
+        if (value === this.topicCategoryVisible) {
+            return;
+        }
+        this.topicCategoryVisible = value;
         Animated.timing(this.state.bottomContainerX, {
             toValue: value ? -windowWidth : 0,
             easing: Easing.out(Easing.back(0.8)),
@@ -84,9 +94,9 @@ class DashContainer extends React.Component<Props, DashContainerState> {
         );
     }
 
-    private renderHButton(options: { text: string, icon: any, small?: boolean, right?: boolean, onPress?: () => void }) {
+    private renderHButton(options: { id?: number, text: string, icon: any, small?: boolean, right?: boolean, onPress?: () => void }) {
         return (
-            <TouchableWithoutFeedback onPress={() => options.onPress && options.onPress()}>
+            <TouchableWithoutFeedback key={options.id} onPress={() => options.onPress && options.onPress()}>
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginBottom: 15, paddingRight: 50 }}>
                     <Image style={[{ marginRight: 15 }, options.small ? { width: 32, height: 32 } : { width: 36, height: 36 }]} source={options.icon} />
                     <Text style={{ color: '#000', fontSize: options.small ? 14 : 15 }}>{options.text}</Text>
@@ -135,7 +145,7 @@ class DashContainer extends React.Component<Props, DashContainerState> {
                                     <ActivityIndicator />
                                     :
                                     this.props.topics.map(topic => {
-                                        return this.renderHButton({ text: topic.title, icon: { uri: topic.white_icon } });
+                                        return this.renderHButton({ id: topic.id, text: topic.title, icon: { uri: topic.white_icon } });
                                     })
                             }
                         </View>

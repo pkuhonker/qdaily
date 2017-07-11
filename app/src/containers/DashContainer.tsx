@@ -1,5 +1,8 @@
 import * as React from 'react';
-import { View, Text, Image, Animated, Easing, TouchableWithoutFeedback, StyleSheet, ViewStyle, Dimensions } from 'react-native';
+import {
+    View, Text, Image, Animated, Easing, TouchableWithoutFeedback, BackHandler,
+    StyleSheet, ViewStyle, Dimensions
+} from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import OverlayButton from '../components/base/OverlayButton';
 import { AppState } from '../reducers';
@@ -9,7 +12,6 @@ type DashContainerProps = NavigationScreenProps<{
 }>;
 
 interface StateProps {
-    stale: boolean;
 }
 
 interface DashContainerState {
@@ -38,19 +40,27 @@ class DashContainer extends React.Component<Props, DashContainerState> {
             Animated.timing(this.state.topContainerY, { toValue: 0, easing: Easing.out(Easing.back(1)), duration: 300 }),
             Animated.timing(this.state.bottomContainerY, { toValue: 0, easing: Easing.out(Easing.back(1)), duration: 300 })
         ]).start();
+        BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid);
     }
 
-    public componentWillReceiveProps(nextProps: Props) {
-        if (nextProps.stale) {
-            Animated.parallel([
-                Animated.timing(this.state.topContainerY, { toValue: -200, easing: Easing.out(Easing.back(1)), duration: 300 }),
-                Animated.timing(this.state.bottomContainerY, { toValue: 600, easing: Easing.out(Easing.back(1)), duration: 300 })
-            ]).start();
-        }
+    public componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid);
+    }
+
+    // http://facebook.github.io/react-native/docs/backhandler.html
+    private onBackAndroid = () => {
+        this.goBack();
+        return true;
     }
 
     private goBack() {
-        this.props.navigation.goBack();
+        Animated.parallel([
+            Animated.timing(this.state.topContainerY, { toValue: -200, easing: Easing.out(Easing.back(1)), duration: 300 }),
+            Animated.timing(this.state.bottomContainerY, { toValue: 600, easing: Easing.out(Easing.back(1)), duration: 300 })
+        ]).start();
+        setTimeout(() => {
+            this.props.navigation.goBack();
+        }, 50);
     }
 
     private showCategory(value: boolean) {
@@ -87,7 +97,7 @@ class DashContainer extends React.Component<Props, DashContainerState> {
     public render(): JSX.Element {
         return (
             <View style={styles.container}>
-                <Animated.View style={{ transform:[{ translateY: this.state.topContainerY }] }}>
+                <Animated.View style={{ transform: [{ translateY: this.state.topContainerY }] }}>
                     <TouchableWithoutFeedback>
                         <View style={styles.searchContainer}>
                             <Image style={{ width: 18, height: 19, marginRight: 8 }} source={require('../../res/imgs/dash/icon_menu_search_day.png')} />
@@ -101,7 +111,7 @@ class DashContainer extends React.Component<Props, DashContainerState> {
                         {this.renderVButton({ text: '推荐', icon: require('../../res/imgs/dash/icon_menu_share_day.png') })}
                     </View>
                 </Animated.View>
-                <Animated.View style={[{ flex: 1, flexDirection: 'row', width: windowWidth * 2 }, { transform:[{ translateX: this.state.bottomContainerX }, { translateY: this.state.bottomContainerY }] }]}>
+                <Animated.View style={[{ flex: 1, flexDirection: 'row', width: windowWidth * 2 }, { transform: [{ translateX: this.state.bottomContainerX }, { translateY: this.state.bottomContainerY }] }]}>
                     <View style={styles.vActionContainer}>
                         {this.renderHButton({ text: '关于我们', icon: require('../../res/imgs/dash/icon_menu_about_day.png') })}
                         {this.renderHButton({ text: '新闻分类', icon: require('../../res/imgs/dash/icon_menu_category_day.png'), right: true, onPress: () => this.showCategory(true) })}
@@ -162,7 +172,6 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state: AppState, ownProps?: DashContainerProps): StateProps {
     return {
-        stale: state.nav.routes[state.nav.index].routeName !== 'dash'
     };
 }
 

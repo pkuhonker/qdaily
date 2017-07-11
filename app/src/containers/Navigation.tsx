@@ -42,7 +42,7 @@ export const Navigator = StackNavigator({
             transitionSpec: {
                 easing: Easing.out(Easing.ease),
                 timing: Animated.timing,
-                duration: 3000
+                duration: 300
             },
             screenInterpolator: sceneProps => {
                 const { scene } = sceneProps;
@@ -70,7 +70,7 @@ class Navigation extends React.Component<DispatchProp<any> & StateProps, any> {
         super(props);
     }
 
-    private onBackAndroid() {
+    private onBackAndroid = () => {
         const { dispatch, nav } = this.props;
         if (nav.routes.length > 1) {
             dispatch(NavigationActions.back() as any);
@@ -87,13 +87,13 @@ class Navigation extends React.Component<DispatchProp<any> & StateProps, any> {
 
     public componentDidMount() {
         if (Platform.OS === 'android') {
-            BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid.bind(this));
+            BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid);
         }
     }
 
     public componentWillUnmount() {
         if (Platform.OS === 'android') {
-            BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid.bind(this));
+            BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid);
         }
     }
 

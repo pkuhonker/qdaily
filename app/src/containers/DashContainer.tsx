@@ -1,17 +1,19 @@
 import * as React from 'react';
 import {
-    View, Text, Image, Animated, Easing, TouchableWithoutFeedback, BackHandler,
+    View, Text, Image, Animated, Easing, TouchableWithoutFeedback, BackHandler, ActivityIndicator,
     StyleSheet, ViewStyle, Dimensions
 } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import OverlayButton from '../components/base/OverlayButton';
 import { AppState } from '../reducers';
+import { TopicCategory } from '../interfaces';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
 
 type DashContainerProps = NavigationScreenProps<{
 }>;
 
 interface StateProps {
+    topics: TopicCategory[];
 }
 
 interface DashContainerState {
@@ -82,12 +84,12 @@ class DashContainer extends React.Component<Props, DashContainerState> {
         );
     }
 
-    private renderHButton(options: { text: string, icon: string, right?: boolean, onPress?: () => void }) {
+    private renderHButton(options: { text: string, icon: any, small?: boolean, right?: boolean, onPress?: () => void }) {
         return (
             <TouchableWithoutFeedback onPress={() => options.onPress && options.onPress()}>
-                <View style={{ alignItems: 'center', flexDirection: 'row', marginBottom: 15 }}>
-                    <Image style={{ width: 36, height: 36, marginRight: 15 }} source={options.icon} />
-                    <Text style={{ color: '#000', fontSize: 15 }}>{options.text}</Text>
+                <View style={{ alignItems: 'center', flexDirection: 'row', marginBottom: 15, paddingRight: 50 }}>
+                    <Image style={[{ marginRight: 15 }, options.small ? { width: 32, height: 32 } : { width: 36, height: 36 }]} source={options.icon} />
+                    <Text style={{ color: '#000', fontSize: options.small ? 14 : 15 }}>{options.text}</Text>
                     {options.right ? <Image style={{ marginLeft: 5, width: 8, height: 16 }} source={require('../../res/imgs/dash/icon_menu_second_day.png')} /> : null}
                 </View>
             </TouchableWithoutFeedback>
@@ -126,9 +128,17 @@ class DashContainer extends React.Component<Props, DashContainerState> {
                         </OverlayButton>
                     </View>
                     <View style={styles.vActionContainer}>
-                        {this.renderHButton({ text: '关于我们', icon: require('../../res/imgs/dash/icon_menu_about_day.png') })}
-                        {this.renderHButton({ text: '栏目中心', icon: require('../../res/imgs/dash/icon_menu_column_day.png') })}
-                        {this.renderHButton({ text: '我的消息', icon: require('../../res/imgs/dash/icon_menu_notification_day.png') })}
+                        <View style={{ flexWrap: 'wrap', height: 350 }}>
+                            {
+                                this.props.topics.length === 0
+                                    ?
+                                    <ActivityIndicator />
+                                    :
+                                    this.props.topics.map(topic => {
+                                        return this.renderHButton({ text: topic.title, icon: { uri: topic.white_icon } });
+                                    })
+                            }
+                        </View>
                         <OverlayButton position={{ left: 20, bottom: 20 }} onPress={() => this.showCategory(false)}>
                             <View>
                                 <Image style={{ width: 50, height: 50 }} source={require('../../res/imgs/dash/icon_back_button.png')} />
@@ -172,6 +182,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state: AppState, ownProps?: DashContainerProps): StateProps {
     return {
+        topics: state.home.left_sidebar
     };
 }
 

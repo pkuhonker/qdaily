@@ -1,6 +1,6 @@
 import { createAction } from 'redux-actions';
 import * as types from '../constants/actionTypes';
-import { News, Papers } from '../interfaces';
+import { News, Papers, TopicCategory } from '../interfaces';
 import * as apiService from '../services/apiService';
 
 export function getNews(key?: string) {
@@ -21,4 +21,10 @@ export function getPapers(key?: string) {
             root: !key || key === '0'
         };
     })(key);
+}
+
+export function getLeftSidebar() {
+    return createAction<Promise<TopicCategory[]>>(types.GET_LEFT_SIDEBAR, async () => {
+        return await apiService.getLeftSidebar();
+    })();
 }

@@ -56,6 +56,7 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
     public componentDidMount() {
         this.refreshNews();
         this.refreshPapers();
+        this.props.actions.getLeftSidebar();
     }
 
     public componentWillReceiveProps(nextProps: Props) {

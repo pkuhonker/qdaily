@@ -1,4 +1,4 @@
-import { News, Papers, HeadLine, PromiseMeta, PromiseMetaSequence } from '../interfaces';
+import { News, Papers, HeadLine, TopicCategory, PromiseMeta, PromiseMetaSequence } from '../interfaces';
 import { FSA } from 'flux-standard-action';
 import * as types from '../constants/actionTypes';
 
@@ -7,6 +7,7 @@ export interface HomeState {
     papers_pullRefreshPending: boolean;
     news: News;
     papers: Papers;
+    left_sidebar: TopicCategory[];
 }
 
 const initialNewsState: News = {
@@ -31,7 +32,8 @@ const initialState: HomeState = {
     news_pullRefreshPending: false,
     papers_pullRefreshPending: false,
     news: initialNewsState,
-    papers: initialPapersState
+    papers: initialPapersState,
+    left_sidebar: []
 };
 
 function getNews(state: HomeState, action: FSA<News, PromiseMeta>): HomeState {
@@ -105,6 +107,20 @@ function getPapers(state: HomeState, action: FSA<Papers, PromiseMeta>): HomeStat
     return newState;
 }
 
+function getLeftSidebar(state: HomeState, action: FSA<TopicCategory[], PromiseMeta>): HomeState {
+    const { payload, error, meta = {} as PromiseMeta } = action;
+    const { sequence = {} as PromiseMetaSequence } = meta;
+    const pending = sequence.type === 'start';
+
+    if (!error && !pending) {
+        return {
+            ...state,
+            left_sidebar: payload
+        };
+    }
+    return state;
+}
+
 export default function (state = initialState, action: FSA<any, PromiseMeta>): HomeState {
     const { type } = action;
 
@@ -113,6 +129,8 @@ export default function (state = initialState, action: FSA<any, PromiseMeta>): H
             return getNews(state, action);
         case types.GET_PAPERS:
             return getPapers(state, action);
+        case types.GET_LEFT_SIDEBAR:
+            return getLeftSidebar(state, action);
         default:
             return state;
     }

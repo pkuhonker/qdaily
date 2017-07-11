@@ -5,6 +5,14 @@ export interface PostCategory {
     [key: string]: any;
 }
 
+export interface TopicCategory {
+    id: number;
+    title: string;
+    normal: string;
+    white_icon: string;
+    black_icon: string;
+}
+
 export interface Share {
     url: string;
     title: string;

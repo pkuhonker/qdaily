@@ -98,6 +98,12 @@ export interface PaperTopic {
     insert_content: PaperTopicContent;
 }
 
+export interface Categories {
+    has_more: boolean;
+    last_key: string;
+    feeds: Feed[];
+}
+
 export interface News {
     has_more: boolean;
     last_key: string;

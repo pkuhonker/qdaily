@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, Image, Text, Dimensions } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import Icon from './base/Icon';
+import NavHeader from './base/NavHeader';
 import Swiper, { SwiperState } from 'react-native-swiper';
 
 export interface Pic {
@@ -48,10 +49,13 @@ export default class PicsPreview extends React.Component<PicsPreviewProps, PicsP
 
         return (
             <View style={{ flex: 1, backgroundColor: '#000' }}>
-                <View style={{ height: 40, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                    <Icon style={{ position: 'absolute', left: 10, color: '#ffffff', fontSize: 40 }} onPress={this.onBack.bind(this)} type='EvilIcons' name='chevron-left' />
-                    <Text style={{ color: '#ffffff', fontSize: 20 }}>{`${activeIndex + 1}/${pics.length}`}</Text>
-                </View>
+                <NavHeader
+                    style={{ backgroundColor: '#000' }}
+                    title={`${activeIndex + 1}/${pics.length}`}
+                    titleStyle={{ color: '#fff', fontSize: 20 }}
+                    backTitleStyle={{ color: '#fff' }}
+                    onBack={this.onBack.bind(this)}
+                />
                 <Swiper index={activeIndex} showsPagination={false} height={swiperHeight} onMomentumScrollEnd={this.onChange.bind(this)} >
                     {
                         pics.map(pic => {

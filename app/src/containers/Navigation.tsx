@@ -1,21 +1,20 @@
 import * as React from 'react';
 import { Platform, BackHandler, ToastAndroid, Easing, Animated } from 'react-native';
 import { connect, DispatchProp } from 'react-redux';
-import { addNavigationHelpers, StackNavigator, NavigationActions, NavigationScreenOptions, NavigationState } from 'react-navigation';
+import { addNavigationHelpers, StackNavigator, NavigationActions, NavigationState } from 'react-navigation';
 import * as transitions from '../utils/transitions';
 import { AppState } from '../reducers';
 import HomeContainer from './HomeContainer';
 import ArticleContainer from './ArticleContainer';
 import PaperContainer from './PaperContainer';
+import CategoryContainer from './CategoryContainer';
 import ADContainer from './ADContainer';
 import PicsPreview from '../components/PicsPreview';
 import DashContainer from './DashContainer';
 
 export const Navigator = StackNavigator({
     home: {
-        screen: HomeContainer,
-        navigationOptions: {
-        } as NavigationScreenOptions
+        screen: HomeContainer
     },
     dash: {
         screen: DashContainer
@@ -25,6 +24,9 @@ export const Navigator = StackNavigator({
     },
     paper: {
         screen: PaperContainer
+    },
+    category: {
+        screen: CategoryContainer
     },
     ad: {
         screen: ADContainer

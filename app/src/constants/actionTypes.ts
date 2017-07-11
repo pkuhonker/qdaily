@@ -13,3 +13,6 @@ export const GET_ARTICLE_INFO_BY_ID = 'GET_ARTICLE_INFO_BY_ID';
 
 // paper
 export const GET_PAPER_DETAIL_BY_ID = 'GET_PAPER_DETAIL_BY_ID';
+
+// category
+export const GET_CATEGORIES = 'GET_CATEGORIES';

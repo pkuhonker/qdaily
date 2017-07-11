@@ -13,6 +13,7 @@ type DashContainerProps = NavigationScreenProps<{
 }>;
 
 interface StateProps {
+    active: boolean;
     topics: TopicCategory[];
 }
 
@@ -33,8 +34,8 @@ class DashContainer extends React.Component<Props, DashContainerState> {
     constructor(props) {
         super(props);
         this.state = {
-            topContainerY: new Animated.Value(-200),
-            bottomContainerY: new Animated.Value(600),
+            topContainerY: new Animated.Value(-300),
+            bottomContainerY: new Animated.Value(800),
             bottomContainerX: new Animated.Value(0)
         };
     }
@@ -51,6 +52,16 @@ class DashContainer extends React.Component<Props, DashContainerState> {
         BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid);
     }
 
+    public componentWillReceiveProps(nextProps: Props): void {
+        if (this.props.active !== nextProps.active) {
+            if (nextProps.active) {
+                BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid);
+            } else {
+                BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid);
+            }
+        }
+    }
+
     // http://facebook.github.io/react-native/docs/backhandler.html
     private onBackAndroid = () => {
         if (this.topicCategoryVisible) {
@@ -63,8 +74,8 @@ class DashContainer extends React.Component<Props, DashContainerState> {
 
     private goBack() {
         Animated.parallel([
-            Animated.timing(this.state.topContainerY, { toValue: -200, easing: Easing.out(Easing.back(1)), duration: 300 }),
-            Animated.timing(this.state.bottomContainerY, { toValue: 600, easing: Easing.out(Easing.back(1)), duration: 300 })
+            Animated.timing(this.state.topContainerY, { toValue: -300, easing: Easing.out(Easing.back(1)), duration: 300 }),
+            Animated.timing(this.state.bottomContainerY, { toValue: 800, easing: Easing.out(Easing.back(1)), duration: 300 })
         ]).start();
         setTimeout(() => {
             this.props.navigation.goBack();
@@ -81,6 +92,13 @@ class DashContainer extends React.Component<Props, DashContainerState> {
             easing: Easing.out(Easing.back(0.8)),
             duration: 300
         }).start();
+    }
+
+    private toCategory(topic: TopicCategory) {
+        this.props.navigation.navigate('category', {
+            id: topic.id,
+            title: topic.title
+        });
     }
 
     private renderVButton(options: { text: string, icon: string, onPress?: () => void }) {
@@ -145,7 +163,12 @@ class DashContainer extends React.Component<Props, DashContainerState> {
                                     <ActivityIndicator />
                                     :
                                     this.props.topics.map(topic => {
-                                        return this.renderHButton({ id: topic.id, text: topic.title, icon: { uri: topic.white_icon } });
+                                        return this.renderHButton({
+                                            id: topic.id,
+                                            text: topic.title,
+                                            icon: { uri: topic.white_icon },
+                                            onPress: () => this.toCategory(topic)
+                                        });
                                     })
                             }
                         </View>
@@ -192,6 +215,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state: AppState, ownProps?: DashContainerProps): StateProps {
     return {
+        active: state.nav.routes[state.nav.index].routeName === 'dash',
         topics: state.home.left_sidebar
     };
 }

@@ -1,5 +1,5 @@
 import * as requestService from './requestService';
-import { News, Papers, TopicCategory, Article, Paper, Feed } from '../interfaces';
+import { News, Papers, Categories, TopicCategory, Article, Paper, Feed } from '../interfaces';
 
 
 export function getNews(key?: string): Promise<News> {
@@ -11,6 +11,12 @@ export function getNews(key?: string): Promise<News> {
 export function getPapers(key?: string): Promise<Papers> {
     return requestService.get(`/papers/index/${key ? key : 0}.json`).then(result => {
         return result.response as Papers;
+    });
+}
+
+export function getCategories(id: number, key?: string): Promise<Categories> {
+    return requestService.get(`/categories/index/${id}/${key ? key : 0}.json`).then(result => {
+        return result.response as Categories;
     });
 }
 

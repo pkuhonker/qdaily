@@ -243,7 +243,7 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
                 />
                 <OverlayButton onPress={() => this.toDash()}>
                     <Animated.View style={{ opacity: overlayOpacity }}>
-                        <Image style={{ width: 50, height: 50 }} source={require('../../res/imgs/icon_round_logo.png')}>
+                        <Image style={{ width: 54, height: 54, borderRadius: 27 }} source={require('../../res/imgs/icon_round_logo.png')}>
                         </Image>
                     </Animated.View>
                 </OverlayButton>

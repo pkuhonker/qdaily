@@ -34,7 +34,7 @@ class DashContainer extends React.Component<Props, DashContainerState> {
     constructor(props) {
         super(props);
         this.state = {
-            topContainerY: new Animated.Value(-300),
+            topContainerY: new Animated.Value(-400),
             bottomContainerY: new Animated.Value(800),
             bottomContainerX: new Animated.Value(0)
         };
@@ -74,7 +74,7 @@ class DashContainer extends React.Component<Props, DashContainerState> {
 
     private goBack() {
         Animated.parallel([
-            Animated.timing(this.state.topContainerY, { toValue: -300, easing: Easing.out(Easing.back(1)), duration: 300 }),
+            Animated.timing(this.state.topContainerY, { toValue: -400, easing: Easing.out(Easing.back(1)), duration: 300 }),
             Animated.timing(this.state.bottomContainerY, { toValue: 800, easing: Easing.out(Easing.back(1)), duration: 300 })
         ]).start();
         setTimeout(() => {
@@ -151,7 +151,7 @@ class DashContainer extends React.Component<Props, DashContainerState> {
                         {this.renderHButton({ text: '意见反馈', icon: require('../../res/imgs/dash/icon_menu_feedback_day.png') })}
                         <OverlayButton position={{ left: 20, bottom: 20 }} onPress={() => this.goBack()}>
                             <View>
-                                <Image style={{ width: 50, height: 50 }} source={require('../../res/imgs/dash/icon_close_button.png')} />
+                                <Image style={{ width: 54, height: 54, borderRadius: 27 }} source={require('../../res/imgs/dash/icon_close_button.png')} />
                             </View>
                         </OverlayButton>
                     </View>
@@ -174,7 +174,7 @@ class DashContainer extends React.Component<Props, DashContainerState> {
                         </View>
                         <OverlayButton position={{ left: 20, bottom: 20 }} onPress={() => this.showCategory(false)}>
                             <View>
-                                <Image style={{ width: 50, height: 50 }} source={require('../../res/imgs/dash/icon_back_button.png')} />
+                                <Image style={{ width: 54, height: 54, borderRadius: 27 }} source={require('../../res/imgs/dash/icon_back_button.png')} />
                             </View>
                         </OverlayButton>
                     </View>

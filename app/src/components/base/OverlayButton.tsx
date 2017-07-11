@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { View, ViewStyle, StyleSheet, TouchableOpacity } from 'react-native';
 
-const overlayButtonSize = 50;
-
 export interface OverlayButtonProps {
     style?: ViewStyle;
     position?: {
@@ -42,9 +40,6 @@ export default class OverlayButton extends React.Component<OverlayButtonProps, a
 
 const styles = StyleSheet.create({
     container: {
-        height: overlayButtonSize,
-        width: overlayButtonSize,
-        position: 'absolute',
-        borderRadius: overlayButtonSize / 2
+        position: 'absolute'
     } as ViewStyle
 });

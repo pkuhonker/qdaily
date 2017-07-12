@@ -51,6 +51,7 @@ export interface Feed {
     image: string;
     type: FeedType;
     post: Post;
+    share: Share;
 }
 
 export interface PaperOption {
@@ -70,7 +71,6 @@ export interface PaperOption {
 
 export interface Paper extends Feed {
     options: PaperOption[];
-    share: Share;
 }
 
 export interface Banner extends Feed {

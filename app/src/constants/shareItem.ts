@@ -1,7 +1,10 @@
+import { Share as RNShare } from 'react-native';
+import { Share } from '../interfaces';
+
 export interface ShareItem {
     type: string;
     icon: any;
-    onPress?: () => void;
+    onPress?: (content: Share ) => void;
 }
 
 export const defaultItems = {
@@ -27,6 +30,15 @@ export const defaultItems = {
     } as ShareItem,
     more: {
         type: 'more',
-        icon: require('../../res/imgs/share/icon_share_more.png')
+        icon: require('../../res/imgs/share/icon_share_more.png'),
+        onPress: content => {
+            const message = content.title + '\n' + content.url;
+            RNShare.share({
+                title: content.title,
+                message: message
+            }, {
+                dialogTitle: message
+            });
+        }
     } as ShareItem,
 };

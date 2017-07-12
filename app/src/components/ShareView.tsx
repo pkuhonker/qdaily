@@ -2,16 +2,19 @@ import * as React from 'react';
 import { View, Image, TouchableWithoutFeedback, StyleSheet, ViewStyle } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { ShareItem } from '../constants/shareItem';
+import { Share } from '../interfaces';
 
 export type ShareProps = NavigationScreenProps<{
+    content: Share;
     items: ShareItem[];
 }>;
 
-export default class Share extends React.Component<ShareProps, any> {
+export default class ShareView extends React.Component<ShareProps, any> {
 
     private renderItem(item: ShareItem) {
+        const { content } = this.props.navigation.state.params;
         return (
-            <TouchableWithoutFeedback key={item.type} onPress={() => item.onPress && item.onPress()}>
+            <TouchableWithoutFeedback key={item.type} onPress={() => item.onPress && item.onPress(content)}>
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <Image style={{ margin: 15, width: 77, height: 77 }} source={item.icon} />
                 </View>

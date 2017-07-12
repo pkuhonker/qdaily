@@ -144,6 +144,7 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
 
     private toShare() {
         this.props.navigation.navigate('share', {
+            content: this.props.info.share,
             items: [
                 defaultItems.wechat,
                 defaultItems.wechatfriends,

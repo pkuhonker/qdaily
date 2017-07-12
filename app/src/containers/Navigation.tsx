@@ -10,7 +10,7 @@ import PaperContainer from './PaperContainer';
 import CategoryContainer from './CategoryContainer';
 import ADContainer from './ADContainer';
 import PicsPreview from '../components/PicsPreview';
-import Share from '../components/Share';
+import ShareView from '../components/ShareView';
 import DashContainer from './DashContainer';
 
 export const Navigator = StackNavigator({
@@ -36,7 +36,7 @@ export const Navigator = StackNavigator({
         screen: PicsPreview
     },
     share: {
-        screen: Share
+        screen: ShareView
     }
 }, {
         initialRouteName: 'home',

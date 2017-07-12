@@ -12,8 +12,8 @@ const initialState: ArticleState = {
     info: {}
 };
 
-export default function (state = initialState, action: FSA<any, PromiseMeta>): ArticleState {
-    const { type, payload, error, meta = {} as PromiseMeta } = action;
+export default function (state = initialState, action: any): ArticleState {
+    const { type, payload, error, meta = {} as PromiseMeta } = action as FSA<any, PromiseMeta>;
     const { sequence = {} as PromiseMetaSequence } = meta;
     const pending = sequence.type === 'start';
 

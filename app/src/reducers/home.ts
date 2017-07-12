@@ -121,8 +121,8 @@ function getLeftSidebar(state: HomeState, action: FSA<TopicCategory[], PromiseMe
     return state;
 }
 
-export default function (state = initialState, action: FSA<any, PromiseMeta>): HomeState {
-    const { type } = action;
+export default function (state = initialState, action: any): HomeState {
+    const { type } = action as FSA<any, PromiseMeta>;
 
     switch (type) {
         case types.GET_NEWS:

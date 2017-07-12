@@ -12,8 +12,8 @@ const initialState: CategoryState = {
     categories: {}
 };
 
-export default function (state = initialState, action: FSA<Categories, PromiseMeta>): CategoryState {
-    const { type, payload, error, meta = {} as PromiseMeta } = action;
+export default function (state = initialState, action: any): CategoryState {
+    const { type, payload, error, meta = {} as PromiseMeta } = action as FSA<Categories, PromiseMeta>;
     const { sequence = {} as PromiseMetaSequence, root = true, id } = meta;
     const pending = sequence.type === 'start';
     let newState: CategoryState;

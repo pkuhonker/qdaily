@@ -1,10 +1,11 @@
 import { Share as RNShare } from 'react-native';
 import { Share } from '../interfaces';
+import ShareSDK, { PlatformType } from '../share/sharesdk';
 
 export interface ShareItem {
     type: string;
     icon: any;
-    onPress?: (content: Share ) => void;
+    openShare?: (content: Share ) => Promise<any>;
 }
 
 export const defaultItems = {
@@ -22,7 +23,13 @@ export const defaultItems = {
     } as ShareItem,
     weibo: {
         type: 'weibo',
-        icon: require('../../res/imgs/share/icon_share_weibo.png')
+        icon: require('../../res/imgs/share/icon_share_weibo.png'),
+        openShare: content => {
+            return ShareSDK.share(PlatformType.SinaWeibo, {
+                text: content.title,
+                imageUrl: content.url
+            });
+        }
     } as ShareItem,
     evernote: {
         type: 'evernote',
@@ -31,7 +38,7 @@ export const defaultItems = {
     more: {
         type: 'more',
         icon: require('../../res/imgs/share/icon_share_more.png'),
-        onPress: content => {
+        openShare: content => {
             const message = content.title + '\n' + content.url;
             RNShare.share({
                 title: content.title,

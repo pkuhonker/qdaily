@@ -10,8 +10,8 @@ const initialState: PaperState = {
     papers: {}
 };
 
-export default function (state = initialState, action: FSA<Paper, PromiseMeta>): PaperState {
-    const { type, payload, error, meta = {} as PromiseMeta } = action;
+export default function (state = initialState, action: any): PaperState {
+    const { type, payload, error, meta = {} as PromiseMeta } = action as FSA<Paper, PromiseMeta>;
     const { sequence = {} as PromiseMetaSequence } = meta;
     const pending = sequence.type === 'start';
 

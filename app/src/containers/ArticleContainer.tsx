@@ -9,7 +9,7 @@ import WebViewBridge, { WebViewMessge } from '../components/base/WebViewBridge';
 import { AppState } from '../reducers';
 import { Article, Feed, Post } from '../interfaces';
 import { domain } from '../constants/config';
-import { defaultItems } from '../constants/shareItem';
+import { defaultItems } from '../share';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
 
 type ArticleContainerProps = NavigationScreenProps<{

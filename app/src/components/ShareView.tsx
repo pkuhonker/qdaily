@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Image, TouchableWithoutFeedback, StyleSheet, ViewStyle, ToastAndroid } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
-import { ShareItem } from '../constants/shareItem';
+import { ShareItem } from '../share';
 import { Share } from '../interfaces';
 
 export type ShareProps = NavigationScreenProps<{
@@ -23,7 +23,7 @@ export default class ShareView extends React.Component<ShareProps, any> {
                 ToastAndroid.showWithGravity('分享成功', ToastAndroid.SHORT, ToastAndroid.CENTER);
             }
         }, error => {
-            ToastAndroid.showWithGravity('分享失败', ToastAndroid.SHORT, ToastAndroid.CENTER);
+            ToastAndroid.showWithGravity(error.message || '分享失败', ToastAndroid.SHORT, ToastAndroid.CENTER);
         });
     }
 

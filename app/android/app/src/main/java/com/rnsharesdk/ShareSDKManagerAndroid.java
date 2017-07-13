@@ -1,11 +1,6 @@
 package com.rnsharesdk;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.view.View;
-import android.text.TextUtils;
-
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -29,7 +24,7 @@ import cn.sharesdk.framework.ShareSDK;
 public class ShareSDKManagerAndroid extends ReactContextBaseJavaModule implements Callback {
 
     private ReactApplicationContext context;
-    private static boolean DEBUG = true;
+    private static boolean DEBUG = false;
     private static boolean disableSSO = false;
 
 
@@ -37,7 +32,6 @@ public class ShareSDKManagerAndroid extends ReactContextBaseJavaModule implement
     private static final int MSG_AUTHORIZE = 2;
     private static final int MSG_SHOW_USER = 3;
     private static final int MSG_SHARE = 4;
-    private static final int MSG_ONEKEY_SAHRE = 5;
     private static final int MSG_GET_FRIENDLIST = 6;
     private static final int MSG_FOLLOW_FRIEND = 7;
 
@@ -87,13 +81,14 @@ public class ShareSDKManagerAndroid extends ReactContextBaseJavaModule implement
     }
 
     @ReactMethod
-    public boolean isClientValid(int platform) {
+    public void isClientValid(int platform, Promise promise) {
         if (DEBUG) {
             System.out.println("ShareSDKUtils.isClientValid");
         }
         String name = ShareSDK.platformIdToName(platform);
         Platform plat = ShareSDK.getPlatform(name);
-        return plat.isClientValid();
+
+        promise.resolve(plat.isClientValid());
     }
 
     @ReactMethod

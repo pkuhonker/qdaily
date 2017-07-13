@@ -85,7 +85,6 @@ class ShareSDK {
 
     public share(platformType: PlatformType, shareParams: Object): Promise<any> {
         return new Promise((c, e) => {
-            shareParams = JSON.stringify(shareParams);
             if (Platform.OS === 'ios') {
                 ShareSDKManagerIOS.share(platformType, shareParams);
             } else {

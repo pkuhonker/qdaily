@@ -4,6 +4,8 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.ReadableNativeMap;
 import com.mob.MobSDK;
 import com.mob.tools.utils.Hashon;
 import android.os.Bundle;
@@ -103,7 +105,7 @@ public class ShareSDKManagerAndroid extends ReactContextBaseJavaModule implement
     }
 
     @ReactMethod
-    public void share(int platform, String content) {
+    public void share(int platform, ReadableMap content) {
         if (DEBUG) {
             System.out.println("ShareSDKUtils.share");
         }
@@ -214,7 +216,7 @@ public class ShareSDKManagerAndroid extends ReactContextBaseJavaModule implement
             break;
             case MSG_SHARE: {
                 int platformID = msg.arg1;
-                String content = (String) msg.obj;
+                ReadableNativeMap content = (ReadableNativeMap) msg.obj;
                 String pName = ShareSDK.platformIdToName(platformID);
                 Platform plat = ShareSDK.getPlatform(pName);
                 plat.setPlatformActionListener(new ShareSDKPlatformListener(context));
@@ -223,9 +225,9 @@ public class ShareSDKManagerAndroid extends ReactContextBaseJavaModule implement
                 try {
                     Hashon hashon = new Hashon();
                     if (DEBUG) {
-                        System.out.println("share content ==>>" + content);
+                        System.out.println("share content ==>>" + content.toHashMap().toString());
                     }
-                    HashMap<String, Object> data = hashon.fromJson(content);
+                    HashMap<String, Object> data = content.toHashMap();
 
 
 

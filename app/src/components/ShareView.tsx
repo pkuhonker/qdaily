@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { View, Image, TouchableWithoutFeedback, StyleSheet, ViewStyle, ToastAndroid } from 'react-native';
+import { View, Image, TouchableWithoutFeedback, StyleSheet, ViewStyle, Dimensions } from 'react-native';
+import Toast from 'react-native-root-toast';
 import { NavigationScreenProps } from 'react-navigation';
 import { ShareItem } from '../share';
 import { Share } from '../interfaces';
@@ -8,6 +9,9 @@ export type ShareProps = NavigationScreenProps<{
     content: Share;
     items: ShareItem[];
 }>;
+
+const itemSize = 77;
+const itemMargin = (Dimensions.get('window').width - 77 * 3) / 8;
 
 export default class ShareView extends React.Component<ShareProps, any> {
 
@@ -18,12 +22,12 @@ export default class ShareView extends React.Component<ShareProps, any> {
         item.openShare(content).then(data => {
             // TODO
             if (!data) {
-                ToastAndroid.showWithGravity('分享取消', ToastAndroid.SHORT, ToastAndroid.CENTER);
+                Toast.show('分享取消', { position: Toast.positions.CENTER });
             } else {
-                ToastAndroid.showWithGravity('分享成功', ToastAndroid.SHORT, ToastAndroid.CENTER);
+                Toast.show('分享成功', { position: Toast.positions.CENTER });
             }
         }, error => {
-            ToastAndroid.showWithGravity(error.message || '分享失败', ToastAndroid.SHORT, ToastAndroid.CENTER);
+            Toast.show(error.message || '分享失败', { position: Toast.positions.CENTER });
         });
     }
 
@@ -32,7 +36,7 @@ export default class ShareView extends React.Component<ShareProps, any> {
         return (
             <TouchableWithoutFeedback key={item.type} onPress={() => this.openShare(item, content)}>
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                    <Image style={{ margin: 15, width: 77, height: 77 }} source={item.icon} />
+                    <Image style={{ margin: itemMargin, width: itemSize, height: itemSize }} source={item.icon} />
                 </View>
             </TouchableWithoutFeedback>
         );

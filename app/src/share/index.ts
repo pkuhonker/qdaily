@@ -161,6 +161,7 @@ export const defaultItems = {
                     return Promise.reject(new Error('您未安装QQ'));
                 } else {
                     return shareSDK.share(PlatformType.QQ, {
+                        url: content.url,
                         title: content.title,
                         text: content.text,
                         imageUrl: content.image

@@ -148,7 +148,22 @@ RCT_REMAP_METHOD(isClientValid,
                  resolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject)
 {
-  resolve(@true);
+  switch (platformType) {
+    case SSDKPlatformTypeSinaWeibo:
+      resolve([NSNumber numberWithBool:[ShareSDKManager isWeiboEnabled]]);
+      break;
+    case SSDKPlatformTypeQQ:
+    case SSDKPlatformSubTypeQZone:
+    case SSDKPlatformSubTypeQQFriend:
+      resolve([NSNumber numberWithBool:[ShareSDKManager isQQEnabled]]);
+      break;
+    case SSDKPlatformTypeWechat:
+      resolve([NSNumber numberWithBool:[ShareSDKManager isWeChatEnabled]]);
+      break;
+    default:
+      resolve(@false);
+      break;
+  }
 }
 
 #pragma mark 授权
@@ -221,5 +236,40 @@ RCT_EXPORT_METHOD(getUserInfo:(NSInteger)platformType)
     
   }];
 }
+
++ (BOOL)isQQEnabled {
+  static int status = -1;
+  if (status < 0) {
+    status = ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"mqqapi://"]]);
+  }
+  return status;
+}
+
++ (BOOL)isWeiboEnabled {
+  static int status = -1;
+  if (status < 0) {
+    status = ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"sinaweibo://"]]);
+  }
+  if (status < 0) {
+    status = ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"weico://"]]);
+  }
+  return status;
+}
+
++ (BOOL)isWeChatEnabled {
+  static int status = -1;
+  if (status < 1) {
+    status = ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"wechat://"]]);
+  }
+  if (status < 1) {
+    status = ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"weixin://"]]);
+  }
+  if (status < 1) {
+    status = ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"fb290293790992170://"]]);
+  }
+  return status;
+}
+
+
 
 @end

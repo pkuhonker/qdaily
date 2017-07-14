@@ -255,7 +255,7 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        top: Platform.OS === 'android' ? 0 : 20, 
+        marginTop: Platform.OS === 'android' ? 0 : 20, 
         backgroundColor: '#f2f2f2'
     } as ViewStyle
 });

@@ -35,13 +35,13 @@ class PaperContainer extends React.Component<Props, PaperContainerState> {
         const { paper } = this.props;
         if (!paper) {
             return (
-                <View style={{ flex: 1, justifyContent: 'center' }}>
+                <View style={{ flex: 1, justifyContent: 'center', backgroundColor: '#fff' }}>
                     <Image style={{ width: 180, height: 120, alignSelf: 'center' }} source={require('../../res/imgs/pen_pageloading.gif')} />
                 </View>
             );
         }
         return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' }}>
                 <Text>施工中, 敬请期待</Text>
             </View>
         );

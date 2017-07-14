@@ -9,6 +9,7 @@
 
 #import "AppDelegate.h"
 #import "RCTSplashScreen.h" //import interface
+#import "ShareSDKManager.h" //import interface
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
@@ -27,6 +28,9 @@
                                                    launchOptions:launchOptions];
   //[RCTSplashScreen open:rootView];
   [RCTSplashScreen open:rootView withImageNamed:@"splash"];
+  
+  //[ShareSDK init];
+  [ShareSDKManager ready];
   
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
 

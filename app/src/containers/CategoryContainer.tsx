@@ -6,6 +6,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import { AppState } from '../reducers';
 import { Categories, Feed, FeedType } from '../interfaces';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
+import { containerStyle } from '../utils/container';
 
 type CategoryContainerProps = NavigationScreenProps<{
     id: number;
@@ -64,7 +65,7 @@ class CategoryContainer extends React.Component<Props, CategoryContainerState> {
         }
 
         return (
-            <View style={{ flex: 1, backgroundColor: '#f2f2f2' }} >
+            <View style={[{ flex: 1, backgroundColor: '#fff' }, containerStyle]} >
                 <NavHeader
                     title={title}
                     style={{ height: 50 }}

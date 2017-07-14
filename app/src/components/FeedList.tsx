@@ -71,7 +71,7 @@ export default class FeedList extends React.Component<FeedListProp, FeedListStat
 
     private renderRow(feed: Feed, sectionID: string, rowID: string) {
         return (
-            <View key={rowID} style={rowID !== '0' ? { marginTop: 10 } : null} >
+            <View key={rowID} style={{ marginTop: rowID !== '0' ? 10 : 0 }} >
                 <FeedItem feed={feed} onPress={() => this.onItemPress(feed)} />
             </View>
         );
@@ -109,7 +109,7 @@ export default class FeedList extends React.Component<FeedListProp, FeedListStat
         return (
             <ListView
                 ref={ref => this.list = ref as any}
-                style={this.props.style}
+                style={[{ backgroundColor: '#f2f2f2' }, this.props.style]}
                 dataSource={this.state.ds}
                 renderRow={this.renderRow.bind(this)}
                 renderHeader={this.renderHeader.bind(this)}

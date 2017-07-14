@@ -1,13 +1,14 @@
 import * as React from 'react';
 import {
     View, Text, Image, Animated, Easing, TouchableWithoutFeedback, BackHandler, ActivityIndicator,
-    StyleSheet, ViewStyle, Dimensions
+    StyleSheet, ViewStyle, Dimensions, Platform
 } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import OverlayButton from '../components/base/OverlayButton';
 import { AppState } from '../reducers';
 import { TopicCategory } from '../interfaces';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
+import { containerStyle } from '../utils/container';
 
 type DashContainerProps = NavigationScreenProps<{
 }>;
@@ -101,11 +102,11 @@ class DashContainer extends React.Component<Props, DashContainerState> {
         });
     }
 
-    private renderVButton(options: { text: string, icon: string, onPress?: () => void }) {
+    private renderVButton(options: { text: string, icon: any, onPress?: () => void }) {
         return (
             <TouchableWithoutFeedback onPress={() => options.onPress && options.onPress()}>
                 <View style={{ alignItems: 'center' }}>
-                    <Image style={{ height: 37, width: 37, marginBottom: 15 }} source={options.icon} />
+                    <Image style={{ height: 37, width: 37, marginBottom: 10 }} source={options.icon} />
                     <Text style={{ color: '#000' }}>{options.text}</Text>
                 </View>
             </TouchableWithoutFeedback>
@@ -115,7 +116,7 @@ class DashContainer extends React.Component<Props, DashContainerState> {
     private renderHButton(options: { id?: number, text: string, icon: any, small?: boolean, right?: boolean, onPress?: () => void }) {
         return (
             <TouchableWithoutFeedback key={options.id} onPress={() => options.onPress && options.onPress()}>
-                <View style={{ alignItems: 'center', flexDirection: 'row', marginBottom: 15, paddingRight: 50 }}>
+                <View style={{ alignItems: 'center', flexDirection: 'row', marginBottom: 15, paddingRight: 20 }}>
                     <Image style={[{ marginRight: 15 }, options.small ? { width: 32, height: 32 } : { width: 36, height: 36 }]} source={options.icon} />
                     <Text style={{ color: '#000', fontSize: options.small ? 14 : 15 }}>{options.text}</Text>
                     {options.right ? <Image style={{ marginLeft: 5, width: 8, height: 16 }} source={require('../../res/imgs/dash/icon_menu_second_day.png')} /> : null}
@@ -126,8 +127,8 @@ class DashContainer extends React.Component<Props, DashContainerState> {
 
     public render(): JSX.Element {
         return (
-            <View style={styles.container}>
-                <Animated.View style={{ transform: [{ translateY: this.state.topContainerY }] }}>
+            <View style={[styles.container, containerStyle]}>
+                <Animated.View style={{ height: 170, transform: [{ translateY: this.state.topContainerY }] }}>
                     <TouchableWithoutFeedback>
                         <View style={styles.searchContainer}>
                             <Image style={{ width: 18, height: 19, marginRight: 8 }} source={require('../../res/imgs/dash/icon_menu_search_day.png')} />
@@ -156,7 +157,7 @@ class DashContainer extends React.Component<Props, DashContainerState> {
                         </OverlayButton>
                     </View>
                     <View style={styles.vActionContainer}>
-                        <View style={{ flexWrap: 'wrap', height: 350 }}>
+                        <View style={{ flexWrap: 'wrap', height: 350, alignContent: 'space-between' }}>
                             {
                                 this.props.topics.length === 0
                                     ?
@@ -187,11 +188,11 @@ class DashContainer extends React.Component<Props, DashContainerState> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#f2f2f2'
     } as ViewStyle,
     searchContainer: {
         height: 39,
-        marginVertical: 20,
+        marginVertical: 18,
         marginHorizontal: 20,
         paddingHorizontal: 10,
         backgroundColor: '#fff',
@@ -202,13 +203,11 @@ const styles = StyleSheet.create({
     hActionContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
-        marginVertical: 20,
         marginHorizontal: 20,
     } as ViewStyle,
     vActionContainer: {
         flex: 1,
         flexDirection: 'column',
-        marginTop: 20,
         paddingHorizontal: 20
     } as ViewStyle,
 });

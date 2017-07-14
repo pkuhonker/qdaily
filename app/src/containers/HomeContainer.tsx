@@ -12,6 +12,7 @@ import { AppState } from '../reducers';
 import { HomeState } from '../reducers/home';
 import { Feed, FeedType, HeadLine } from '../interfaces';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
+import { containerStyle } from '../utils/container';
 import SplashScreen from 'react-native-smart-splash-screen';
 import { TabViewAnimated } from 'react-native-tab-view';
 
@@ -156,9 +157,9 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
         return (
             <View>
                 <Banners banners={banners} onPress={banner => this.toDetail(banner)} />
-                <View style={{ height: 10 }}/>
+                <View style={{ height: 10, backgroundColor: '#f2f2f2' }}/>
                 <HeadLineCard headline={headline} onPress={() => this.toDetail(headline)} />
-                <View style={{ height: 10 }}/>
+                <View style={{ height: 10, backgroundColor: '#f2f2f2' }}/>
             </View>
         );
     }
@@ -234,7 +235,7 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
         const { overlayOpacity, ...state } = this.state;
 
         return (
-            <View style={styles.container}>
+            <View style={[styles.container, containerStyle]}>
                 <TabViewAnimated
                     navigationState={state}
                     renderScene={this.renderScene.bind(this)}
@@ -255,8 +256,7 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: Platform.OS === 'android' ? 0 : 20, 
-        backgroundColor: '#f2f2f2'
+        backgroundColor: '#ffffff'
     } as ViewStyle
 });
 

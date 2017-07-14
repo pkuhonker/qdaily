@@ -491,7 +491,9 @@ const styles = StyleSheet.create({
         elevation: 4,
         shadowColor: 'black',
         shadowOpacity: 0.1,
+        shadowOffset: { height: 2 },
         shadowRadius: StyleSheet.hairlineWidth,
+        zIndex: 1000
     } as ViewStyle,
     tabContent: {
         flexDirection: 'row',

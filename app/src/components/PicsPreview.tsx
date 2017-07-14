@@ -4,6 +4,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import Icon from './base/Icon';
 import NavHeader from './base/NavHeader';
 import Swiper, { SwiperState } from 'react-native-swiper';
+import { containerStyle } from '../utils/container';
 
 export interface Pic {
     text: string;
@@ -48,7 +49,7 @@ export default class PicsPreview extends React.Component<PicsPreviewProps, PicsP
         const swiperHeight = Dimensions.get('window').height - 110;
 
         return (
-            <View style={{ flex: 1, backgroundColor: '#000' }}>
+            <View style={[{ flex: 1, backgroundColor: '#000' }, containerStyle]}>
                 <NavHeader
                     style={{ backgroundColor: '#000' }}
                     title={`${activeIndex + 1}/${pics.length}`}

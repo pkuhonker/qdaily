@@ -32,8 +32,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         elevation: 4,
         shadowColor: 'black',
+        shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: StyleSheet.hairlineWidth,
+        zIndex: 1000,
     } as ViewStyle,
     back: {
         position: 'absolute',

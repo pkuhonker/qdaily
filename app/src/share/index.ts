@@ -195,12 +195,13 @@ export const defaultItems = {
         icon: require('../../res/imgs/share/icon_share_more.png'),
         openShare: content => {
             const message = content.title + '\n' + content.url;
-            RNShare.share({
-                title: content.title,
-                message: message
-            }, {
-                    dialogTitle: message
-                });
+            return RNShare.share({ title: content.title, message: message }, { dialogTitle: message }).then(result => {
+                if ((<any>result).action === RNShare.dismissedAction) {
+                    return null;
+                } else {
+                    return result;
+                }
+            });
         }
     } as ShareItem,
 };

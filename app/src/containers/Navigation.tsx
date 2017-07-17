@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { Platform, BackHandler, ToastAndroid, Easing, Animated } from 'react-native';
+import { Platform, BackHandler, ToastAndroid, Easing, Animated, AppState as RNAppState } from 'react-native';
 import { connect, DispatchProp } from 'react-redux';
 import { addNavigationHelpers, StackNavigator, NavigationActions, NavigationState } from 'react-navigation';
 import * as transitions from '../utils/transitions';
+import * as codePushUtils from '../utils/codePushSync';
 import { AppState } from '../reducers';
 import HomeContainer from './HomeContainer';
 import ArticleContainer from './ArticleContainer';
@@ -97,6 +98,12 @@ class Navigation extends React.Component<DispatchProp<any> & StateProps, any> {
         if (Platform.OS === 'android') {
             BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid);
         }
+        codePushUtils.sync();
+        RNAppState.addEventListener('change', (newState) => {
+            if (newState === 'active') {
+                codePushUtils.sync();
+            }
+        });
     }
 
     public componentWillUnmount() {

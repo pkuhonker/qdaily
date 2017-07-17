@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {
     View, Text, Image, Animated, Easing, TouchableWithoutFeedback, BackHandler, ActivityIndicator,
-    StyleSheet, ViewStyle, Dimensions, Platform
+    StyleSheet, ViewStyle, Dimensions
 } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import OverlayButton from '../components/base/OverlayButton';

@@ -1,3 +1,4 @@
 <resources>
+    <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">itXudePqkidenlhXFOkSJphqgo7O4f831ac7-526d-4879-8cb6-c1564b4cd3e4</string>
     <string name="app_name">astro</string>
 </resources>

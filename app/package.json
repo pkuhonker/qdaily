@@ -5,8 +5,15 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "android": "node node_modules/react-native/local-cli/cli.js run-android",
+    "android-staging": "node node_modules/react-native/local-cli/cli.js run-android --variant=releaseStaging",
     "ios": "node node_modules/react-native/local-cli/cli.js run-ios",
-    "release-android": "tsc && cd android && gradlew assembleRelease"
+    "release-ios": "react-native unbundle --entry-file index.ios.js --platform ios --dev false",
+    "release-android": "tsc && cd android && gradlew assembleRelease",
+    "push-android": "code-push release-react astro android --deploymentName Staging",
+    "push-ios": "code-push release-react astro ios --deploymentName Staging",
+    "push-android-prod": "code-push release-react astro android --deploymentName Production",
+    "push-ios-prod": "code-push release-react astro ios --deploymentName Production",
+    "push-key": "code-push deployment ls astro -k"
   },
   "dependencies": {
     "antd-mobile": "^1.3.0",
@@ -17,6 +24,7 @@
     "react": "16.0.0-alpha.6",
     "react-addons-pure-render-mixin": "^15.6.0",
     "react-native": "~0.44.3",
+    "react-native-code-push": "^2.0.2-beta",
     "react-native-navigation-redux-helpers": "^0.5.0",
     "react-native-root-toast": "^1.1.2",
     "react-native-smart-splash-screen": "^2.3.4",

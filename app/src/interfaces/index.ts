@@ -1,8 +1,10 @@
 export interface PostCategory {
     id: number;
     title: string;
+    normal: string;
+    normal_hl: string;
     image_lab?: string;
-    [key: string]: any;
+    image_experiment: string;
 }
 
 export interface TopicCategory {
@@ -42,6 +44,7 @@ export interface Post {
     title: string;
     description: string;
     publish_time: number;
+    image: string;
     comment_count: number;
     praise_count: number;
     category: PostCategory;

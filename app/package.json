@@ -9,10 +9,10 @@
     "ios": "node node_modules/react-native/local-cli/cli.js run-ios",
     "release-ios": "react-native unbundle --entry-file index.ios.js --platform ios --dev false",
     "release-android": "tsc && cd android && gradlew assembleRelease",
-    "push-android": "code-push release-react astro android --deploymentName Staging",
-    "push-ios": "code-push release-react astro ios --deploymentName Staging",
-    "push-android-prod": "code-push release-react astro android --deploymentName Production",
-    "push-ios-prod": "code-push release-react astro ios --deploymentName Production",
+    "push-android": "code-push release-react astro-android android --deploymentName Staging",
+    "push-ios": "code-push release-react astro-ios ios --deploymentName Staging",
+    "push-android-prod": "code-push release-react astro-android android --deploymentName Production",
+    "push-ios-prod": "code-push release-react astro-ios ios --deploymentName Production",
     "push-key": "code-push deployment ls astro -k"
   },
   "dependencies": {

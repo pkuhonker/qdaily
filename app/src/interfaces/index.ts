@@ -112,6 +112,7 @@ export interface Categories {
     has_more: boolean;
     last_key: string;
     feeds: Feed[];
+    feeds_ad: Feed[];
 }
 
 export interface News {

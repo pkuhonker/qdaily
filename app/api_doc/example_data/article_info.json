@@ -1,0 +1,48 @@
+{
+    "meta": {
+        "status": 200,
+        "msg": "success"
+    },
+    "response": {
+        "image": "http://img.qdaily.com/article/banner/201707180746304emzNo6dG9brT0xi.jpg?imageMogr2/auto-orient/thumbnail/!640x380r/gravity/Center/crop/640x380/quality/85/format/jpg/ignore-error/1",
+        "type": 2,
+        "post": {
+            "id": 43071,
+            "genre": 1,
+            "title": "在英国作家、导演和建筑设计师的眼里，伦敦正在发生什么样的变化？",
+            "description": "如今，超过一半的伦敦人都不出生在伦敦，甚至英国。这个城市还保持着它鲜明的身份吗？",
+            "publish_time": 1500335194,
+            "image": "http://img.qdaily.com/article/banner/201707180746304emzNo6dG9brT0xi.jpg?imageMogr2/auto-orient/thumbnail/!640x380r/gravity/Center/crop/640x380/quality/85/format/jpg/ignore-error/1",
+            "start_time": 0,
+            "comment_count": 2,
+            "praise_count": 65,
+            "super_tag": "",
+            "page_style": 0,
+            "post_id": 44862,
+            "appview": "http://app3.qdaily.com/app3/articles/43071.html",
+            "film_length": "",
+            "datatype": "article",
+            "category": {
+                "id": 5,
+                "title": "城市",
+                "normal": "http://img.qdaily.com/category/icon_black/20160606004532qOnV1WpsEHkJ9Zfr.png?imageMogr2/auto-orient/thumbnail/!128x128r/gravity/Center/crop/128x128/quality/85/ignore-error/1",
+                "normal_hl": "http://img.qdaily.com/category/icon_yellow_app/20160606004533uFozK3xI4CHZjfSM.png?imageMogr2/auto-orient/thumbnail/!160x160r/gravity/Center/crop/160x160/quality/85/ignore-error/1",
+                "image_lab": "http://img.qdaily.com/category/icon_yellow_app/20160606004533uFozK3xI4CHZjfSM.png?imageMogr2/auto-orient/thumbnail/!160x160r/gravity/Center/crop/160x160/quality/85/ignore-error/1",
+                "image_experiment": ""
+            }
+        },
+        "share": {
+            "url": "http://m.qdaily.com/mobile/articles/43071.html?share_from=app",
+            "title": "在英国作家、导演和建筑设计师的眼里，伦敦正在发生什么样的变化？_好奇心日报",
+            "text": "如今，超过一半的伦敦人都不出生在伦敦，甚至英国。这个城市还保持着它鲜明的身份吗？",
+            "image": "http://img.qdaily.com/article/article_show/201707170200263fSsD6CLl4HGMY7a.jpg?imageMogr2/auto-orient/thumbnail/!640x380r/gravity/Center/crop/640x380/quality/85/format/jpg/ignore-error/1"
+        },
+        "author": {
+            "id": 18,
+            "description": null,
+            "avatar": "http://app3.qdaily.com/default_images/missing_face.png",
+            "name": "好奇心日报",
+            "background_image": "http://app3.qdaily.com/default_images/missing_loading.jpg"
+        }
+    }
+}

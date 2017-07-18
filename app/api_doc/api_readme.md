@@ -15,7 +15,7 @@
 
 # 首页
 
-## NEWS
+## 获取NEWS
 
 ### 地址
 
@@ -48,14 +48,10 @@ interface News {
 ```typescript
 interface Feed {
     image: string;      // 缩略图
-    type: FeedType;     // 类型 [FeedType](./api_readme.md#FeedType 新闻类型)
+    type: FeedType;     // 类型
     post: Post;         // 详细信息
 }
-```
 
-#### FeedType 新闻类型
-
-```typescript
 enum FeedType {
     PAPER = 0,      // LABS中的新闻类型，通常用户可以参与讨论
     NORMAL = 1,     // 一般类型，大多数为这种类型
@@ -79,11 +75,7 @@ interface Post {
     record_count?: number;      // 类型为Paper的新闻，参与的人数
     column?: PostColumn;        // 新闻所在的column
 }
-```
 
-#### PostCategory 新闻类别
-
-```typescript
 interface PostCategory {
     id: number;
     title: string;
@@ -92,11 +84,7 @@ interface PostCategory {
     image_lab?: string;
     image_experiment: string;
 }
-```
 
-#### PostColumn 新闻column
-
-```typescript
 interface PostColumn {
     id: number;
     name: string;
@@ -128,7 +116,186 @@ interface HeadLine extends Feed {
 
 ### 示例数据
 
-[实例](./example_data/homes0.json)
+[实例](example_data/homes0.json)
 
 
-### LABS
+## 获取LABS
+
+### 地址
+
+http://app3.qdaily.com/papers/index/${key}.json
+
+### 参数
+
+| 名称     | 类型    | 描述         |
+|----------|:------:|:------------:|
+| key      | string | 分页索引，第一页为`0`。 <br/>下一页的索引为返回结果中的 last_key 字段 |
+
+### 结果
+
+#### Response
+
+```typescript
+interface Papers {
+    has_more: boolean;
+    last_key: string;
+    feeds: Feed[];
+    paper_topics: PaperTopic[];
+}
+
+interface PaperTopicContent {
+    id: string;
+    icon: string;
+    title: string;
+    description: string;
+    image: string;
+}
+
+interface PaperTopic {
+    id: string;
+    insert_location: number;
+    insert_content: PaperTopicContent;
+}
+```
+
+### 示例数据
+
+[实例](example_data/papers0.json)
+
+
+# 文章
+
+## 获取文章内容
+
+### 地址
+
+http://app3.qdaily.com/articles/detail/${id}.json
+
+### 参数
+
+| 名称     | 类型    | 描述         |
+|----------|:------:|:------------:|
+| id      | number | 文章id |
+
+### 结果
+
+#### Response
+
+```typescript
+interface Article {
+    id: number;
+    body: string;
+    js: string[];
+    css: string[];
+    image: string[];
+}
+```
+
+### 示例数据
+
+[实例](example_data/article_detail.json)
+
+
+## 获取文章信息
+
+### 地址
+
+http://app3.qdaily.com/articles/info/${id}.json
+
+### 参数
+
+| 名称     | 类型    | 描述         |
+|----------|:------:|:------------:|
+| id      | number | 文章id |
+
+### 结果
+
+#### Response
+
+```typescript
+interface ArticleInfo extends Feed {
+    share: Share;       //分享信息
+    author: Author;     //文章作者信息
+}
+
+interface Share {
+    url: string;
+    title: string;
+    text: string;
+    image: string;
+}
+
+interface Author {
+    id: number;
+    description: string;
+    avatar: string;
+    name: string;
+    background_image: string;
+}
+```
+
+### 示例数据
+
+[实例](example_data/article_info.json)
+
+
+# 分类
+
+## 获取分类列表
+
+
+### 地址
+
+http://app3.qdaily.com/homes/left_sidebar.json
+
+### 结果
+
+#### Response
+
+```typescript
+response: TopicCategory[];
+
+interface TopicCategory {
+    id: number;
+    title: string;
+    normal: string;
+    white_icon: string;
+    black_icon: string;
+}
+```
+
+### 示例数据
+
+[实例](example_data/left_sidebar.json)
+
+
+## 获取分类新闻数据
+
+
+### 地址
+
+http://app3.qdaily.com/categories/index/${categoryId}/${key}.json
+
+### 参数
+
+| 名称     | 类型    | 描述         |
+|----------|:------:|:------------:|
+| categoryId      | number | 类别id |
+| key      | string | 分页索引，第一页为`0`。 <br/>下一页的索引为返回结果中的 last_key 字段 |
+
+### 结果
+
+#### Response
+
+```typescript
+interface Categories {
+    has_more: boolean;
+    last_key: string;
+    feeds: Feed[];
+    feeds_ad: Feed[];
+}
+```
+
+### 示例数据
+
+[实例](example_data/category1.json)

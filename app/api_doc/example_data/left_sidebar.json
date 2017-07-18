@@ -1,0 +1,85 @@
+{
+    "meta": {
+        "status": 200,
+        "msg": "success"
+    },
+    "response": [
+        {
+            "id": 1,
+            "title": "长文章",
+            "normal": "http://img.qdaily.com/category/icon_app/20160606144749JAgousWvnfD9r6Op.png?imageMogr2/auto-orient/thumbnail/!160x160r/gravity/Center/crop/160x160/quality/85/ignore-error/1",
+            "white_icon": "http://img.qdaily.com/category/icon_white_app/20161130162204XNnUWGkuvaS0O3ph.png?imageMogr2/auto-orient/thumbnail/!128x128r/gravity/Center/crop/128x128/quality/85/ignore-error/1",
+            "black_icon": "http://img.qdaily.com/category/icon_black_app/20161130162204tlE4TeI9WMkowxbO.png"
+        },
+        {
+            "id": 16,
+            "title": "Top 15",
+            "normal": "http://img.qdaily.com/category/icon_app/20160606000644H3nyg6fFZXYGKoEA.png?imageMogr2/auto-orient/thumbnail/!160x160r/gravity/Center/crop/160x160/quality/85/ignore-error/1",
+            "white_icon": "http://img.qdaily.com/category/icon_white_app/20161130162312AqpnIgEti4yw2NKW.png?imageMogr2/auto-orient/thumbnail/!128x128r/gravity/Center/crop/128x128/quality/85/ignore-error/1",
+            "black_icon": "http://img.qdaily.com/category/icon_black_app/20161130162312TA2hC06gzLs9mlqG.png"
+        },
+        {
+            "id": 22,
+            "title": "10 个图",
+            "normal": "http://img.qdaily.com/category/icon_app/20160606004530njwRUJgDzeZPQviE.png?imageMogr2/auto-orient/thumbnail/!160x160r/gravity/Center/crop/160x160/quality/85/ignore-error/1",
+            "white_icon": "http://img.qdaily.com/category/icon_white_app/20161130161854abmIjqc3wnS6RT4M.png?imageMogr2/auto-orient/thumbnail/!128x128r/gravity/Center/crop/128x128/quality/85/ignore-error/1",
+            "black_icon": "http://img.qdaily.com/category/icon_black_app/20161130161855b4PTqoKD2MvRQ630.png"
+        },
+        {
+            "id": 63,
+            "title": "大公司头条",
+            "normal": "http://img.qdaily.com/category/icon_app/20160606004551a0g4zhK8rcB9LmEV.png?imageMogr2/auto-orient/thumbnail/!160x160r/gravity/Center/crop/160x160/quality/85/ignore-error/1",
+            "white_icon": "http://img.qdaily.com/category/icon_white_app/20161130161709IA8hvnl0q3TMbkus.png?imageMogr2/auto-orient/thumbnail/!128x128r/gravity/Center/crop/128x128/quality/85/ignore-error/1",
+            "black_icon": "http://img.qdaily.com/category/icon_black_app/201611301617091Qr0x3WPheZf6TgX.png"
+        },
+        {
+            "id": 18,
+            "title": "商业",
+            "normal": "http://img.qdaily.com/category/icon_app/20160606004538EmGJaUzFbuMDq4cN.png?imageMogr2/auto-orient/thumbnail/!160x160r/gravity/Center/crop/160x160/quality/85/ignore-error/1",
+            "white_icon": "http://img.qdaily.com/category/icon_white_app/201611301617415V9kat3SgEJw670A.png?imageMogr2/auto-orient/thumbnail/!128x128r/gravity/Center/crop/128x128/quality/85/ignore-error/1",
+            "black_icon": "http://img.qdaily.com/category/icon_black_app/201611301617414pDryXkL7q08Pl5N.png"
+        },
+        {
+            "id": 4,
+            "title": "智能",
+            "normal": "http://img.qdaily.com/category/icon_app/20160606004531Z0yD24eMhavSwtnr.png?imageMogr2/auto-orient/thumbnail/!160x160r/gravity/Center/crop/160x160/quality/85/ignore-error/1",
+            "white_icon": "http://img.qdaily.com/category/icon_white_app/20161130162237bsDvMVEOLl6tRSXf.png?imageMogr2/auto-orient/thumbnail/!128x128r/gravity/Center/crop/128x128/quality/85/ignore-error/1",
+            "black_icon": "http://img.qdaily.com/category/icon_black_app/20161130162237EkBTl7z6ajqfSACJ.png"
+        },
+        {
+            "id": 17,
+            "title": "设计",
+            "normal": "http://img.qdaily.com/category/icon_app/20160606004538QWztYhoJrRaeDnlG.png?imageMogr2/auto-orient/thumbnail/!160x160r/gravity/Center/crop/160x160/quality/85/ignore-error/1",
+            "white_icon": "http://img.qdaily.com/category/icon_white_app/20161130161810Byfkx7ISFmCKWiTX.png?imageMogr2/auto-orient/thumbnail/!128x128r/gravity/Center/crop/128x128/quality/85/ignore-error/1",
+            "black_icon": "http://img.qdaily.com/category/icon_black_app/20161130161810WblqsS3Div6aHrm8.png"
+        },
+        {
+            "id": 19,
+            "title": "时尚",
+            "normal": "http://img.qdaily.com/category/icon_app/20160606004539wbxHy5fP2MjQAkUW.png?imageMogr2/auto-orient/thumbnail/!160x160r/gravity/Center/crop/160x160/quality/85/ignore-error/1",
+            "white_icon": "http://img.qdaily.com/category/icon_white_app/20161130161931CVT4P1Zf2HLB5dRn.png?imageMogr2/auto-orient/thumbnail/!128x128r/gravity/Center/crop/128x128/quality/85/ignore-error/1",
+            "black_icon": "http://img.qdaily.com/category/icon_black_app/20161130161931C1FnK3tJ9ahVRBfk.png"
+        },
+        {
+            "id": 3,
+            "title": "娱乐",
+            "normal": "http://img.qdaily.com/category/icon_app/20160606004531mFnLvV87BCSEZ4MD.png?imageMogr2/auto-orient/thumbnail/!160x160r/gravity/Center/crop/160x160/quality/85/ignore-error/1",
+            "white_icon": "http://img.qdaily.com/category/icon_white_app/201611301634116hw7KvSqPjMn5Nar.png?imageMogr2/auto-orient/thumbnail/!128x128r/gravity/Center/crop/128x128/quality/85/ignore-error/1",
+            "black_icon": "http://img.qdaily.com/category/icon_black_app/20161130162130e7VWj8lIRXuZQ1Tt.png"
+        },
+        {
+            "id": 5,
+            "title": "城市",
+            "normal": "http://img.qdaily.com/category/icon_app/201606060045329D7PkTvj6dywrFqs.png?imageMogr2/auto-orient/thumbnail/!160x160r/gravity/Center/crop/160x160/quality/85/ignore-error/1",
+            "white_icon": "http://img.qdaily.com/category/icon_white_app/20161130161329kR6O4Tu8ZrPfYehM.png?imageMogr2/auto-orient/thumbnail/!128x128r/gravity/Center/crop/128x128/quality/85/ignore-error/1",
+            "black_icon": "http://img.qdaily.com/category/icon_black_app/20161130161329U85xsNAH0fnVSP1j.png"
+        },
+        {
+            "id": 54,
+            "title": "游戏",
+            "normal": "http://img.qdaily.com/category/icon_app/20160606004549VEgyIORqia40Mf5p.png?imageMogr2/auto-orient/thumbnail/!160x160r/gravity/Center/crop/160x160/quality/85/ignore-error/1",
+            "white_icon": "http://img.qdaily.com/category/icon_white_app/20161130162005uRUpXY2K4COG85AE.png?imageMogr2/auto-orient/thumbnail/!128x128r/gravity/Center/crop/128x128/quality/85/ignore-error/1",
+            "black_icon": "http://img.qdaily.com/category/icon_black_app/20161130162005S5mF8L4w6ANRJQyG.png"
+        }
+    ]
+}

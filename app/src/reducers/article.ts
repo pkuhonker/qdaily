@@ -1,10 +1,10 @@
-import { Article, Feed, PromiseMeta, PromiseMetaSequence } from '../interfaces';
+import { Article, ArticleInfo, PromiseMeta, PromiseMetaSequence } from '../interfaces';
 import { FSA } from 'flux-standard-action';
 import * as types from '../constants/actionTypes';
 
 export interface ArticleState {
     detail: { [id: string]: Article };
-    info: { [id: string]: Feed };
+    info: { [id: string]: ArticleInfo };
 }
 
 const initialState: ArticleState = {
@@ -28,7 +28,7 @@ export default function (state = initialState, action: any): ArticleState {
                 }
             } : state;
         case types.GET_ARTICLE_INFO_BY_ID:
-            const feed = payload as Feed;
+            const feed = payload as ArticleInfo;
             return (!error && !pending) ? {
                 ...state,
                 info: {

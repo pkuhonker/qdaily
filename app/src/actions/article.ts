@@ -1,6 +1,6 @@
 import { createAction } from 'redux-actions';
 import * as types from '../constants/actionTypes';
-import { Article, Feed } from '../interfaces';
+import { Article, ArticleInfo } from '../interfaces';
 import * as apiService from '../services/apiService';
 
 export function getArticleDetailById(id: number) {
@@ -10,7 +10,7 @@ export function getArticleDetailById(id: number) {
 }
 
 export function getArticleInfoById(id: number) {
-    return createAction<Promise<Feed>, any>(types.GET_ARTICLE_INFO_BY_ID, async (id: number) => {
+    return createAction<Promise<ArticleInfo>, any>(types.GET_ARTICLE_INFO_BY_ID, async (id: number) => {
         return await apiService.getArticleInfoById(id);
     })(id);
 }

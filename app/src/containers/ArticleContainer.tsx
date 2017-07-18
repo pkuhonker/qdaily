@@ -7,7 +7,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import Icon from '../components/base/Icon';
 import WebViewBridge, { WebViewMessge } from '../components/base/WebViewBridge';
 import { AppState } from '../reducers';
-import { Article, Feed, Post } from '../interfaces';
+import { Article, ArticleInfo, Post } from '../interfaces';
 import { domain } from '../constants/config';
 import { defaultItems } from '../share';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
@@ -18,7 +18,7 @@ type ArticleContainerProps = NavigationScreenProps<{
 
 interface StateProps {
     detail?: Article;
-    info?: Feed;
+    info?: ArticleInfo;
 }
 
 interface ArticleContainerState {
@@ -204,7 +204,7 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
 
     private renderBottomBar() {
         const { info = {} } = this.props;
-        const { post = {} as Post } = info as Feed;
+        const { post = {} as Post } = info as ArticleInfo;
         return (
             <Animated.View style={[styles.bottomBar, { transform: [{ translateY: this.state.bottomBarBottom }] }]}>
                 <Icon style={styles.backIcon} type='EvilIcons' name='chevron-left' onPress={() => this.props.navigation.goBack()} />

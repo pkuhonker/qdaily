@@ -1,5 +1,5 @@
 import * as requestService from './requestService';
-import { News, Papers, Categories, TopicCategory, Article, Paper, Feed } from '../interfaces';
+import { News, Papers, Categories, TopicCategory, Article, Paper, ArticleInfo } from '../interfaces';
 
 
 export function getNews(key?: string): Promise<News> {
@@ -32,9 +32,9 @@ export function getArticleDetailById(id: number): Promise<Article> {
     });
 }
 
-export function getArticleInfoById(id: number): Promise<Feed> {
+export function getArticleInfoById(id: number): Promise<ArticleInfo> {
     return requestService.get(`/articles/info/${id}.json`).then(result => {
-        return result.response as Feed;
+        return result.response as ArticleInfo;
     });
 }
 

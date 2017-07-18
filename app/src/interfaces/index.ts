@@ -20,6 +20,14 @@ export interface Share {
     image: string;
 }
 
+export interface Author {
+    id: number;
+    description: string;
+    avatar: string;
+    name: string;
+    background_image: string;
+}
+
 export interface PostColumn {
     id: number;
     name: string;
@@ -51,7 +59,6 @@ export interface Feed {
     image: string;
     type: FeedType;
     post: Post;
-    share: Share;
 }
 
 export interface PaperOption {
@@ -125,6 +132,11 @@ export interface Article {
     js: string[];
     css: string[];
     image: string[];
+}
+
+export interface ArticleInfo extends Feed {
+    share: Share;
+    author: Author;
 }
 
 /////////

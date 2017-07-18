@@ -1,6 +1,6 @@
 > Note: 所有API返回结果格式如下
 
-```
+```typescript
 {
     "meta": {
         status: ${status_code},    // 200
@@ -29,7 +29,7 @@ http://app3.qdaily.com/homes/index/${key}.json
 
 **结果**
 
-```
+```typescript
 {
     has_more: boolean;
     last_key: string;       // 下一页的索引
@@ -43,7 +43,7 @@ http://app3.qdaily.com/homes/index/${key}.json
 
 - Feed  新闻数据
 
-```
+```typescript
 {
     image: string;      // 缩略图
     type: FeedType;     // 类型

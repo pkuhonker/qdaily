@@ -77,11 +77,11 @@ interface Post {
 }
 
 interface PostCategory {
-    id: number;
-    title: string;
+    id: number;                 // 类别id
+    title: string;              // 类别名称
     normal: string;
     normal_hl: string;
-    image_lab?: string;
+    image_lab?: string;         // Paper的左下角图标
     image_experiment: string;
 }
 
@@ -95,6 +95,13 @@ interface PostColumn {
 }
 ```
 
+![](example_data/feed0.png)
+
+![](example_data/feed1.png)
+
+![](example_data/feed2.png)
+
+
 ##### Banner 首页轮播
 
 ```typescript
@@ -102,17 +109,21 @@ interface Banner extends Feed {
 }
 ```
 
+![](example_data/banner.png)
+
 ##### HeadLine 头条
 
 ```typescript
 interface HeadLine extends Feed {
-    list: {
+    list: {                     // 头条列表，通常是3个
         title: string;
         description: string;
         keywords: string[];
     }[];
 }
 ```
+
+![](example_data/headline.png)
 
 ### 示例数据
 
@@ -140,7 +151,13 @@ interface Papers {
     has_more: boolean;
     last_key: string;
     feeds: Feed[];
-    paper_topics: PaperTopic[];
+    paper_topics: PaperTopic[];         // LABS中的话题列表
+}
+
+interface PaperTopic {
+    id: string;
+    insert_location: number;
+    insert_content: PaperTopicContent;
 }
 
 interface PaperTopicContent {
@@ -149,12 +166,6 @@ interface PaperTopicContent {
     title: string;
     description: string;
     image: string;
-}
-
-interface PaperTopic {
-    id: string;
-    insert_location: number;
-    insert_content: PaperTopicContent;
 }
 ```
 
@@ -183,11 +194,11 @@ http://app3.qdaily.com/articles/detail/${id}.json
 
 ```typescript
 interface Article {
-    id: number;
-    body: string;
-    js: string[];
-    css: string[];
-    image: string[];
+    id: number;         // 文章id
+    body: string;       // 文章对应的html内容
+    js: string[];       // 文章需要加载的js列表(暂时用不到)
+    css: string[];      // 文章需要加载的css列表(暂时用不到)
+    image: string[];    // 文章中的图片列表，由于点击查看图片的轮播
 }
 ```
 
@@ -214,15 +225,15 @@ http://app3.qdaily.com/articles/info/${id}.json
 
 ```typescript
 interface ArticleInfo extends Feed {
-    share: Share;       //分享信息
-    author: Author;     //文章作者信息
+    share: Share;       // 分享信息
+    author: Author;     // 文章作者信息
 }
 
 interface Share {
-    url: string;
-    title: string;
-    text: string;
-    image: string;
+    url: string;        // 分享的url
+    title: string;      // 分享的标题
+    text: string;       // 分享的文本
+    image: string;      // 分享的图片
 }
 
 interface Author {
@@ -256,11 +267,11 @@ http://app3.qdaily.com/homes/left_sidebar.json
 response: TopicCategory[];
 
 interface TopicCategory {
-    id: number;
-    title: string;
+    id: number;             // 分类的id
+    title: string;          // 分类的标题
     normal: string;
-    white_icon: string;
-    black_icon: string;
+    white_icon: string;     // 分类对应的图标(白色主题)
+    black_icon: string;     // 分类对应的图标(黑色主题)
 }
 ```
 
@@ -288,6 +299,7 @@ http://app3.qdaily.com/categories/index/${categoryId}/${key}.json
 #### Response
 
 ```typescript
+// 参见NEWS
 interface Categories {
     has_more: boolean;
     last_key: string;

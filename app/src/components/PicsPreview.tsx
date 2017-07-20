@@ -3,8 +3,8 @@ import { View, Text, Dimensions } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import Icon from './base/Icon';
 import NavHeader from './base/NavHeader';
+import ZoomImage from './base/ZoomImage';
 import Swiper, { SwiperState } from 'react-native-swiper';
-import PhotoView from 'react-native-photo-view';
 import { containerStyle } from '../utils/container';
 
 export interface Pic {
@@ -44,6 +44,10 @@ export default class PicsPreview extends React.Component<PicsPreviewProps, PicsP
         }
     }
 
+    private savePic() {
+        console.log('savePic');
+    }
+
     public render() {
         const { pics } = this.props.navigation.state.params;
         const { activeIndex } = this.state;
@@ -62,12 +66,16 @@ export default class PicsPreview extends React.Component<PicsPreviewProps, PicsP
                     {
                         pics.map(pic => {
                             return (
-                                <View key={pic.url} style={{}}>
-                                    <PhotoView
-                                        androidScaleType="fitCenter"
-                                        style={{ height: swiperHeight }}
-                                        source={{ uri: pic.url }}>
-                                    </PhotoView>
+                                <View key={pic.url} style={{ flex: 1 }}>
+                                    <ZoomImage
+                                        maximumZoomScale={3}
+                                        orginHeight={swiperHeight}
+                                        orginWidth={Dimensions.get('window').width}
+                                        source={{ uri: pic.url }}
+                                        onTap={() => this.onBack()}
+                                        onLongPress={() => this.savePic()}
+                                    >
+                                    </ZoomImage>
                                     <Text style={{ position: 'absolute', left: 20, right: 0, bottom: 100 , color: '#ffffff' }}>{pic.text}</Text>
                                 </View>
                             );

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    Image, ScrollView, Platform, ImageURISource,
+    Image, ScrollView, Platform, ImageURISource, View,
     NativeSyntheticEvent, NativeScrollEvent, NativeTouchEvent
 } from 'react-native';
 import PhotoView from 'react-native-photo-view';
@@ -62,21 +62,22 @@ export default class ZoomImage extends React.Component<ZoomImageProps, ZoomImage
     }
 
     private onTouchStart(e: NativeSyntheticEvent<NativeTouchEvent>) {
+        clearTimeout(this.longPressTimeout);
         if (this.isMultiTouch(e)) {
             return;
         }
 
-        this.longPressTimeout = setTimeout(() => {
-            if (this.props.onLongPress) {
-                this.props.onLongPress();
-            }
+        this.longPressTimeout = setTimeout(() =>{
+            this.onLongPress();
         }, 500);
 
         this.lastTouchStartNativeEvent = e.nativeEvent;
     }
 
     private onTouchMove(e: NativeSyntheticEvent<NativeTouchEvent>) {
-        clearTimeout(this.longPressTimeout);
+        if (this.isMoving(e)) {
+            clearTimeout(this.longPressTimeout);
+        }
     }
 
     private onTouchEnd(e: NativeSyntheticEvent<NativeTouchEvent>) {
@@ -86,18 +87,30 @@ export default class ZoomImage extends React.Component<ZoomImageProps, ZoomImage
             return;
         }
 
+        this.lastTouchEndTimestamp = e.nativeEvent.timestamp;
+
+        if (Platform.OS === 'android') {
+            return;
+        }
+
         if (this.isSecondTap(e)) {
             const actionToPerform = this.isZoomed ? this.zoomOut : this.zoomIn;
             actionToPerform.bind(this)(e);
         } else {
-            this.tapTimeout = setTimeout(() => {
-                if (this.props.onTap) {
-                    this.props.onTap();
-                }
-            }, 300);
+            this.tapTimeout = setTimeout(() => this.onTap(), 300);
         }
+    }
 
-        this.lastTouchEndTimestamp = e.nativeEvent.timestamp;
+    private onTap() {
+        if (this.props.onTap) {
+            this.props.onTap();
+        }
+    }
+
+    private onLongPress() {
+        if (this.props.onLongPress) {
+            this.props.onLongPress();
+        }
     }
 
     private onScroll(e: NativeSyntheticEvent<NativeScrollEvent>) {
@@ -133,10 +146,10 @@ export default class ZoomImage extends React.Component<ZoomImageProps, ZoomImage
     }
 
     private isMoving(e: NativeSyntheticEvent<NativeTouchEvent>) {
-        const { locationX, locationY } = e.nativeEvent;
-        const { locationX: lastLocationX, locationY: lastLocationY } = this.lastTouchStartNativeEvent;
+        const { pageX, pageY } = e.nativeEvent;
+        const { pageX: lastPageX, pageY: lastPageY } = this.lastTouchStartNativeEvent;
 
-        return locationX !== lastLocationX && locationY !== lastLocationY;
+        return pageX !== lastPageX && pageY !== lastPageY;
     }
 
     private isLongPress(e: NativeSyntheticEvent<NativeTouchEvent>) {
@@ -158,14 +171,20 @@ export default class ZoomImage extends React.Component<ZoomImageProps, ZoomImage
     public render() {
         if (Platform.OS === 'android') {
             return (
-                <PhotoView
-                    maximumZoomScale={this.props.maximumZoomScale}
-                    androidScaleType="fitCenter"
-                    style={{ width: this.props.orginWidth, height: this.props.orginHeight }}
-                    source={this.props.source}
-                    onTap={this.props.onTap && this.props.onTap()}
+                <View
+                    onTouchStart={this.onTouchStart.bind(this)}
+                    onTouchEnd={this.onTouchEnd.bind(this)}
+                    onTouchMove={this.onTouchMove.bind(this)}
                 >
-                </PhotoView>
+                    <PhotoView
+                        maximumZoomScale={this.props.maximumZoomScale}
+                        androidScaleType="fitCenter"
+                        style={{ width: this.props.orginWidth, height: this.props.orginHeight }}
+                        source={this.props.source}
+                        onTap={this.onTap.bind(this)}
+                    >
+                    </PhotoView>
+                </View>
             );
         } else {
             const { orginWidth, orginHeight } = this.props;

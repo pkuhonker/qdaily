@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { View, Text, Dimensions } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
+import Toast from 'react-native-root-toast';
 import Icon from './base/Icon';
 import NavHeader from './base/NavHeader';
 import ZoomImage from './base/ZoomImage';
@@ -45,7 +46,7 @@ export default class PicsPreview extends React.Component<PicsPreviewProps, PicsP
     }
 
     private savePic() {
-        console.log('savePic');
+        Toast.show('保存图片成功', { position: Toast.positions.CENTER });
     }
 
     public render() {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Dimensions } from 'react-native';
+import { View, Text, Dimensions, CameraRoll, Platform } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import Toast from 'react-native-root-toast';
 import RNFS from 'react-native-fs';
@@ -58,11 +58,15 @@ export default class PicsPreview extends React.Component<PicsPreviewProps, PicsP
 
     private async savePic(url: string) {
         try {
-            await RNFS.mkdir(imageDownloadPath);
-            await RNFS.downloadFile({
-                fromUrl: url,
-                toFile:  `${imageDownloadPath}/${Date.now()}.${this.getImageExtension(url)}`
-            }).promise;
+            if (Platform.OS === 'ios') {
+                await CameraRoll.saveToCameraRoll(url);
+            } else {
+                await RNFS.mkdir(imageDownloadPath);
+                await RNFS.downloadFile({
+                    fromUrl: url,
+                    toFile:  `${imageDownloadPath}/${Date.now()}.${this.getImageExtension(url)}`
+                }).promise;
+            }
             Toast.show('保存图片成功', { position: Toast.positions.CENTER });
         } catch (error) {
              Toast.show('保存图片失败:' + error, { position: Toast.positions.CENTER });

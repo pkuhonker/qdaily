@@ -62,6 +62,7 @@ export default class ZoomImage extends React.Component<ZoomImageProps, ZoomImage
     }
 
     private onTouchStart(e: NativeSyntheticEvent<NativeTouchEvent>) {
+        clearTimeout(this.tapTimeout);
         clearTimeout(this.longPressTimeout);
         if (this.isMultiTouch(e)) {
             return;
@@ -87,9 +88,8 @@ export default class ZoomImage extends React.Component<ZoomImageProps, ZoomImage
             return;
         }
 
-        this.lastTouchEndTimestamp = e.nativeEvent.timestamp;
-
         if (Platform.OS === 'android') {
+            this.lastTouchEndTimestamp = e.nativeEvent.timestamp;
             return;
         }
 
@@ -99,6 +99,7 @@ export default class ZoomImage extends React.Component<ZoomImageProps, ZoomImage
         } else {
             this.tapTimeout = setTimeout(() => this.onTap(), 300);
         }
+        this.lastTouchEndTimestamp = e.nativeEvent.timestamp;
     }
 
     private onTap() {

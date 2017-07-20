@@ -2,11 +2,13 @@ import * as React from 'react';
 import { View, Text, Dimensions } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import Toast from 'react-native-root-toast';
+import RNFS from 'react-native-fs';
 import Icon from './base/Icon';
 import NavHeader from './base/NavHeader';
 import ZoomImage from './base/ZoomImage';
 import Swiper, { SwiperState } from 'react-native-swiper';
 import { containerStyle } from '../utils/container';
+import { imageDownloadPath } from '../constants/config';
 
 export interface Pic {
     text: string;
@@ -45,8 +47,26 @@ export default class PicsPreview extends React.Component<PicsPreviewProps, PicsP
         }
     }
 
-    private savePic() {
-        Toast.show('保存图片成功', { position: Toast.positions.CENTER });
+    private getImageExtension(url: string) {
+        const matches = url.match(/\.(png|jpg|jpeg|bmp|gif)/);
+        if (matches && matches.length > 1) {
+            return matches[1];
+        } else {
+            return 'png';
+        }
+    }
+
+    private async savePic(url: string) {
+        try {
+            await RNFS.mkdir(imageDownloadPath);
+            await RNFS.downloadFile({
+                fromUrl: url,
+                toFile:  `${imageDownloadPath}/${Date.now()}.${this.getImageExtension(url)}`
+            }).promise;
+            Toast.show('保存图片成功', { position: Toast.positions.CENTER });
+        } catch (error) {
+             Toast.show('保存图片失败:' + error, { position: Toast.positions.CENTER });
+        }
     }
 
     public render() {
@@ -74,7 +94,7 @@ export default class PicsPreview extends React.Component<PicsPreviewProps, PicsP
                                         orginWidth={Dimensions.get('window').width}
                                         source={{ uri: pic.url }}
                                         onTap={() => this.onBack()}
-                                        onLongPress={() => this.savePic()}
+                                        onLongPress={() => this.savePic(pic.url)}
                                     >
                                     </ZoomImage>
                                     <Text style={{ position: 'absolute', left: 20, right: 0, bottom: 100 , color: '#ffffff' }}>{pic.text}</Text>

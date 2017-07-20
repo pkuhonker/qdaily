@@ -35,20 +35,22 @@ export default class ShareView extends React.Component<ShareViewProps, ShareView
         }).start();
     }
 
-    private openShare(item: ShareItem, content: Share) {
+    private async openShare(item: ShareItem, content: Share) {
         if (!item.openShare) {
             return;
         }
         this.props.navigation.goBack();
-        item.openShare(content).then(data => {
+
+        try {
+            const data = await item.openShare(content);
             if (!data) {
                 // Toast.show('分享取消', { position: Toast.positions.CENTER });
             } else {
                 // Toast.show('分享成功', { position: Toast.positions.CENTER });
             }
-        }, error => {
+        } catch (error) {
             Toast.show(error.message || '分享失败', { position: Toast.positions.CENTER });
-        });
+        }
     }
 
     private renderItem(item: ShareItem) {

@@ -4,7 +4,7 @@ import * as config from '../constants/config';
 const urlPrefix = config.domain + config.apiPath;
 const isDebuggingInChrome = __DEV__ && !!window.navigator.userAgent;
 
-function filterJSON(res: Response) {
+async function filterJSON(res: Response) {
     return res.json();
 }
 
@@ -17,7 +17,7 @@ function filterStatus(res: Response) {
     }
 }
 
-export function get(url: string, params?: { [key: string]: any }) {
+export async function get(url: string, params?: { [key: string]: any }) {
     url = urlPrefix + url;
     if (params) {
         url += `?${qs.stringify(params)}`;
@@ -27,13 +27,10 @@ export function get(url: string, params?: { [key: string]: any }) {
         console.info('GET: ', url);
         console.info('Params: ', params);
     }
-
-    return fetch(url)
-        .then(filterStatus)
-        .then(filterJSON);
+    return filterJSON(filterStatus(await fetch(url)));
 }
 
-export function post(url: string, body?: { [key: string]: any }) {
+export async function post(url: string, body?: { [key: string]: any }) {
     url = urlPrefix + url;
 
     if (isDebuggingInChrome) {
@@ -41,14 +38,12 @@ export function post(url: string, body?: { [key: string]: any }) {
         console.info('Body: ', body);
     }
 
-    return fetch(url, {
+    return filterJSON(filterStatus(await fetch(url, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(body)
-    })
-        .then(filterStatus)
-        .then(filterJSON);
+    })));
 }

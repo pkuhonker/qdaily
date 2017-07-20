@@ -155,35 +155,33 @@ export const defaultItems = {
     qq: {
         type: 'qq',
         icon: require('../../res/imgs/share/icon_share_qq.png'),
-        openShare: content => {
-            return shareSDK.isClientValid(PlatformType.QQ).then(valid => {
-                if (!valid) {
-                    return Promise.reject(new Error('您未安装QQ'));
-                } else {
-                    return shareSDK.share(PlatformType.QQ, {
-                        url: content.url,
-                        title: content.title,
-                        text: content.text,
-                        imageUrl: content.image
-                    });
-                }
-            });
+        openShare: async content => {
+            const valid = await shareSDK.isClientValid(PlatformType.QQ);
+            if (!valid) {
+                throw new Error('您未安装QQ');
+            } else {
+                return await shareSDK.share(PlatformType.QQ, {
+                    url: content.url,
+                    title: content.title,
+                    text: content.text,
+                    imageUrl: content.image
+                });
+            }
         }
     } as ShareItem,
     weibo: {
         type: 'weibo',
         icon: require('../../res/imgs/share/icon_share_weibo.png'),
-        openShare: content => {
-            return shareSDK.isClientValid(PlatformType.SinaWeibo).then(valid => {
-                if (!valid) {
-                    return Promise.reject(new Error('您未安装微博'));
-                } else {
-                    return shareSDK.share(PlatformType.SinaWeibo, {
-                        text: '#好奇心日报# ' + content.title + '\n' + content.url,
-                        imageUrl: content.image
-                    });
-                }
-            });
+        openShare: async content => {
+            const valid = await shareSDK.isClientValid(PlatformType.SinaWeibo);
+            if (!valid) {
+                throw new Error('您未安装微博');
+            } else {
+                return await shareSDK.share(PlatformType.SinaWeibo, {
+                    text: '#好奇心日报# ' + content.title + '\n' + content.url,
+                    imageUrl: content.image
+                });
+            }
         }
     } as ShareItem,
     evernote: {
@@ -193,15 +191,14 @@ export const defaultItems = {
     more: {
         type: 'more',
         icon: require('../../res/imgs/share/icon_share_more.png'),
-        openShare: content => {
+        openShare: async content => {
             const message = content.title + '\n' + content.url;
-            return RNShare.share({ title: content.title, message: message }, { dialogTitle: message }).then(result => {
-                if ((<any>result).action === RNShare.dismissedAction) {
-                    return null;
-                } else {
-                    return result;
-                }
-            });
+            const result = await RNShare.share({ title: content.title, message: message }, { dialogTitle: message });
+            if ((<any>result).action === RNShare.dismissedAction) {
+                return null;
+            } else {
+                return result;
+            }
         }
     } as ShareItem,
 };

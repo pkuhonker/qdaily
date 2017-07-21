@@ -96,7 +96,7 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "com.astro"
+        applicationId "com.mr4iot.astroreality"
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1

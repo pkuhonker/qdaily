@@ -6,7 +6,7 @@
  * Copyright (c) 2013年 mob.com. All rights reserved.
  */
 
-package com.astro.wxapi;
+package com.mr4iot.astroreality.wxapi;
 
 import android.content.Intent;
 import android.widget.Toast;

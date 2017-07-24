@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { StyleSheet, Text, View, ViewStyle, TextStyle } from 'react-native';
-import { Card } from 'antd-mobile';
 import Touchable from './base/Touchable';
 import MiniCalendar from './base/MiniCalendar';
 import { HeadLine } from '../interfaces';
@@ -54,13 +53,13 @@ export default class HeadLineCard extends React.Component<HeadLineProp, any> {
                 androidRippleColor='#f2f2f2'
                 onPress={this.onPress.bind(this)}
             >
-                <Card style={styles.card} >
-                    <Card.Header title={this.renderTitle()} />
-                    <Card.Body style={styles.cardBody}>
+                <View style={styles.card}>
+                    {this.renderTitle()}
+                    <View style={styles.cardBody}>
                         {this.renderContent()}
-                    </Card.Body>
-                    <Card.Footer extra={this.renderFooter()} />
-                </Card>
+                    </View>
+                    {this.renderFooter()}
+                </View>
             </Touchable>
         );
     }
@@ -72,8 +71,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#f2f2f2',
     },
     card: {
+        borderRadius: 8,
+        backgroundColor: '#fff',
         marginHorizontal: 5,
-        borderWidth: 0
+        padding: 10
     } as ViewStyle,
     cardTitle: {
         flex: 1,
@@ -87,12 +88,13 @@ const styles = StyleSheet.create({
         fontSize: 15
     } as TextStyle,
     cardBody: {
-        marginHorizontal: 15,
-        borderTopWidth: 0
+        marginHorizontal: 10,
+        marginTop: 10,
+        marginBottom: 5
     } as ViewStyle,
     cardContentText: {
         color: '#2a2a2a',
-        marginHorizontal: 14,
+        marginHorizontal: 10,
         fontSize: 14,
         paddingVertical: 8,
         borderBottomWidth: 1,

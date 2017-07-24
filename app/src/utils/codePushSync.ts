@@ -13,7 +13,7 @@ export async function shouldSync(): Promise<boolean> {
                         const result = await shouldSync();
                         c(result);
                     } catch (error) {
-                        c(false)
+                        c(false);
                     }
                 }
                 netInfoInited = true;

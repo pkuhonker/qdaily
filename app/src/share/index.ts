@@ -17,6 +17,19 @@ export enum ContentType {
     WebPage = 3
 }
 
+export enum ShareType {
+    SHARE_TEXT = 1,
+    SHARE_IMAGE = 2,
+    SHARE_WEBPAGE = 4,
+    SHARE_MUSIC = 5,
+    SHARE_VIDEO = 6,
+    SHARE_APPS = 7,
+    SHARE_FILE = 8,
+    SHARE_EMOJI = 9,
+    SHARE_ZHIFUBAO = 10,
+    SHARE_WXMINIPROGRAM = 11
+}
+
 export enum PlatformType {
     SinaWeibo = 1,    // 新浪微博
     Evernote = 12,  // 印象笔记
@@ -146,11 +159,39 @@ export const shareSDK = new ShareSDK();
 export const defaultItems = {
     wechat: {
         type: 'wechat',
-        icon: require('../../res/imgs/share/icon_share_wechat.png')
+        icon: require('../../res/imgs/share/icon_share_wechat.png'),
+        openShare: async content => {
+            const valid = await shareSDK.isClientValid(PlatformType.Wechat);
+            if (!valid) {
+                throw new Error('您未安装微信');
+            } else {
+                return await shareSDK.share(PlatformType.Wechat, {
+                    shareType: ShareType.SHARE_WEBPAGE,
+                    url: content.url,
+                    title: content.title,
+                    text: content.text,
+                    imageUrl: content.image
+                });
+            }
+        }
     } as ShareItem,
     wechatfriends: {
         type: 'wechatfriends',
-        icon: require('../../res/imgs/share/icon_share_wechatfriends.png')
+        icon: require('../../res/imgs/share/icon_share_wechatfriends.png'),
+        openShare: async content => {
+            const valid = await shareSDK.isClientValid(PlatformType.Wechat);
+            if (!valid) {
+                throw new Error('您未安装微信');
+            } else {
+                return await shareSDK.share(PlatformType.WechatMoments, {
+                    shareType: ShareType.SHARE_WEBPAGE,
+                    url: content.url,
+                    title: content.title,
+                    text: content.text,
+                    imageUrl: content.image
+                });
+            }
+        }
     } as ShareItem,
     qq: {
         type: 'qq',

@@ -24,6 +24,7 @@ public class ShareSDKPlatformListener extends ReactContextBaseJavaModule impleme
         this.reactContext = reactContext;
     }
 
+    @Override
     public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
         System.out.println("成功"+hashMap.toString());
         //发送事件给javascript层

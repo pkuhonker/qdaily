@@ -228,8 +228,9 @@ public class ShareSDKManagerAndroid extends ReactContextBaseJavaModule implement
                         System.out.println("share content ==>>" + content.toHashMap().toString());
                     }
                     HashMap<String, Object> data = content.toHashMap();
-
-
+                    if(data.containsKey("shareType")) {
+                        data.put("shareType", new Double((double)data.get("shareType")).intValue());
+                    }
 
                     ShareParams sp = new ShareParams(data);
                     //不同平台，分享不同内容

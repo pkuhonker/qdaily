@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Animated, View, Image, TouchableWithoutFeedback, Easing, StyleSheet, ViewStyle, Dimensions } from 'react-native';
-import Toast from 'react-native-root-toast';
+import * as Toast from './base/Toast';
 import { NavigationScreenProps } from 'react-navigation';
 import { ShareItem } from '../share';
 import { Share } from '../interfaces';
@@ -49,7 +49,7 @@ export default class ShareView extends React.Component<ShareViewProps, ShareView
                 // Toast.show('分享成功', { position: Toast.positions.CENTER });
             }
         } catch (error) {
-            Toast.show(error.message || '分享失败', { position: Toast.positions.CENTER });
+            Toast.show(error.message || '分享失败');
         }
     }
 

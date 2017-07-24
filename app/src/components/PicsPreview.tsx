@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Text, Dimensions, CameraRoll, Platform } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
-import Toast from 'react-native-root-toast';
+import * as Toast from './base/Toast';
 import RNFS from 'react-native-fs';
 import Icon from './base/Icon';
 import NavHeader from './base/NavHeader';
@@ -64,12 +64,12 @@ export default class PicsPreview extends React.Component<PicsPreviewProps, PicsP
                 await RNFS.mkdir(imageDownloadPath);
                 await RNFS.downloadFile({
                     fromUrl: url,
-                    toFile:  `${imageDownloadPath}/${Date.now()}.${this.getImageExtension(url)}`
+                    toFile: `${imageDownloadPath}/${Date.now()}.${this.getImageExtension(url)}`
                 }).promise;
             }
-            Toast.show('保存图片成功', { position: Toast.positions.CENTER });
+            Toast.show('保存图片成功');
         } catch (error) {
-             Toast.show('保存图片失败:' + error, { position: Toast.positions.CENTER });
+            Toast.show('保存图片失败:' + error);
         }
     }
 
@@ -101,7 +101,7 @@ export default class PicsPreview extends React.Component<PicsPreviewProps, PicsP
                                         onLongPress={() => this.savePic(pic.url)}
                                     >
                                     </ZoomImage>
-                                    <Text style={{ position: 'absolute', left: 20, right: 0, bottom: 100 , color: '#ffffff' }}>{pic.text}</Text>
+                                    <Text style={{ position: 'absolute', left: 20, right: 0, bottom: 100, color: '#ffffff' }}>{pic.text}</Text>
                                 </View>
                             );
                         })

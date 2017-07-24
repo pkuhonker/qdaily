@@ -1,6 +1,8 @@
 package com.mr4iot.astroreality;
 
 import android.app.Application;
+import android.os.Build;
+import android.webkit.WebView;
 
 import com.facebook.react.ReactApplication;
 import com.rnfs.RNFSPackage;
@@ -52,5 +54,8 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+      if(BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+          WebView.setWebContentsDebuggingEnabled(true);
+      }
   }
 }

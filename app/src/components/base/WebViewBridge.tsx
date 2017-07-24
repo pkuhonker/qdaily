@@ -67,6 +67,7 @@ export default class WebViewBridge extends React.Component<WebViewBridgeProperti
             <WebView
                 {...props}
                 ref={ref => this.webview = ref as any}
+                mixedContentMode='always'   // fix tencent video error: http://blog.csdn.net/qq_16472137/article/details/54346078
                 injectedJavaScript={bridgeScript + injectedJavaScript}
                 onMessage={this.onMessage.bind(this)}
             >

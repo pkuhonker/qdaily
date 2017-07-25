@@ -84,6 +84,9 @@ export default class FeedList extends React.Component<FeedListProp, FeedListStat
     }
 
     private renderFooter() {
+        if (this.props.feeds.length === 0) {
+            return null;
+        }
         return (
             <View style={{ height: 120, backgroundColor: '#fff', marginTop: 10, alignItems: 'center' }}>
                 <Image style={{ flex: 1 }} source={require('../../res/imgs/icon_loadmore.gif')}></Image>

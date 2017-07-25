@@ -154,6 +154,9 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
 
     private renderNewsHeader() {
         const { banners, headline = Object.create(null) as HeadLine } = this.props.news;
+        if (banners.length === 0) {
+            return null;
+        }
         return (
             <View>
                 <Banners banners={banners} onPress={banner => this.toDetail(banner)} />

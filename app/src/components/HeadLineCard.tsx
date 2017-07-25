@@ -47,6 +47,9 @@ export default class HeadLineCard extends React.Component<HeadLineProp, any> {
     }
 
     public render(): JSX.Element {
+        if (this.props.headline.list.length === 0) {
+            return <View />;
+        }
         return (
             <Touchable
                 style={styles.container}

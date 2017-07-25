@@ -54,6 +54,10 @@ export default class Banners extends React.Component<BannersProp, BannersState> 
     }
 
     public render(): JSX.Element {
+        if (this.props.banners.length === 0) {
+            return <View />;
+        }
+
         if (!this.state.swiperShow) {
             return (
                 <View style={{ height: BannerHeight, backgroundColor: '#ffffff' }}></View>

@@ -55,7 +55,7 @@ export const Navigator = StackNavigator({
                 const { scene } = sceneProps;
                 switch (scene.route.routeName) {
                     case 'dash':
-                        return transitions.crossFade(sceneProps);
+                        return transitions.crossFade(sceneProps, 0, 1);
                     case 'picsPreview':
                         return transitions.crossFade(sceneProps);
                     case 'share':

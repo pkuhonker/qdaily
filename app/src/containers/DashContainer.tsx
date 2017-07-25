@@ -19,6 +19,7 @@ interface StateProps {
 }
 
 interface DashContainerState {
+    containerOpacity: Animated.Value;
     topContainerY: Animated.Value;
     bottomContainerY: Animated.Value;
     bottomContainerX: Animated.Value;
@@ -27,6 +28,10 @@ interface DashContainerState {
 type Props = DashContainerProps & StateProps & ConnectComponentProps;
 
 const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
+const topContanerHeight = 170;
+const bottomContainerHeight = windowHeight - topContanerHeight;
 
 class DashContainer extends React.Component<Props, DashContainerState> {
 
@@ -35,16 +40,17 @@ class DashContainer extends React.Component<Props, DashContainerState> {
     constructor(props) {
         super(props);
         this.state = {
-            topContainerY: new Animated.Value(-400),
-            bottomContainerY: new Animated.Value(800),
+            containerOpacity: new Animated.Value(1),
+            topContainerY: new Animated.Value(-topContanerHeight),
+            bottomContainerY: new Animated.Value(bottomContainerHeight),
             bottomContainerX: new Animated.Value(0)
         };
     }
 
     public componentDidMount() {
         Animated.parallel([
-            Animated.timing(this.state.topContainerY, { toValue: 0, easing: Easing.out(Easing.back(1)), duration: 300 }),
-            Animated.timing(this.state.bottomContainerY, { toValue: 0, easing: Easing.out(Easing.back(1)), duration: 300 })
+            Animated.timing(this.state.topContainerY, { toValue: 0, easing: Easing.out(Easing.back(1.5)), duration: 300 }),
+            Animated.timing(this.state.bottomContainerY, { toValue: 0, easing: Easing.out(Easing.back(1.5)), duration: 300 })
         ]).start();
         BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid);
     }
@@ -75,8 +81,9 @@ class DashContainer extends React.Component<Props, DashContainerState> {
 
     private goBack() {
         Animated.parallel([
-            Animated.timing(this.state.topContainerY, { toValue: -400, easing: Easing.out(Easing.back(1)), duration: 300 }),
-            Animated.timing(this.state.bottomContainerY, { toValue: 800, easing: Easing.out(Easing.back(1)), duration: 300 })
+            Animated.timing(this.state.topContainerY, { toValue: -topContanerHeight, easing: Easing.out(Easing.back(2)), duration: 300 }),
+            Animated.timing(this.state.bottomContainerY, { toValue: bottomContainerHeight, easing: Easing.out(Easing.back(2)), duration: 300 }),
+            Animated.timing(this.state.containerOpacity, { toValue: 0, easing: Easing.out(Easing.back(2)), duration: 100 }),
         ]).start();
         setTimeout(() => {
             this.props.navigation.goBack();
@@ -127,8 +134,8 @@ class DashContainer extends React.Component<Props, DashContainerState> {
 
     public render(): JSX.Element {
         return (
-            <View style={[styles.container, containerStyle]}>
-                <Animated.View style={{ height: 170, transform: [{ translateY: this.state.topContainerY }] }}>
+            <Animated.View style={[styles.container, containerStyle, { opacity: this.state.containerOpacity }]}>
+                <Animated.View style={{ height: topContanerHeight, transform: [{ translateY: this.state.topContainerY }] }}>
                     <TouchableWithoutFeedback>
                         <View style={styles.searchContainer}>
                             <Image style={{ width: 18, height: 19, marginRight: 8 }} source={require('../../res/imgs/dash/icon_menu_search_day.png')} />
@@ -180,7 +187,7 @@ class DashContainer extends React.Component<Props, DashContainerState> {
                         </OverlayButton>
                     </View>
                 </Animated.View>
-            </View>
+            </Animated.View>
         );
     }
 }

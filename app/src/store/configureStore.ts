@@ -2,6 +2,7 @@ import { createStore, applyMiddleware, Middleware, Store } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import promiseMiddleware from './promiseMiddleware';
 import asyncActionCallbackMiddleware from './asyncActionCallbackMiddleware';
+import fetchErrorMiddleware from './fetchErrorMiddleware';
 import reducers from '../reducers';
 
 declare const module: any;
@@ -9,7 +10,8 @@ declare const module: any;
 const middlewares: Middleware[] = [
     thunkMiddleware,
     promiseMiddleware,
-    asyncActionCallbackMiddleware
+    asyncActionCallbackMiddleware,
+    fetchErrorMiddleware
 ];
 
 export default function configureStore(initialState?: any): Store<any> {

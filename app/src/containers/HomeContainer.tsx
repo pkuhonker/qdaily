@@ -58,18 +58,28 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
         this.refreshNews();
         this.refreshPapers();
         this.props.actions.getLeftSidebar();
+        setTimeout(() => {
+            this.hideSplash();
+        }, 5000);
     }
 
     public componentWillReceiveProps(nextProps: Props) {
         if (!this.splashClosed && !nextProps.news_pullRefreshPending) {
-            SplashScreen.close({
-                animationType: SplashScreen.animationType.fade,
-                duration: 500,
-                delay: 4000
-            });
-
-            this.splashClosed = true;
+            this.hideSplash();
         }
+    }
+
+    private hideSplash() {
+        if (this.splashClosed) {
+            return;
+        }
+        SplashScreen.close({
+            animationType: SplashScreen.animationType.fade,
+            duration: 500,
+            delay: 2000
+        });
+
+        this.splashClosed = true;
     }
 
     private toDetail(feed: Feed) {

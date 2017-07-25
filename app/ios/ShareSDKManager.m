@@ -64,8 +64,8 @@ RCT_EXPORT_MODULE();
                                     authType:SSDKAuthTypeSSO];
          break;
        case SSDKPlatformTypeWechat:
-         [appInfo SSDKSetupWeChatByAppId:@"wx4868b35061f87885"
-                               appSecret:@"64020361b8ec4c99936c0e3999a9f249"];
+         [appInfo SSDKSetupWeChatByAppId:@"wxe6a5ef70e3997707"
+                               appSecret:@"4c6134c6f4e837a8260f9b63dee3a51f"];
          break;
        case SSDKPlatformTypeQQ:
          [appInfo SSDKSetupQQByAppId:@"1106286418"
@@ -158,6 +158,9 @@ RCT_REMAP_METHOD(isClientValid,
       resolve([NSNumber numberWithBool:[ShareSDKManager isQQEnabled]]);
       break;
     case SSDKPlatformTypeWechat:
+    case SSDKPlatformSubTypeWechatSession:
+    case SSDKPlatformSubTypeWechatTimeline:
+    case SSDKPlatformSubTypeWechatFav:
       resolve([NSNumber numberWithBool:[ShareSDKManager isWeChatEnabled]]);
       break;
     default:

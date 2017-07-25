@@ -48,4 +48,17 @@
   return YES;
 }
 
+// https://stackoverflow.com/questions/28465612/how-can-i-set-landscape-orientation-when-playing-a-video-from-webview
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+  id presentedViewController = [window.rootViewController presentedViewController];
+  NSString *className = presentedViewController ? NSStringFromClass([presentedViewController class]) : nil;
+  
+  if (window && ([className isEqualToString:@"MPInlineVideoFullscreenViewController"] || [className isEqualToString:@"AVFullScreenViewController"])) {
+    return UIInterfaceOrientationMaskAll;
+  } else {
+    return UIInterfaceOrientationMaskPortrait;
+  }
+  
+}
+
 @end

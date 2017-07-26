@@ -16,7 +16,7 @@ const initialState: SystemState = {
 export default function reducer(state = initialState, action: any): SystemState {
     switch (action.type) {
         case REHYDRATE:
-            const system = action.payload.system as SystemState;
+            const system: SystemState = action.payload.system || {};
             return {
                 ...state,
                 redux_version: system.redux_version || state.redux_version,

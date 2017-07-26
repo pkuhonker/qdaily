@@ -8,6 +8,7 @@ import Banners from '../components/Banners';
 import HeadLineCard from '../components/HeadLineCard';
 import CustomTabBar from '../components/base/CustomTabBar';
 import OverlayButton from '../components/base/OverlayButton';
+import WhatsNew from '../components/base/WhatsNew';
 import { AppState } from '../reducers';
 import { HomeState } from '../reducers/home';
 import { Feed, FeedType, HeadLine } from '../interfaces';
@@ -20,6 +21,7 @@ type HomeContainerProps = NavigationScreenProps<{
 }>;
 
 interface StateProps extends HomeState {
+    isLaunched: boolean;
 }
 
 interface HomeContainerState {
@@ -237,6 +239,14 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
     }
 
     public render(): JSX.Element {
+        if (!this.props.isLaunched) {
+            return (
+                <View style={{ flex: 1 }}>
+                    <WhatsNew onExit={() => this.props.actions.launch()} />
+                </View>
+            );
+        }
+
         if (!this.splashClosed) {
             return (
                 <View style={{ flex: 1, justifyContent: 'center' }}>
@@ -292,7 +302,8 @@ const tabBarStyles = StyleSheet.create({
 
 function mapStateToProps(state: AppState, ownProps?: HomeContainerProps): StateProps {
     return {
-        ...state.home
+        ...state.home,
+        isLaunched: state.system.isLaunched
     };
 }
 

@@ -23,7 +23,17 @@ export default function configureStore(initialState?: any): Store<any> {
     )(createStore)(reducers, initialState);
 
     persistStore(store, {
-        storage: AsyncStorage as any
+        storage: AsyncStorage as any,
+        transforms: [
+            {
+                in: (state, key) => {
+                    return state;
+                },
+                out: (raw, key) => {
+                    return raw;
+                },
+            }
+        ]
     });
 
     if (module.hot) {

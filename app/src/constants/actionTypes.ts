@@ -16,3 +16,6 @@ export const GET_PAPER_DETAIL_BY_ID = 'GET_PAPER_DETAIL_BY_ID';
 
 // category
 export const GET_CATEGORIES = 'GET_CATEGORIES';
+
+// system
+export const LAUNCH = 'LAUNCH';

@@ -13,13 +13,14 @@ const initialState: SystemState = {
     restored: false
 };
 
-export default function reducer(state = initialState, action: any) {
+export default function reducer(state = initialState, action: any): SystemState {
     switch (action.type) {
         case REHYDRATE:
-            const system = action.payload.system;
+            const system = action.payload.system as SystemState;
             return {
                 ...state,
-                ...system,
+                redux_version: system.redux_version || state.redux_version,
+                isLaunched: system.isLaunched || state.isLaunched,
                 restored: true
             };
         case types.LAUNCH:

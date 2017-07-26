@@ -14,17 +14,14 @@ const initialState: SystemState = {
 };
 
 export default function reducer(state = initialState, action: any) {
-    switch(action.type) {
+    switch (action.type) {
         case REHYDRATE:
-            if (action.payload.system) {
-                return {
-                    ...state,
-                    ...action.payload.system,
-                    restored: true
-                };
-            } else {
-                return state;
-            }
+            const system = action.payload.system;
+            return {
+                ...state,
+                ...system,
+                restored: true
+            };
         case types.LAUNCH:
             return {
                 ...state,

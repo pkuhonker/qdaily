@@ -203,6 +203,7 @@ export const defaultItems = {
             } else {
                 return await shareSDK.share(PlatformType.QQ, {
                     url: content.url,
+                    titleUrl: content.url,
                     title: content.title,
                     text: content.text,
                     imageUrl: content.image

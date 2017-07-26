@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, BackHandler, ToastAndroid, Easing, Animated, AppState as RNAppState } from 'react-native';
+import { View, ActivityIndicator, Platform, BackHandler, ToastAndroid, Easing, Animated, AppState as RNAppState } from 'react-native';
 import { connect, DispatchProp } from 'react-redux';
 import { addNavigationHelpers, StackNavigator, NavigationActions, NavigationState } from 'react-navigation';
 import * as transitions from '../utils/transitions';
@@ -68,6 +68,7 @@ export const Navigator = StackNavigator({
     });
 
 interface StateProps {
+    restored?: boolean;
     nav?: NavigationState;
 }
 
@@ -113,15 +114,24 @@ class Navigation extends React.Component<DispatchProp<any> & StateProps, any> {
     }
 
     public render() {
-        const { dispatch, nav } = this.props;
-        return (
-            <Navigator navigation={addNavigationHelpers({ state: nav, dispatch })} />
-        );
+        const { dispatch, nav, restored } = this.props;
+        if (!restored) {
+            return (
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <ActivityIndicator />
+                </View>
+            );
+        } else {
+            return (
+                <Navigator navigation={addNavigationHelpers({ state: nav, dispatch })} />
+            );
+        }
     }
 }
 
 function mapStateToProps(state: AppState, ownProps?: any): StateProps {
     return {
+        restored: state.system.restored,
         nav: state.nav
     };
 }

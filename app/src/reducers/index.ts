@@ -4,6 +4,7 @@ import article, { ArticleState } from './article';
 import paper, { PaperState } from './paper';
 import category, { CategoryState } from './category';
 import nav, { NavigationState } from './routes';
+import system, { SystemState } from './system';
 
 export interface AppState {
     home: HomeState;
@@ -11,6 +12,7 @@ export interface AppState {
     paper: PaperState;
     category: CategoryState;
     nav: NavigationState;
+    system: SystemState;
 }
 
 export default combineReducers<AppState>({
@@ -18,5 +20,6 @@ export default combineReducers<AppState>({
     article,
     paper,
     category,
-    nav
+    nav,
+    system
 });

@@ -1,3 +1,4 @@
+// import { REHYDRATE } from 'redux-persist/constants';
 import { NavigationState } from 'react-navigation';
 import { Navigator } from '../containers/Navigation';
 
@@ -10,7 +11,15 @@ export default function reducer(state = initialState, action: any) {
     if (typeof action.type === 'string' && action.type.startsWith('Navigation/')) {
         const nextState = Navigator.router.getStateForAction(action, state);
         return nextState || state;
-    } else {
-        return state;
+    }
+    switch (action.type) {
+        // We should restore the route.
+        // case REHYDRATE:
+        //     return {
+        //         ...state,
+        //         initialState
+        //     };
+        default:
+            return state;
     }
 };

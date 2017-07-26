@@ -56,10 +56,23 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
         };
     }
 
-    public componentDidMount() {
+    private fetchHome() {
         this.refreshNews();
         this.refreshPapers();
         this.props.actions.getLeftSidebar();
+    }
+    
+    private onWhatsNewExit() {
+        if (Platform.OS === 'ios') {
+            // fix http://www.jianshu.com/p/6cbde1b8b922
+            // fetch home data again.
+            this.fetchHome();
+        }
+        this.props.actions.launch();
+    }
+
+    public componentDidMount() {
+        this.fetchHome();
         setTimeout(() => {
             this.hideSplash();
         }, 5000);
@@ -242,7 +255,7 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
         if (!this.props.isLaunched) {
             return (
                 <View style={{ flex: 1 }}>
-                    <WhatsNew onExit={() => this.props.actions.launch()} />
+                    <WhatsNew onExit={() => this.onWhatsNewExit()} />
                 </View>
             );
         }

@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
+    "watch": "node node_modules/typescript/bin/tsc -w",
     "android": "node node_modules/react-native/local-cli/cli.js run-android",
     "android-staging": "node node_modules/react-native/local-cli/cli.js run-android --variant=releaseStaging",
     "ios": "node node_modules/react-native/local-cli/cli.js run-ios",
     "release-ios": "react-native unbundle --entry-file index.ios.js --platform ios --dev false",
-    "release-android": "tsc && cd android && gradlew assembleRelease",
+    "release-android": "node node_modules/typescript/bin/tsc && cd android && gradlew assembleRelease",
     "push-android": "code-push release-react astro-android android --deploymentName Staging",
     "push-ios": "code-push release-react astro-ios ios --deploymentName Staging",
     "push-android-prod": "code-push release-react astro-android android --deploymentName Production",

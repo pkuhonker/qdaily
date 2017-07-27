@@ -123,8 +123,8 @@ class DashContainer extends React.Component<Props, DashContainerState> {
     private renderHButton(options: { id?: number, text: string, icon: any, small?: boolean, right?: boolean, onPress?: () => void }) {
         return (
             <TouchableWithoutFeedback key={options.id} onPress={() => options.onPress && options.onPress()}>
-                <View style={{ alignItems: 'center', flexDirection: 'row', marginBottom: 15, paddingRight: 20 }}>
-                    <Image style={[{ marginRight: 15 }, options.small ? { width: 32, height: 32 } : { width: 36, height: 36 }]} source={options.icon} />
+                <View style={{ alignItems: 'center', flexDirection: 'row', width: options.small ? windowWidth / 2 : windowWidth, marginBottom: 20, paddingRight: 20 }}>
+                    <Image style={[{ marginRight: 15 }, { width: 36, height: 36 }]} source={options.icon} />
                     <Text style={{ color: '#000', fontSize: options.small ? 14 : 15 }}>{options.text}</Text>
                     {options.right ? <Image style={{ marginLeft: 5, width: 8, height: 16 }} source={require('../../res/imgs/dash/icon_menu_second_day.png')} /> : null}
                 </View>
@@ -157,14 +157,14 @@ class DashContainer extends React.Component<Props, DashContainerState> {
                         {this.renderHButton({ text: '我的消息', icon: require('../../res/imgs/dash/icon_menu_notification_day.png') })}
                         {this.renderHButton({ text: '个人中心', icon: require('../../res/imgs/dash/icon_menu_usercenter_day.png') })}
                         {this.renderHButton({ text: '意见反馈', icon: require('../../res/imgs/dash/icon_menu_feedback_day.png') })}
-                        <OverlayButton position={{ left: 20, bottom: 20 }} onPress={() => this.goBack()}>
+                        <OverlayButton position={{ left: 0, bottom: 20 }} onPress={() => this.goBack()}>
                             <View>
                                 <Image style={{ width: 54, height: 54, borderRadius: 27 }} source={require('../../res/imgs/dash/icon_close_button.png')} />
                             </View>
                         </OverlayButton>
                     </View>
                     <View style={styles.vActionContainer}>
-                        <View style={{ flexWrap: 'wrap', height: 350, alignContent: 'space-between' }}>
+                        <View style={{ flexWrap: 'wrap', position: 'absolute', top: 0, bottom: 100 }}>
                             {
                                 this.props.topics.length === 0
                                     ?
@@ -175,12 +175,13 @@ class DashContainer extends React.Component<Props, DashContainerState> {
                                             id: topic.id,
                                             text: topic.title,
                                             icon: { uri: topic.white_icon },
+                                            small: true,
                                             onPress: () => this.toCategory(topic)
                                         });
                                     })
                             }
                         </View>
-                        <OverlayButton position={{ left: 20, bottom: 20 }} onPress={() => this.showCategory(false)}>
+                        <OverlayButton position={{ left: 0, bottom: 20 }} onPress={() => this.showCategory(false)}>
                             <View>
                                 <Image style={{ width: 54, height: 54, borderRadius: 27 }} source={require('../../res/imgs/dash/icon_back_button.png')} />
                             </View>
@@ -215,7 +216,7 @@ const styles = StyleSheet.create({
     vActionContainer: {
         flex: 1,
         flexDirection: 'column',
-        paddingHorizontal: 20
+        marginHorizontal: 20
     } as ViewStyle,
 });
 

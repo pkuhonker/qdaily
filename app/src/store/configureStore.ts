@@ -17,7 +17,7 @@ const middlewares: Middleware[] = [
 ];
 
 export default function configureStore(initialState?: any): Store<any> {
-    const store = compose(
+    const store = compose<any>(
         applyMiddleware(...middlewares),
         autoRehydrate({ log: __DEV__ })
     )(createStore)(reducers, initialState);

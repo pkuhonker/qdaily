@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, Text, View, ViewStyle, TextStyle, Image, Dimensions } from 'react-native';
 import Touchable from './base/Touchable';
-import Carousel from './base/Carousel';
+import Carousel from 'react-native-banner-carousel';
 import { Banner } from '../interfaces';
 
 export interface BannersProp {

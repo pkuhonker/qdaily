@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, ViewStyle, TextStyle, Image } from 'react-native';
+import { StyleSheet, Text, View, ViewStyle, TextStyle, Image, Dimensions } from 'react-native';
 import Touchable from './base/Touchable';
-import Swiper from 'react-native-swiper';
+import Carousel from './base/Carousel';
 import { Banner } from '../interfaces';
 
 export interface BannersProp {
@@ -14,23 +14,12 @@ export interface BannersState {
 }
 
 const BannerHeight = 260;
+const BannerWidth = Dimensions.get('window').width;
 
 export default class Banners extends React.Component<BannersProp, BannersState> {
 
     constructor(props) {
         super(props);
-        this.state = {
-            swiperShow: false
-        };
-    }
-
-    public componentDidMount() {
-        // see https://github.com/leecade/react-native-swiper/issues/389
-        setTimeout(() => {
-            this.setState({
-                swiperShow: true
-            });
-        }, 0);
     }
 
     private onPress(banner) {
@@ -43,7 +32,7 @@ export default class Banners extends React.Component<BannersProp, BannersState> 
         return (
             <Touchable key={data.image} onPress={() => this.onPress(data)}>
                 <View style={styles.container}>
-                    <Image style={{ height: BannerHeight }} source={{ uri: data.image }}>
+                    <Image style={{ width: BannerWidth, height: BannerHeight }} source={{ uri: data.image }}>
                         <View style={{ flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0, 0, 0, 0.2)' }}>
                             <Text style={styles.text}>{data.post.title}</Text>
                         </View>
@@ -58,27 +47,18 @@ export default class Banners extends React.Component<BannersProp, BannersState> 
             return <View />;
         }
 
-        if (!this.state.swiperShow) {
-            return (
-                <View style={{ height: BannerHeight, backgroundColor: '#ffffff' }}></View>
-            );
-        }
         return (
             <View>
-                <Swiper
-                    height={BannerHeight}
-                    index={0}
-                    autoplayTimeout={5}
-                    autoplay
+                <Carousel
+                    autoplay={true}
+                    autoplayTimeout={5000}
                     loop
-                    paginationStyle={{ bottom: 8 }}
-                    dotStyle={{ width: 6, height: 6, borderRadius: 3 }}
-                    activeDotStyle={{ width: 6, height: 6, borderRadius: 3 }}
-                    activeDotColor='#ffc81f'
-                    dotColor='rgba(0,0,0,.4)'
+                    index={0}
+                    pageWidth={BannerWidth}
+                    pageHeight={BannerHeight}
                 >
                     {this.props.banners.map(banner => { return this.renderPage(banner); })}
-                </Swiper>
+                </Carousel>
             </View>
         );
     }
@@ -88,7 +68,7 @@ const styles = StyleSheet.create({
     wrapper: {
     } as ViewStyle,
     container: {
-        flex: 1
+        width: BannerWidth
     } as ViewStyle,
     text: {
         fontSize: 18,

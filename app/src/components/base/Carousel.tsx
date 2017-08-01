@@ -1,6 +1,6 @@
 import * as  React from 'react';
 import {
-    View, Animated, ScrollView, StyleSheet, Platform,
+    View, Animated, ScrollView, StyleSheet, ViewStyle, Platform,
     PanResponder, PanResponderInstance, PanResponderGestureState
 } from 'react-native';
 
@@ -12,16 +12,18 @@ interface IndicatorConfig {
 }
 
 interface CarouselProps {
-    pageWidth: number;
-    pageHeight?: number;
+    pageSize: number;
     loop?: boolean;
     index?: number;
     autoplay?: boolean;
     autoplayTimeout?: number;
     slipFactor?: number;
+    animation?: (animate: Animated.Value, toValue: number) => Animated.CompositeAnimation;
+    onPageChanged?: (index: number) => void;
     showsPageIndicator?: boolean;
     renderPageIndicator?: (config: IndicatorConfig) => JSX.Element;
-    onPageChanged?: (index: number) => void;
+    activePageIndicatorStyle?: ViewStyle;
+    pageIndicatorStyle?: ViewStyle;
 }
 
 
@@ -32,13 +34,20 @@ interface CarouselState {
 export default class Carousel extends React.Component<CarouselProps, CarouselState> {
 
     public static defaultProps: CarouselProps = {
-        pageWidth: 0,
+        pageSize: 0,
         loop: true,
         index: 0,
         autoplay: false,
         autoplayTimeout: 5000,
         slipFactor: 1,
-        showsPageIndicator: true
+        showsPageIndicator: true,
+        animation: (animate, toValue) => {
+            return Animated.spring(animate, {
+                toValue: toValue,
+                friction: 10,
+                tension: 50
+            });
+        }
     };
 
     private scrollView: ScrollView;
@@ -122,7 +131,7 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
     }
 
     private computePanOffset(g: PanResponderGestureState) {
-        let offset = -g.dx / (this.props.pageWidth / this.props.slipFactor);
+        let offset = -g.dx / (this.props.pageSize / this.props.slipFactor);
         if (Math.abs(offset) > 1) {
             offset = offset > 1 ? 1 : -1;
         }
@@ -146,9 +155,9 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
         }
         let newIndex = this.currentIndex;
         this.panOffsetFactor = this.computePanOffset(g);
-        if (this.panOffsetFactor > 0.5 || (this.panOffsetFactor > 0 && g.vx <= -1e-1)) {
+        if (this.panOffsetFactor > 0.5 || (this.panOffsetFactor > 0 && g.vx <= -0.1)) {
             newIndex = Math.floor(this.currentIndex + 1);
-        } else if (this.panOffsetFactor < -0.5 || (this.panOffsetFactor < 0 && g.vx >= 1e-1)) {
+        } else if (this.panOffsetFactor < -0.5 || (this.panOffsetFactor < 0 && g.vx >= 0.1)) {
             newIndex = Math.ceil(this.currentIndex - 1);
         } else {
             newIndex = Math.round(this.currentIndex);
@@ -184,17 +193,13 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
 
         const setIndex = (index: number) => {
             this.currentIndex = index;
-            if (this.props.onPageChanged) {
+            if (this.props.onPageChanged && Number.isInteger(this.currentIndex)) {
                 this.props.onPageChanged(this.getCurrentPage());
             }
         };
 
         if (animated) {
-            this.pageAnimation = Animated.spring(this.state.scrollValue, {
-                toValue: index,
-                friction: 10,
-                tension: 50
-            });
+            this.pageAnimation = this.props.animation(this.state.scrollValue, index);
             const animationId = this.state.scrollValue.addListener((state: { value: number }) => {
                 setIndex(state.value);
             });
@@ -279,7 +284,7 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
 
         const indicators: JSX.Element[] = [];
         for (let i = 0; i < pageNum; i++) {
-            indicators.push(<View key={i} style={styles.pointStyle} />);
+            indicators.push(<View key={i} style={[styles.pageIndicatorStyle, this.props.pageIndicatorStyle]} />);
         }
 
         let left: Animated.AnimatedInterpolation;
@@ -304,13 +309,19 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
         return (
             <View style={{ position: 'absolute', alignSelf: 'center', flexDirection: 'row', bottom: 10 }}>
                 {indicators}
-                <Animated.View style={[styles.pointStyle, styles.pointActiveStyle, { left: left }]} />
+                <Animated.View
+                    style={[
+                        styles.pageIndicatorStyle, styles.activePageIndicatorStyle,
+                        this.props.pageIndicatorStyle, this.props.activePageIndicatorStyle,
+                        { left: left }
+                    ]}
+                />
             </View>
         );
     }
 
     public render() {
-        const { children, pageWidth, pageHeight, loop } = this.props;
+        const { children, pageSize, loop } = this.props;
         const { scrollValue } = this.state;
 
         let pages = React.Children.toArray(children);
@@ -322,7 +333,7 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
 
         pages = pages.map((page, index) => {
             return (
-                <View key={index} style={{ height: pageHeight, width: pageWidth }}>
+                <View key={index} style={{ width: pageSize }}>
                     {page}
                 </View>
             );
@@ -331,15 +342,15 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
         const childrenNum = pages.length;
         const translateX = scrollValue.interpolate({
             inputRange: [0, 1, childrenNum],
-            outputRange: [0, -pageWidth, -childrenNum * pageWidth]
+            outputRange: [0, -pageSize, -childrenNum * pageSize]
         });
 
         return (
             <View>
                 <ScrollView
                     ref={ref => this.scrollView = ref as any}
-                    style={{ width: this.props.pageWidth }}
-                    contentContainerStyle={{ width: this.props.pageWidth + 1 }}
+                    style={{ width: this.props.pageSize }}
+                    contentContainerStyle={{ width: this.props.pageSize + 1 }}
                     horizontal
                     pagingEnabled
                     directionalLockEnabled
@@ -351,7 +362,7 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
                     scrollEnabled={Platform.OS === 'ios' ? true : false}
                 >
                     <Animated.View
-                        style={{ flexDirection: 'row', width: this.props.pageWidth * childrenNum, transform: [{ translateX }] }}
+                        style={{ flexDirection: 'row', width: this.props.pageSize * childrenNum, transform: [{ translateX }] }}
                         {...this.panResponder.panHandlers}
 
                     >
@@ -365,28 +376,14 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
 }
 
 const styles = StyleSheet.create({
-    pagination: {
-        position: 'absolute',
-        alignItems: 'center',
-    },
-    paginationX: {
-        bottom: 10,
-        left: 0,
-        right: 0,
-    },
-    paginationY: {
-        right: 10,
-        top: 0,
-        bottom: 0,
-    },
-    pointStyle: {
+    pageIndicatorStyle: {
         width: 6,
         height: 6,
         borderRadius: 3,
         marginHorizontal: 5,
         backgroundColor: 'rgba(0,0,0,.4)'
     },
-    pointActiveStyle: {
+    activePageIndicatorStyle: {
         position: 'absolute',
         backgroundColor: '#ffc81f',
     }

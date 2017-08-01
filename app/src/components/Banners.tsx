@@ -54,8 +54,7 @@ export default class Banners extends React.Component<BannersProp, BannersState> 
                     autoplayTimeout={5000}
                     loop
                     index={0}
-                    pageWidth={BannerWidth}
-                    pageHeight={BannerHeight}
+                    pageSize={BannerWidth}
                 >
                     {this.props.banners.map(banner => { return this.renderPage(banner); })}
                 </Carousel>

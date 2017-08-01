@@ -1,6 +1,6 @@
 import * as  React from 'react';
 import {
-    View, Animated, ScrollView, StyleSheet,
+    View, Animated, ScrollView, StyleSheet, Platform,
     PanResponder, PanResponderInstance, PanResponderGestureState
 } from 'react-native';
 
@@ -18,7 +18,7 @@ interface CarouselProps {
     index?: number;
     autoplay?: boolean;
     autoplayTimeout?: number;
-    androidSlipFactor?: number;
+    slipFactor?: number;
     showsPageIndicator?: boolean;
     renderPageIndicator?: (config: IndicatorConfig) => JSX.Element;
     onPageChanged?: (index: number) => void;
@@ -37,9 +37,11 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
         index: 0,
         autoplay: false,
         autoplayTimeout: 5000,
-        androidSlipFactor: 1,
+        slipFactor: 1,
         showsPageIndicator: true
     };
+
+    private scrollView: ScrollView;
 
     private autoPlayTimer: number = 0;
     private pageAnimation: Animated.CompositeAnimation;
@@ -69,6 +71,9 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
                     return false;
                 }
             },
+            onPanResponderTerminationRequest: () => {
+                return false;
+            },
             onPanResponderGrant: () => {
                 this.startPanResponder();
             },
@@ -81,6 +86,7 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
             },
             onPanResponderEnd: (e, g) => {
                 this.endPanResponder(g);
+                this.scrollView.scrollTo({ x: 0, animated: false });
             }
         });
     }
@@ -116,7 +122,7 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
     }
 
     private computePanOffset(g: PanResponderGestureState) {
-        let offset = -g.dx / (this.props.pageWidth / this.props.androidSlipFactor);
+        let offset = -g.dx / (this.props.pageWidth / this.props.slipFactor);
         if (Math.abs(offset) > 1) {
             offset = offset > 1 ? 1 : -1;
         }
@@ -331,16 +337,23 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
         return (
             <View>
                 <ScrollView
+                    ref={ref => this.scrollView = ref as any}
                     style={{ width: this.props.pageWidth }}
+                    contentContainerStyle={{ width: this.props.pageWidth + 1 }}
                     horizontal
                     pagingEnabled
                     directionalLockEnabled
+                    bounces={false}
+                    alwaysBounceHorizontal={false}
+                    alwaysBounceVertical={false}
+                    showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
-                    scrollEnabled={false}
+                    scrollEnabled={Platform.OS === 'ios' ? true : false}
                 >
                     <Animated.View
                         style={{ flexDirection: 'row', width: this.props.pageWidth * childrenNum, transform: [{ translateX }] }}
                         {...this.panResponder.panHandlers}
+
                     >
                         {pages}
                     </Animated.View>

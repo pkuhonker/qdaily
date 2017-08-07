@@ -50,7 +50,11 @@ function getNews(state: HomeState, action: FSA<News, PromiseMeta>): HomeState {
     if (!error && !pending) {
         if (root) {
             const filterFeeds = payload.feeds.filter(feed => {
-                return feed.post.id !== payload.headline.post.id;
+                if (payload.headline) {
+                    return feed.post.id !== payload.headline.post.id;
+                } else {
+                    return true;
+                }
             });
             return {
                 ...newState, news: {

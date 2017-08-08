@@ -30,6 +30,8 @@ type Props = StateProps & ConnectComponentProps & ArticleContainerProps;
 
 const scrollScript = require('../../res/other/scroll.js');
 
+const ArticleIds: { [id: string]: boolean } = {};
+
 class ArticleContainer extends React.Component<Props, ArticleContainerState> {
 
     private panResponder: PanResponderInstance;
@@ -50,12 +52,13 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
 
     public componentDidMount() {
         const { params } = this.props.navigation.state;
-        if (!this.props.info) {
+        if (!ArticleIds[params.id] || !this.props.info) {
             this.props.actions.getArticleInfoById(params.id);
         }
-        if (!this.props.detail) {
+        if (!ArticleIds[params.id] || !this.props.detail) {
             this.props.actions.getArticleDetailById(params.id);
         }
+        ArticleIds[params.id] = true;
     }
 
     private onPanResponderMove(e: GestureResponderEvent, gestureState: PanResponderGestureState) {
@@ -208,8 +211,8 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
         return (
             <Animated.View style={[styles.bottomBar, { transform: [{ translateY: this.state.bottomBarBottom }] }]}>
                 <Icon style={styles.backIcon} type='EvilIcons' name='chevron-left' onPress={() => this.props.navigation.goBack()} />
-                {this.renderBadgeIcon('comment', () => {}, post.comment_count)}
-                {this.renderBadgeIcon('heart', () => {}, post.praise_count)}
+                {this.renderBadgeIcon('comment', () => { }, post.comment_count)}
+                {this.renderBadgeIcon('heart', () => { }, post.praise_count)}
                 {this.renderBadgeIcon('share-apple', () => this.toShare())}
             </Animated.View>
         );

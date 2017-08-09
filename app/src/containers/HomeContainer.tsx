@@ -50,7 +50,7 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
             index: 0,
             routes: [
                 { key: 'news', title: 'NEWS' },
-                { key: 'labs', title: 'LABS' }
+                // { key: 'labs', title: 'LABS' }
             ],
             overlayOpacity: new Animated.Value(1)
         };
@@ -58,8 +58,8 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
 
     private fetchHome() {
         this.refreshNews();
-        this.refreshPapers();
-        this.props.actions.getLeftSidebar();
+        // this.refreshPapers();
+        // this.props.actions.getLeftSidebar();
     }
     
     private onWhatsNewExit() {
@@ -278,7 +278,7 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
                     renderHeader={this.renderTabBar.bind(this)}
                     onRequestChangeTab={index => this.setState({ index })}
                 />
-                <OverlayButton onPress={() => this.toDash()}>
+                <OverlayButton style={{ opacity: 0 }} onPress={() => {/* this.toDash() */}}>
                     <Animated.View style={{ opacity: overlayOpacity }}>
                         <Image style={{ width: 54, height: 54, borderRadius: 27 }} source={require('../../res/imgs/icon_round_logo.png')}>
                         </Image>
@@ -299,6 +299,7 @@ const styles = StyleSheet.create({
 const tabBarStyles = StyleSheet.create({
     container: {
         backgroundColor: '#ffffff',
+        height: 0
     } as ViewStyle,
     tab: {
         padding: Platform.OS === 'android' ? 6 : 4,

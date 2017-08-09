@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {
     View, ActivityIndicator, Image, Animated, NativeSyntheticEvent, NativeScrollEvent,
-    StyleSheet, ViewStyle, TextStyle, Dimensions, Platform } from 'react-native';
+    StyleSheet, ViewStyle, TextStyle, Dimensions, Platform
+} from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import FeedList from '../components/FeedList';
 import Banners from '../components/Banners';
@@ -61,7 +62,7 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
         // this.refreshPapers();
         // this.props.actions.getLeftSidebar();
     }
-    
+
     private onWhatsNewExit() {
         if (Platform.OS === 'ios') {
             // fix http://www.jianshu.com/p/6cbde1b8b922
@@ -185,9 +186,9 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
         return (
             <View>
                 <Banners banners={banners} onPress={banner => this.toDetail(banner)} />
-                <View style={{ height: 10, backgroundColor: '#f2f2f2' }}/>
+                <View style={{ height: 10, backgroundColor: '#f2f2f2' }} />
                 <HeadLineCard headline={headline} onPress={() => this.toDetail(headline)} />
-                <View style={{ height: 10, backgroundColor: '#f2f2f2' }}/>
+                <View style={{ height: 10, backgroundColor: '#f2f2f2' }} />
             </View>
         );
     }
@@ -197,11 +198,12 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
         return (
             <FeedList
                 style={{ width: windowWidth }}
+                hasMore={news.has_more}
                 feeds={news.feeds}
                 pullRefreshPending={news_pullRefreshPending}
                 renderHeader={this.renderNewsHeader.bind(this)}
                 onRefresh={this.refreshNews.bind(this)}
-                onEndReached={() => this.refreshNews(news.last_key)}
+                onEndReached={() => news.has_more && this.refreshNews(news.last_key)}
                 onItemPress={feed => this.toDetail(feed)}
                 onScroll={this.onScroll.bind(this)}
                 onMomentumScrollBegin={this.onMomentumScrollBegin.bind(this)}
@@ -216,10 +218,11 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
         return (
             <FeedList
                 style={{ width: windowWidth }}
+                hasMore={papers.has_more}
                 feeds={papers.feeds}
                 pullRefreshPending={papers_pullRefreshPending}
                 onRefresh={this.refreshNews.bind(this)}
-                onEndReached={() => this.refreshPapers(papers.last_key)}
+                onEndReached={() => papers.has_more && this.refreshPapers(papers.last_key)}
                 onItemPress={feed => this.toDetail(feed)}
                 onScroll={this.onScroll.bind(this)}
                 onMomentumScrollBegin={this.onMomentumScrollBegin.bind(this)}
@@ -278,14 +281,14 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
                     renderHeader={this.renderTabBar.bind(this)}
                     onRequestChangeTab={index => this.setState({ index })}
                 />
-                <OverlayButton style={{ opacity: 0 }} onPress={() => {/* this.toDash() */}}>
+                <OverlayButton style={{ opacity: 0 }} onPress={() => {/* this.toDash() */ }}>
                     <Animated.View style={{ opacity: overlayOpacity }}>
                         <Image style={{ width: 54, height: 54, borderRadius: 27 }} source={require('../../res/imgs/icon_round_logo.png')}>
                         </Image>
                     </Animated.View>
                 </OverlayButton>
             </View>
-        ); 
+        );
     }
 }
 

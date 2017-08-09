@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    View, ListView, Image, ListViewDataSource, NativeSyntheticEvent, NativeScrollEvent,
+    View, ListView, Image, Text, ListViewDataSource, NativeSyntheticEvent, NativeScrollEvent,
     RefreshControl, ViewStyle
 } from 'react-native';
 import { Feed } from '../interfaces';
@@ -8,6 +8,7 @@ import FeedItem from './FeedItem';
 
 export interface FeedListProp {
     feeds: Feed[];
+    hasMore?: boolean;
     style?: ViewStyle;
     pullRefreshPending?: boolean;
     renderHeader?: () => JSX.Element;
@@ -84,6 +85,14 @@ export default class FeedList extends React.Component<FeedListProp, FeedListStat
     }
 
     private renderFooter() {
+        if (!this.props.hasMore) {
+            return (
+                <View style={{ height: 60, backgroundColor: '#fff', marginTop: 10, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text>没有更多啦</Text>
+                </View>
+            );
+        }
+
         if (this.props.feeds.length === 0) {
             return null;
         }

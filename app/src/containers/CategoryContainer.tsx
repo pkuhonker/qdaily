@@ -72,10 +72,11 @@ class CategoryContainer extends React.Component<Props, CategoryContainerState> {
                     onBack={() => this.props.navigation.goBack()}
                 />
                 <FeedList
+                    hasMore={category.has_more}
                     feeds={category.feeds}
                     pullRefreshPending={pullRefreshPending}
                     onRefresh={this.refresh.bind(this)}
-                    onEndReached={() => this.refresh(category.last_key)}
+                    onEndReached={() => category.has_more && this.refresh(category.last_key)}
                     onItemPress={feed => this.toDetail(feed)}
                 >
                 </FeedList>

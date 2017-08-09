@@ -4,6 +4,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import { AppState } from '../reducers';
 import Icon from '../components/base/Icon';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
+import { containerStyle } from '../utils/container';
 
 type ADContainerProps = NavigationScreenProps<{
     url: string;
@@ -64,7 +65,7 @@ class ADContainer extends React.Component<Props, ADContainerState> {
     public render() {
         const { params } = this.props.navigation.state;
         return (
-            <View style={{ flex: 1, justifyContent: 'center' }}>
+            <View style={{ flex: 1, justifyContent: 'center', backgroundColor: '#ffffff' }}>
                 <WebView
                     ref={ref => this.webview = ref as any}
                     style={{ flex: 1 }}

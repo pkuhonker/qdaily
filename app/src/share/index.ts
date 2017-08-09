@@ -220,7 +220,7 @@ export const defaultItems = {
                 throw new Error('您未安装微博');
             } else {
                 return await shareSDK.share(PlatformType.SinaWeibo, {
-                    text: '#好奇心日报# ' + content.title + '\n' + content.url,
+                    text: '#通晓# ' + content.title + '\n' + content.url,
                     imageUrl: content.image
                 });
             }

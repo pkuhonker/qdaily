@@ -4,8 +4,10 @@
     android:versionName="1.0">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <uses-sdk
         android:minSdkVersion="16"
@@ -61,6 +63,10 @@
     <!-- 填写您从Mob开发者后台中得到的Appkey和AppSecret -->
     <meta-data android:name="Mob-AppKey" android:value="1f5f18b31d7f2"/>
     <meta-data android:name="Mob-AppSecret" android:value="837d6c7502fe50b0474c2e15ba7de4b0"/>
+
+    <!-- 友盟 -->
+    <meta-data android:name="UMENG_APPKEY" android:value="598130964544cb7eff001ff7"/>
+    <meta-data android:name="UMENG_CHANNEL" android:value="app"/>
 
     </application>
 

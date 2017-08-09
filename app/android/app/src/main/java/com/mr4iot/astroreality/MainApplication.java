@@ -14,6 +14,7 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.reactnativecomponent.splashscreen.RCTSplashScreenPackage;
 import com.rnsharesdk.ShareSDKReactPackager;
+import com.umeng.UmengReactPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -36,11 +37,12 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
               new MainReactPackage(),
-            new RNFSPackage(),
-            new PhotoViewPackage(),
+              new RNFSPackage(),
+              new PhotoViewPackage(),
               new CodePush(BuildConfig.CODEPUSH_KEY, getApplicationContext(), BuildConfig.DEBUG),
               new RCTSplashScreenPackage(),
-              new ShareSDKReactPackager()
+              new ShareSDKReactPackager(),
+              new UmengReactPackage()
       );
     }
   };

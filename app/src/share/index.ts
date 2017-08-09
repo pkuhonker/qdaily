@@ -228,7 +228,21 @@ export const defaultItems = {
     } as ShareItem,
     evernote: {
         type: 'evernote',
-        icon: require('../../res/imgs/share/icon_share_evernote.png')
+        icon: require('../../res/imgs/share/icon_share_evernote.png'),
+        openShare: async content => {
+            const valid = await shareSDK.isClientValid(PlatformType.Evernote);
+            if (!valid) {
+                throw new Error('您未安装印象笔记');
+            } else {
+                return await shareSDK.share(PlatformType.Evernote, {
+                    url: content.url,
+                    titleUrl: content.url,
+                    title: content.title,
+                    text: content.text,
+                    imageUrl: content.image
+                });
+            }
+        }
     } as ShareItem,
     more: {
         type: 'more',

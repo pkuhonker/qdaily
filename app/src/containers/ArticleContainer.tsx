@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    View, Image, Text, Animated, Easing, NavState, StyleSheet, ViewStyle, TextStyle, Platform,
+    View, Image, Text, Animated, Easing, NavState, StyleSheet, ViewStyle, TextStyle, Platform, StatusBar, StatusBarProperties,
     PanResponder, PanResponderInstance, GestureResponderEvent, PanResponderGestureState
 } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
@@ -34,6 +34,13 @@ const ArticleIds: { [id: string]: boolean } = {};
 
 class ArticleContainer extends React.Component<Props, ArticleContainerState> {
 
+    public static navigationOptions = {
+        statusbar: {
+            backgroundColor: 'rgba(0,0,0,0)'
+        } as StatusBarProperties
+    };
+
+    private statusbarVisible: boolean;
     private panResponder: PanResponderInstance;
     private panDirection = '';
 
@@ -69,10 +76,7 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
         }
     }
 
-    private updateBar(direction: string) {
-        if (direction === this.panDirection) {
-            return;
-        }
+    private updateBar(direction: string, androidPosition?: number) {
         if (direction === 'down') {
             if (Platform.OS === 'android') {
                 this.state.bottomBarBottom.setValue(48);
@@ -90,21 +94,24 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
                 toValue: 0,
                 easing: Easing.in(Easing.ease)
             }).start();
-            if (direction === 'bottom') {
-                this.updateStautsBar(false);
+            this.updateStautsBar(true);
+        }
+        if (Platform.OS === 'android' && androidPosition !== undefined) {
+            if (direction === 'top' || androidPosition < 200) {
+                StatusBar.setBackgroundColor('rgba(0,0,0,0)', true);
             } else {
-                this.updateStautsBar(true);
+                StatusBar.setBackgroundColor('#fff', true);
             }
         }
         this.panDirection = direction;
     }
 
     private updateStautsBar(visible: boolean) {
-        // if (Platform.OS === 'android') {
-        //     StatusBar.setTranslucent(!visible);
-        // } else {
-        //     StatusBar.setHidden(!visible, 'slide');
-        // }
+        if (this.statusbarVisible === visible) {
+            return;
+        }
+        this.statusbarVisible = visible;
+        StatusBar.setHidden(!visible, 'slide');
     }
 
     private onLoadEnd() {
@@ -122,8 +129,9 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
     private onBridgeMessage(data: WebViewMessge) {
         const { navigate } = this.props.navigation;
         if (data.name === '_toNative::onScroll') {
-            const direction = data.options;
-            this.updateBar(direction);
+            const { direction, position } = data.options;
+            console.log(direction, position);
+            this.updateBar(direction, position);
         } else if (data.name === 'qdaily::picsPreview') {
             navigate('picsPreview', {
                 defaultActiveIndex: data.options.cur,

@@ -15,24 +15,27 @@ function scroll(fn) {
         var scrollHeight = document.documentElement.scrollHeight ? document.documentElement.scrollHeight : document.body.scrollHeight;
         var windowHeight = document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight;
         if (scrollTop + windowHeight >= scrollHeight) {
-            fn('bottom');
+            fn('bottom', scrollTop);
             return;
-        } else if (scrollTop === 0) {
-            fn('top');
+        } else if (scrollTop <= 0) {
+            fn('top', scrollTop);
             return;
         }
         if (Math.abs(delta) < 3) {
             return false;
         }
-        fn(delta > 0 ? "down" : "up");
+        fn(delta > 0 ? "down" : "up", scrollTop);
     });
 }
 
 var last_direction = '';
-scroll(function(direction) {
-    if (last_direction !== direction || direction === 'bottom' || direction === 'top') {
+var last_position = 0;
+scroll(function(direction, position) {
+    if (last_direction !== direction || direction === 'bottom' || direction === 'top' ||
+        (last_position < 200 && position > 200) || (last_position > 200 && position < 200)) {
         last_direction = direction;
-        window.bridge.callHandler('_toNative::onScroll', direction);
+        window.bridge.callHandler('_toNative::onScroll', { direction: direction, position: position });
     }
+    last_position = position;
 });
 `;

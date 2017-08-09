@@ -57,7 +57,7 @@ class ADContainer extends React.Component<Props, ADContainerState> {
     private renderLoading() {
         return (
             <View style={{ flex: 1, justifyContent: 'center' }}>
-                <Image style={{ width: 180, height: 120, alignSelf: 'center' }} source={require('../../res/imgs/pen_pageloading.gif')} />
+                <Image style={{ width: 150, height: 150, alignSelf: 'center' }} source={require('../../res/imgs/icon_loadmore.gif')} />
             </View>
         );
     }

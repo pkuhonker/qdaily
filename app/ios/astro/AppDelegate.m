@@ -11,6 +11,7 @@
 #import <CodePush/CodePush.h>
 #import "RCTSplashScreen.h" //import interface
 #import "ShareSDKManager.h" //import interface
+#import "UMMobClick/MobClick.h"
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
@@ -37,6 +38,11 @@
   
   //[ShareSDK init];
   [ShareSDKManager ready];
+  
+  //[UMENG init]
+  UMConfigInstance.appKey = @"598130e82ae85b7433000d82";
+  [MobClick startWithConfigure:UMConfigInstance];
+  [MobClick setLogEnabled:YES];
   
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
 

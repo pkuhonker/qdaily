@@ -41,6 +41,9 @@
 		1B0CFA4E1F29981A00B0A261 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1B0CFA371F29981900B0A261 /* README.txt */; };
 		1B0CFA4F1F29981A00B0A261 /* ShareSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1B0CFA3C1F29981900B0A261 /* ShareSDK.bundle */; };
 		1B0CFA501F29981A00B0A261 /* ShareSDKConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B0CFA3D1F29981900B0A261 /* ShareSDKConnector.framework */; };
+		1B48B1EA1F3AE823007EB37C /* UMMobClick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B48B1E91F3AE823007EB37C /* UMMobClick.framework */; };
+		1B48B20B1F3AE85F007EB37C /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B48B20A1F3AE85F007EB37C /* CoreTelephony.framework */; };
+		1B48B20E1F3AE8F4007EB37C /* UMNative.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B48B20D1F3AE8F4007EB37C /* UMNative.m */; };
 		1B4EC2691F0B446B00375650 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B4EC2681F0B444900375650 /* libRNVectorIcons.a */; };
 		1B4EC2721F0B45AF00375650 /* libRCTSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B4EC2711F0B458D00375650 /* libRCTSplashScreen.a */; };
 		1B4EC2811F0B51D000375650 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1B4EC2771F0B51D000375650 /* Entypo.ttf */; };
@@ -362,6 +365,10 @@
 		1B0CFA3C1F29981900B0A261 /* ShareSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ShareSDK.bundle; sourceTree = "<group>"; };
 		1B0CFA3D1F29981900B0A261 /* ShareSDKConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKConnector.framework; sourceTree = "<group>"; };
 		1B1AF0E71F187DC60040A1CA /* astro.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = astro.entitlements; path = astro/astro.entitlements; sourceTree = "<group>"; };
+		1B48B1E91F3AE823007EB37C /* UMMobClick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UMMobClick.framework; sourceTree = "<group>"; };
+		1B48B20A1F3AE85F007EB37C /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		1B48B20C1F3AE8DE007EB37C /* UMNative.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UMNative.h; sourceTree = "<group>"; };
+		1B48B20D1F3AE8F4007EB37C /* UMNative.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMNative.m; sourceTree = "<group>"; };
 		1B4EC24A1F0B444900375650 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		1B4EC26C1F0B458D00375650 /* RCTSplashScreen.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSplashScreen.xcodeproj; path = "../node_modules/react-native-smart-splash-screen/ios/RCTSplashScreen/RCTSplashScreen.xcodeproj"; sourceTree = "<group>"; };
 		1B4EC2771F0B51D000375650 /* Entypo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Entypo.ttf; sourceTree = "<group>"; };
@@ -409,6 +416,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B6C53401F17485B00AE775E /* libz.tbd in Frameworks */,
+				1B48B20B1F3AE85F007EB37C /* CoreTelephony.framework in Frameworks */,
 				1BD9B6CA1F20BBA100889926 /* libRCTCameraRoll.a in Frameworks */,
 				1B0CFA4B1F29981A00B0A261 /* libWeiboSDK.a in Frameworks */,
 				1B6C53481F17489F00AE775E /* libsqlite3.tbd in Frameworks */,
@@ -418,7 +427,6 @@
 				1B0CFA3F1F29981900B0A261 /* ShareSDK.framework in Frameworks */,
 				1B6C53441F17487500AE775E /* JavaScriptCore.framework in Frameworks */,
 				1B6C53421F17486700AE775E /* libstdc++.tbd in Frameworks */,
-				1B6C53401F17485B00AE775E /* libz.tbd in Frameworks */,
 				1B0CFA421F29981900B0A261 /* ShareSDKExtension.framework in Frameworks */,
 				1B6C533E1F17484200AE775E /* libicucore.tbd in Frameworks */,
 				1B4EC2721F0B45AF00375650 /* libRCTSplashScreen.a in Frameworks */,
@@ -427,6 +435,7 @@
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				1B0CFA501F29981A00B0A261 /* ShareSDKConnector.framework in Frameworks */,
+				1B48B1EA1F3AE823007EB37C /* UMMobClick.framework in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				1B0CFA4D1F29981A00B0A261 /* libWeChatSDK.a in Frameworks */,
 				1B0CFA491F29981A00B0A261 /* TencentOpenAPI.framework in Frameworks */,
@@ -552,6 +561,9 @@
 		13B07FAE1A68108700A75B9A /* astro */ = {
 			isa = PBXGroup;
 			children = (
+				1B48B20D1F3AE8F4007EB37C /* UMNative.m */,
+				1B48B20C1F3AE8DE007EB37C /* UMNative.h */,
+				1B48B1E91F3AE823007EB37C /* UMMobClick.framework */,
 				1B1AF0E71F187DC60040A1CA /* astro.entitlements */,
 				1B6C53491F1761FD00AE775E /* ShareSDKManager.h */,
 				1B6C534A1F1761FD00AE775E /* ShareSDKManager.m */,
@@ -748,6 +760,7 @@
 		1B6C533C1F17484200AE775E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1B48B20A1F3AE85F007EB37C /* CoreTelephony.framework */,
 				1B6C53471F17489F00AE775E /* libsqlite3.tbd */,
 				1B6C53451F17489100AE775E /* ImageIO.framework */,
 				1B6C53431F17487500AE775E /* JavaScriptCore.framework */,
@@ -1366,6 +1379,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				1B6C534B1F1761FD00AE775E /* ShareSDKManager.m in Sources */,
+				1B48B20E1F3AE8F4007EB37C /* UMNative.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1479,6 +1493,7 @@
 					"$(PROJECT_DIR)/SDK/ShareSDK/Support/PlatformConnector",
 					"$(PROJECT_DIR)/SDK/ShareSDK/Support/PlatformSDK/QQSDK",
 					"$(PROJECT_DIR)/SDK/ShareSDK/Support/Required",
+					"$(PROJECT_DIR)",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../node_modules/react-native/React/**",
@@ -1523,6 +1538,7 @@
 					"$(PROJECT_DIR)/SDK/ShareSDK/Support/PlatformConnector",
 					"$(PROJECT_DIR)/SDK/ShareSDK/Support/PlatformSDK/QQSDK",
 					"$(PROJECT_DIR)/SDK/ShareSDK/Support/Required",
+					"$(PROJECT_DIR)",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../node_modules/react-native/React/**",
@@ -1604,6 +1620,7 @@
 					"$(PROJECT_DIR)/SDK/ShareSDK/Support/PlatformConnector",
 					"$(PROJECT_DIR)/SDK/ShareSDK/Support/PlatformSDK/QQSDK",
 					"$(PROJECT_DIR)/SDK/ShareSDK/Support/Required",
+					"$(PROJECT_DIR)",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../node_modules/react-native/React/**",

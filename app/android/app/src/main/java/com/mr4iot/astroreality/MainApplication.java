@@ -5,6 +5,7 @@ import android.os.Build;
 import android.webkit.WebView;
 
 import com.facebook.react.ReactApplication;
+import com.mr4iot.astroreality.statusbar.StatusBarReactPackage;
 import com.rnfs.RNFSPackage;
 import com.reactnative.photoview.PhotoViewPackage;
 import com.microsoft.codepush.react.CodePush;
@@ -41,6 +42,7 @@ public class MainApplication extends Application implements ReactApplication {
               new PhotoViewPackage(),
               new CodePush(BuildConfig.CODEPUSH_KEY, getApplicationContext(), BuildConfig.DEBUG),
               new RCTSplashScreenPackage(),
+              new StatusBarReactPackage(),
               new ShareSDKReactPackager(),
               new UmengReactPackage()
       );

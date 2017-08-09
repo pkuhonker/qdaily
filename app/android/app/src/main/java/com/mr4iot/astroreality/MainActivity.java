@@ -1,6 +1,7 @@
 package com.mr4iot.astroreality;
 
 import android.os.Bundle;
+
 import com.facebook.react.ReactActivity;
 import com.reactnativecomponent.splashscreen.RCTSplashScreen;
 import com.umeng.analytics.MobclickAgent;

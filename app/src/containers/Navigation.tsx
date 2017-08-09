@@ -1,7 +1,10 @@
 import * as React from 'react';
-import { View, ActivityIndicator, Platform, BackHandler, ToastAndroid, Easing, Animated, AppState as RNAppState } from 'react-native';
+import {
+    View, ActivityIndicator, StatusBar, StatusBarProperties, Platform, NativeModules,
+    BackHandler, ToastAndroid, Easing, Animated, AppState as RNAppState
+} from 'react-native';
 import { connect, DispatchProp } from 'react-redux';
-import { addNavigationHelpers, StackNavigator, NavigationActions, NavigationState } from 'react-navigation';
+import { addNavigationHelpers, StackNavigator, NavigationActions, NavigationState, NavigationRoute } from 'react-navigation';
 import * as transitions from '../utils/transitions';
 import * as codePushUtils from '../utils/codePushSync';
 import { AppState } from '../reducers';
@@ -13,6 +16,16 @@ import ADContainer from './ADContainer';
 import PicsPreview from '../components/PicsPreview';
 import ShareView from '../components/ShareView';
 import DashContainer from './DashContainer';
+
+const defaultStatusBarOptions: StatusBarProperties = {
+    animated: true,
+    backgroundColor: '#fff',
+    barStyle: 'dark-content',
+    hidden: false,
+    networkActivityIndicatorVisible: true,
+    showHideTransition: 'fade',
+    translucent: true
+};
 
 export const Navigator = StackNavigator({
     home: {
@@ -95,6 +108,30 @@ class Navigation extends React.Component<DispatchProp<any> & StateProps, any> {
         }
     }
 
+    private onNavigationStateChange(prevNavigationState: NavigationState, nextNavigationState: NavigationState) {
+        const prevRoute: NavigationRoute<any> = prevNavigationState.routes[prevNavigationState.index];
+        const nextRoute: NavigationRoute<any> = nextNavigationState.routes[nextNavigationState.index];
+        if (prevRoute.routeName !== nextRoute.routeName) {
+            const nextRouteComponent = Navigator.router.getComponentForRouteName(nextRoute.routeName);
+            const barOptions: StatusBarProperties = nextRouteComponent.navigationOptions && nextRouteComponent.navigationOptions.statusbar;
+            this.updateStatusBar(barOptions);
+        }
+    }
+
+    private updateStatusBar(options: StatusBarProperties) {
+        options = Object.assign({}, defaultStatusBarOptions, options);
+        if (Platform.OS === 'android') {
+            StatusBar.setHidden(options.hidden, options.animated ? 'fade' : 'none');
+            StatusBar.setBackgroundColor(options.backgroundColor);
+            StatusBar.setTranslucent(options.translucent);
+            NativeModules.StatusBarManagerAndroid.setStyle(options.barStyle);
+        } else {
+            StatusBar.setHidden(options.hidden, options.showHideTransition || 'fade');
+            StatusBar.setBarStyle(options.barStyle, options.animated);
+            StatusBar.setNetworkActivityIndicatorVisible(options.networkActivityIndicatorVisible);
+        }
+    }
+
     public componentDidMount() {
         if (Platform.OS === 'android') {
             BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid);
@@ -110,6 +147,12 @@ class Navigation extends React.Component<DispatchProp<any> & StateProps, any> {
     public componentWillUnmount() {
         if (Platform.OS === 'android') {
             BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid);
+        }
+    }
+
+    public componentWillReceiveProps(nextProps: StateProps) {
+        if (this.props.nav !== nextProps.nav) {
+            this.onNavigationStateChange(this.props.nav, nextProps.nav);
         }
     }
 

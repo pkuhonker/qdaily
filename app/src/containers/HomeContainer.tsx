@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    View, ActivityIndicator, Image, Animated, NativeSyntheticEvent, NativeScrollEvent,
+    View, ActivityIndicator, Image, Animated, NativeSyntheticEvent, NativeScrollEvent, StatusBar,
     StyleSheet, ViewStyle, TextStyle, Dimensions, Platform
 } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';

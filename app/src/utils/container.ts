@@ -1,5 +1,6 @@
-import { ViewStyle, Platform } from 'react-native';
+import { ViewStyle } from 'react-native';
 
 export const containerStyle = {
-    paddingTop: Platform.OS === 'android' ? 0 : 20,
+    // ios and android use translucent stauts bar, so most container will add paddingTop.
+    paddingTop: 20,
 } as ViewStyle;

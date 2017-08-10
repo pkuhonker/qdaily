@@ -47,7 +47,8 @@ export default class HeadLineCard extends React.Component<HeadLineProp, any> {
     }
 
     public render(): JSX.Element {
-        if (this.props.headline.list.length === 0) {
+        const { headline = Object.create(null) as HeadLine } = this.props;
+        if (!headline.list || headline.list.length === 0) {
             return <View />;
         }
         return (

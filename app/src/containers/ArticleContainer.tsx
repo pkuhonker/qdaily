@@ -130,7 +130,6 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
         const { navigate } = this.props.navigation;
         if (data.name === '_toNative::onScroll') {
             const { direction, position } = data.options;
-            console.log(direction, position);
             this.updateBar(direction, position);
         } else if (data.name === 'qdaily::picsPreview') {
             navigate('picsPreview', {

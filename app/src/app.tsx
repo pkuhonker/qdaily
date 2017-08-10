@@ -1,5 +1,6 @@
 import 'moment/locale/zh-cn.js';
 import * as React from 'react';
+import { NativeModules } from 'react-native';
 import { Provider } from 'react-redux';
 import configureStore from './store/configureStore';
 import Navigation from './containers/Navigation';
@@ -18,9 +19,10 @@ export default class Astro extends React.Component<any, any> {
     }
 }
 
-global.ErrorUtils.setGlobalHandler((error, isFatal) => {
-    // todo
-    if (isFatal) {
-        Toast.show(error.message, Toast.ToastDuration.LONG);
-    }
-});
+if (!__DEV__) {
+    global.ErrorUtils.setGlobalHandler((error: Error, isFatal) => {
+        if (isFatal) {
+            NativeModules.UmengNativeModule.onEventWithLabel('js_error', error.stack);
+        }
+    });
+}

@@ -1,10 +1,10 @@
 import 'moment/locale/zh-cn.js';
 import * as React from 'react';
-import { NativeModules } from 'react-native';
+import { View, NativeModules } from 'react-native';
 import { Provider } from 'react-redux';
 import configureStore from './store/configureStore';
 import Navigation from './containers/Navigation';
-import * as Toast from './components/base/Toast';
+import CustomStatusBar from './components/base/CustomStatusBar';
 
 const store = configureStore();
 
@@ -12,9 +12,12 @@ export default class Astro extends React.Component<any, any> {
 
     render() {
         return (
-            <Provider store={store}>
-                <Navigation />
-            </Provider>
+            <View style={{ flex: 1 }}>
+                <CustomStatusBar />
+                <Provider store={store}>
+                    <Navigation />
+                </Provider>
+            </View>
         );
     }
 }

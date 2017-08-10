@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    View, ActivityIndicator, StatusBar, StatusBarProperties, Platform, NativeModules,
+    View, ActivityIndicator, StatusBarProperties, Platform,
     BackHandler, ToastAndroid, Easing, Animated, AppState as RNAppState
 } from 'react-native';
 import { connect, DispatchProp } from 'react-redux';
@@ -8,6 +8,7 @@ import { addNavigationHelpers, StackNavigator, NavigationActions, NavigationStat
 import * as transitions from '../utils/transitions';
 import * as codePushUtils from '../utils/codePushSync';
 import { AppState } from '../reducers';
+import CustomStatusBar from '../components/base/CustomStatusBar';
 import HomeContainer from './HomeContainer';
 import ArticleContainer from './ArticleContainer';
 import PaperContainer from './PaperContainer';
@@ -16,16 +17,6 @@ import ADContainer from './ADContainer';
 import PicsPreview from '../components/PicsPreview';
 import ShareView from '../components/ShareView';
 import DashContainer from './DashContainer';
-
-const defaultStatusBarOptions: StatusBarProperties = {
-    animated: true,
-    backgroundColor: '#fff',
-    barStyle: 'dark-content',
-    hidden: false,
-    networkActivityIndicatorVisible: true,
-    showHideTransition: 'fade',
-    translucent: true
-};
 
 export const Navigator = StackNavigator({
     home: {
@@ -119,16 +110,17 @@ class Navigation extends React.Component<DispatchProp<any> & StateProps, any> {
     private updateStatusBar(route: NavigationRoute<any>) {
         const routeComponent = Navigator.router.getComponentForRouteName(route.routeName);
         let options: StatusBarProperties = routeComponent.navigationOptions && routeComponent.navigationOptions.statusbar;
-        options = Object.assign({}, defaultStatusBarOptions, options);
+        options = Object.assign({}, CustomStatusBar.defaultStatusBarOptions, options);
         if (Platform.OS === 'android') {
-            StatusBar.setHidden(options.hidden, options.animated ? 'fade' : 'none');
-            StatusBar.setBackgroundColor(options.backgroundColor);
-            StatusBar.setTranslucent(options.translucent);
-            NativeModules.StatusBarManagerAndroid.setStyle(options.barStyle);
+            CustomStatusBar.setHidden(options.hidden, options.animated ? 'fade' : 'none');
+            CustomStatusBar.setBackgroundColor(options.backgroundColor);
+            CustomStatusBar.setTranslucent(options.translucent);
+            CustomStatusBar.setBarStyle(options.barStyle);
         } else {
-            StatusBar.setHidden(options.hidden, options.showHideTransition || 'fade');
-            StatusBar.setBarStyle(options.barStyle, options.animated);
-            StatusBar.setNetworkActivityIndicatorVisible(options.networkActivityIndicatorVisible);
+            CustomStatusBar.setHidden(options.hidden, options.showHideTransition || 'fade');
+            CustomStatusBar.setBackgroundColor(options.backgroundColor);
+            CustomStatusBar.setBarStyle(options.barStyle, options.animated);
+            CustomStatusBar.setNetworkActivityIndicatorVisible(options.networkActivityIndicatorVisible);
         }
     }
 
@@ -172,7 +164,9 @@ class Navigation extends React.Component<DispatchProp<any> & StateProps, any> {
             );
         } else {
             return (
-                <Navigator navigation={addNavigationHelpers({ state: nav, dispatch })} />
+                <View style={{ flex: 1 }}>
+                    <Navigator navigation={addNavigationHelpers({ state: nav, dispatch })} />
+                </View>
             );
         }
     }

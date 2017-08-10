@@ -1,11 +1,12 @@
 import * as React from 'react';
 import {
-    View, Image, Text, Animated, Easing, NavState, StyleSheet, ViewStyle, TextStyle, Platform, StatusBar, StatusBarProperties,
+    View, Image, Text, Animated, Easing, NavState, StyleSheet, ViewStyle, TextStyle, Platform, StatusBarProperties,
     PanResponder, PanResponderInstance, GestureResponderEvent, PanResponderGestureState
 } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import Icon from '../components/base/Icon';
 import WebViewBridge, { WebViewMessge } from '../components/base/WebViewBridge';
+import CustomStatusBar from '../components/base/CustomStatusBar';
 import { AppState } from '../reducers';
 import { Article, ArticleInfo, Post } from '../interfaces';
 import { domain } from '../constants/config';
@@ -76,7 +77,7 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
         }
     }
 
-    private updateBar(direction: string, androidPosition?: number) {
+    private updateBar(direction: string, position?: number) {
         if (direction === 'down') {
             if (Platform.OS === 'android') {
                 this.state.bottomBarBottom.setValue(48);
@@ -96,11 +97,11 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
             }).start();
             this.updateStautsBar(true);
         }
-        if (Platform.OS === 'android' && androidPosition !== undefined) {
-            if (direction === 'top' || androidPosition < 200) {
-                StatusBar.setBackgroundColor('rgba(0,0,0,0)', true);
+        if (Platform.OS === 'ios' || position !== undefined) {
+            if (direction === 'top' || position < 200) {
+                CustomStatusBar.setBackgroundColor('rgba(0,0,0,0)', true);
             } else {
-                StatusBar.setBackgroundColor('#fff', true);
+                CustomStatusBar.setBackgroundColor('#fff', true);
             }
         }
         this.panDirection = direction;
@@ -111,7 +112,7 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
             return;
         }
         this.statusbarVisible = visible;
-        StatusBar.setHidden(!visible, 'fade');
+        CustomStatusBar.setHidden(!visible, 'fade');
     }
 
     private onLoadEnd() {

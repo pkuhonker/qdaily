@@ -43,7 +43,7 @@
 		1B0CFA501F29981A00B0A261 /* ShareSDKConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B0CFA3D1F29981900B0A261 /* ShareSDKConnector.framework */; };
 		1B48B1EA1F3AE823007EB37C /* UMMobClick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B48B1E91F3AE823007EB37C /* UMMobClick.framework */; };
 		1B48B20B1F3AE85F007EB37C /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B48B20A1F3AE85F007EB37C /* CoreTelephony.framework */; };
-		1B48B20E1F3AE8F4007EB37C /* UMNative.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B48B20D1F3AE8F4007EB37C /* UMNative.m */; };
+		1B48B20E1F3AE8F4007EB37C /* UmengNativeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B48B20D1F3AE8F4007EB37C /* UmengNativeModule.m */; };
 		1B4EC2691F0B446B00375650 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B4EC2681F0B444900375650 /* libRNVectorIcons.a */; };
 		1B4EC2721F0B45AF00375650 /* libRCTSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B4EC2711F0B458D00375650 /* libRCTSplashScreen.a */; };
 		1B4EC2811F0B51D000375650 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1B4EC2771F0B51D000375650 /* Entypo.ttf */; };
@@ -367,8 +367,8 @@
 		1B1AF0E71F187DC60040A1CA /* astro.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = astro.entitlements; path = astro/astro.entitlements; sourceTree = "<group>"; };
 		1B48B1E91F3AE823007EB37C /* UMMobClick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UMMobClick.framework; sourceTree = "<group>"; };
 		1B48B20A1F3AE85F007EB37C /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
-		1B48B20C1F3AE8DE007EB37C /* UMNative.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UMNative.h; sourceTree = "<group>"; };
-		1B48B20D1F3AE8F4007EB37C /* UMNative.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMNative.m; sourceTree = "<group>"; };
+		1B48B20C1F3AE8DE007EB37C /* UmengNativeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UmengNativeModule.h; sourceTree = "<group>"; };
+		1B48B20D1F3AE8F4007EB37C /* UmengNativeModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UmengNativeModule.m; sourceTree = "<group>"; };
 		1B4EC24A1F0B444900375650 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		1B4EC26C1F0B458D00375650 /* RCTSplashScreen.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSplashScreen.xcodeproj; path = "../node_modules/react-native-smart-splash-screen/ios/RCTSplashScreen/RCTSplashScreen.xcodeproj"; sourceTree = "<group>"; };
 		1B4EC2771F0B51D000375650 /* Entypo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Entypo.ttf; sourceTree = "<group>"; };
@@ -561,8 +561,8 @@
 		13B07FAE1A68108700A75B9A /* astro */ = {
 			isa = PBXGroup;
 			children = (
-				1B48B20D1F3AE8F4007EB37C /* UMNative.m */,
-				1B48B20C1F3AE8DE007EB37C /* UMNative.h */,
+				1B48B20D1F3AE8F4007EB37C /* UmengNativeModule.m */,
+				1B48B20C1F3AE8DE007EB37C /* UmengNativeModule.h */,
 				1B48B1E91F3AE823007EB37C /* UMMobClick.framework */,
 				1B1AF0E71F187DC60040A1CA /* astro.entitlements */,
 				1B6C53491F1761FD00AE775E /* ShareSDKManager.h */,
@@ -1379,7 +1379,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				1B6C534B1F1761FD00AE775E /* ShareSDKManager.m in Sources */,
-				1B48B20E1F3AE8F4007EB37C /* UMNative.m in Sources */,
+				1B48B20E1F3AE8F4007EB37C /* UmengNativeModule.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

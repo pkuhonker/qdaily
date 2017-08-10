@@ -111,14 +111,14 @@ class Navigation extends React.Component<DispatchProp<any> & StateProps, any> {
     private onNavigationStateChange(prevNavigationState: NavigationState, nextNavigationState: NavigationState) {
         const prevRoute: NavigationRoute<any> = prevNavigationState.routes[prevNavigationState.index];
         const nextRoute: NavigationRoute<any> = nextNavigationState.routes[nextNavigationState.index];
-        if (prevRoute.routeName !== nextRoute.routeName) {
-            const nextRouteComponent = Navigator.router.getComponentForRouteName(nextRoute.routeName);
-            const barOptions: StatusBarProperties = nextRouteComponent.navigationOptions && nextRouteComponent.navigationOptions.statusbar;
-            this.updateStatusBar(barOptions);
+        if (prevRoute.key !== nextRoute.key) {
+            this.updateStatusBar(nextRoute);
         }
     }
 
-    private updateStatusBar(options: StatusBarProperties) {
+    private updateStatusBar(route: NavigationRoute<any>) {
+        const routeComponent = Navigator.router.getComponentForRouteName(route.routeName);
+        let options: StatusBarProperties = routeComponent.navigationOptions && routeComponent.navigationOptions.statusbar;
         options = Object.assign({}, defaultStatusBarOptions, options);
         if (Platform.OS === 'android') {
             StatusBar.setHidden(options.hidden, options.animated ? 'fade' : 'none');
@@ -136,7 +136,13 @@ class Navigation extends React.Component<DispatchProp<any> & StateProps, any> {
         if (Platform.OS === 'android') {
             BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid);
         }
-        codePushUtils.sync();
+        
+        setTimeout(() => {
+            const { nav } = this.props;
+            codePushUtils.sync();
+            this.updateStatusBar(nav.routes[nav.index]);
+        }, 100);
+
         RNAppState.addEventListener('change', (newState) => {
             if (newState === 'active') {
                 codePushUtils.sync();

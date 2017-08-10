@@ -111,7 +111,7 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
             return;
         }
         this.statusbarVisible = visible;
-        StatusBar.setHidden(!visible, 'slide');
+        StatusBar.setHidden(!visible, 'fade');
     }
 
     private onLoadEnd() {

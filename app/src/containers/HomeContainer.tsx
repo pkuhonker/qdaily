@@ -179,16 +179,23 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
     }
 
     private renderNewsHeader() {
-        const { banners, headline = Object.create(null) as HeadLine } = this.props.news;
+        const { banners, headline } = this.props.news;
         if (banners.length === 0) {
             return null;
         }
+        let headlineView: JSX.Element[];
+        if (headline) {
+            headlineView = [
+                <HeadLineCard headline={headline} onPress={() => this.toDetail(headline)} />,
+                <View style={{ height: 10, backgroundColor: '#f2f2f2' }} />
+            ];
+        }
+
         return (
             <View>
                 <Banners banners={banners} onPress={banner => this.toDetail(banner)} />
                 <View style={{ height: 10, backgroundColor: '#f2f2f2' }} />
-                <HeadLineCard headline={headline} onPress={() => this.toDetail(headline)} />
-                <View style={{ height: 10, backgroundColor: '#f2f2f2' }} />
+                {headlineView}
             </View>
         );
     }

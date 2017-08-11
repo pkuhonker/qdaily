@@ -33,7 +33,7 @@ export default class Banners extends React.Component<BannersProp, BannersState> 
             <Touchable key={data.image} onPress={() => this.onPress(data)}>
                 <View style={styles.container}>
                     <Image style={{ width: BannerWidth, height: BannerHeight }} source={{ uri: data.image }}>
-                        <View style={{ flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0, 0, 0, 0.2)' }}>
+                        <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.2)' }}>
                             <Text style={styles.text}>{data.post.title}</Text>
                         </View>
                     </Image>

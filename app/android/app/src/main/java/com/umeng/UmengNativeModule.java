@@ -3,7 +3,6 @@ package com.umeng;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -19,13 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @Copyright © 2016 Umeng Inc. All rights reserved.
- * @Description: process files
- * @Version: 1.0
- * @Create: 16/11/17 15:53
- * @Author: sanbo
- */
 public class UmengNativeModule extends ReactContextBaseJavaModule {
     public static final String NAME = "UmengNativeModule";
     private Context mContext;
@@ -119,7 +111,7 @@ public class UmengNativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     @SuppressWarnings("unused")
     public void onEventWithCounter(String eventId, ReadableMap map, int value) {
-        Map<String, String> rMap = new HashMap();
+        Map<String, String> rMap = new HashMap<String, String>();
         ReadableMapKeySetIterator iterator = map.keySetIterator();
         while (iterator.hasNextKey()) {
             String key = iterator.nextKey();

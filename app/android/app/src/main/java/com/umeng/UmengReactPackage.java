@@ -9,13 +9,7 @@ import com.facebook.react.uimanager.ViewManager;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-/**
- * @Copyright © 2016 Umeng Inc. All rights reserved.
- * @Description: TODO
- * @Version: 1.0
- * @Create: 16/11/17 16:37
- * @Author: sanbo
- */
+
 public class UmengReactPackage implements ReactPackage {
 
     @Override

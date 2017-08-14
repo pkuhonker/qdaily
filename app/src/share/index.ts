@@ -1,4 +1,4 @@
-import { Share as RNShare, Platform, DeviceEventEmitter, NativeModules, NativeEventEmitter } from 'react-native';
+import { Share as RNShare, Platform, NativeModules } from 'react-native';
 import { Share } from '../interfaces';
 
 const ShareSDKManagerIOS = NativeModules.ShareSDKManager;
@@ -46,48 +46,7 @@ export interface ShareItem {
 
 class ShareSDK {
 
-    private callbacks: ((error: any, cancel: boolean, data: any) => void)[];
-
     constructor() {
-        this.callbacks = [];
-        this.registerListener();
-    }
-
-    private handleCallback(error: any, cancel: boolean, data: any) {
-        while (this.callbacks.length > 0) {
-            this.callbacks.pop()(error, cancel, data);
-        }
-    }
-
-    private registerListener() {
-        if (Platform.OS === 'ios') {
-            var successListener = new NativeEventEmitter(NativeModules.ShareSDKManager);
-            successListener.addListener('success', e => {
-                this.handleCallback(null, false, e);
-            });
-
-            var failListener = new NativeEventEmitter(NativeModules.ShareSDKManager);
-            failListener.addListener('fail', e => {
-                this.handleCallback(e, false, null);
-            });
-
-            var cancelListener = new NativeEventEmitter(NativeModules.ShareSDKManager);
-            cancelListener.addListener('cancel', e => {
-                this.handleCallback(null, true, e);
-            });
-        } else {
-            DeviceEventEmitter.addListener('OnComplete', (e) => {
-                this.handleCallback(null, false, e);
-            });
-
-            DeviceEventEmitter.addListener('OnError', (e) => {
-                this.handleCallback(e, false, null);
-            });
-
-            DeviceEventEmitter.addListener('OnCancel', (e) => {
-                this.handleCallback(null, true, e);
-            });
-        }
     }
 
     public registerApp(appkey: string, activePlatforms: any[], totalPlatforms: any[]) {
@@ -97,47 +56,38 @@ class ShareSDK {
     }
 
     public share(platformType: PlatformType, shareParams: Object): Promise<any> {
-        return new Promise((c, e) => {
-            if (Platform.OS === 'ios') {
-                ShareSDKManagerIOS.share(platformType, shareParams);
-            } else {
-                ShareSDKManagerAndroid.share(platformType, shareParams);
-            }
-            this.callbacks.push((error, cancel, data) => {
-                if (error) {
-                    return e(error);
-                } else {
-                    return c(cancel ? null : data);
-                }
-            });
-        });
-    }
-
-    public authorize(platformType: PlatformType) {
         if (Platform.OS === 'ios') {
-            ShareSDKManagerIOS.authorize(platformType);
+            return ShareSDKManagerIOS.share(platformType, shareParams);
         } else {
-            ShareSDKManagerAndroid.authorize(platformType);
+            return ShareSDKManagerAndroid.share(platformType, shareParams);
         }
     }
 
-    public hasAuthorized(platformType: PlatformType) {
+    public async authorize(platformType: PlatformType) {
         if (Platform.OS === 'ios') {
-            ShareSDKManagerIOS.hasAuthorized(platformType);
+            return ShareSDKManagerIOS.authorize(platformType);
         } else {
-            ShareSDKManagerAndroid.isAuthValid(platformType);
+            return ShareSDKManagerAndroid.authorize(platformType);
         }
     }
 
-    public cancelAuthorize(platformType: PlatformType) {
+    public async isAuthValid(platformType: PlatformType): Promise<boolean> {
         if (Platform.OS === 'ios') {
-            ShareSDKManagerIOS.cancelAuthorize(platformType);
+            return ShareSDKManagerIOS.hasAuthorized(platformType);
         } else {
-            ShareSDKManagerAndroid.removeAccount(platformType);
+            return ShareSDKManagerAndroid.isAuthValid(platformType);
         }
     }
 
-    public isClientValid(platformType: PlatformType): Promise<boolean> {
+    public async cancelAuthorize(platformType: PlatformType): Promise<boolean> {
+        if (Platform.OS === 'ios') {
+            return ShareSDKManagerIOS.cancelAuthorize(platformType);
+        } else {
+            return ShareSDKManagerAndroid.removeAccount(platformType);
+        }
+    }
+
+    public async isClientValid(platformType: PlatformType): Promise<boolean> {
         if (Platform.OS === 'ios') {
             return ShareSDKManagerIOS.isClientValid(platformType);
         } else {
@@ -145,11 +95,11 @@ class ShareSDK {
         }
     }
 
-    public getUserInfo(platformType: PlatformType) {
+    public async getUserInfo(platformType: PlatformType) {
         if (Platform.OS === 'ios') {
-            ShareSDKManagerIOS.getUserInfo(platformType);
+            return ShareSDKManagerIOS.getUserInfo(platformType);
         } else {
-            ShareSDKManagerAndroid.getAuthInfo(platformType);
+            return ShareSDKManagerAndroid.getAuthInfo(platformType);
         }
     }
 }

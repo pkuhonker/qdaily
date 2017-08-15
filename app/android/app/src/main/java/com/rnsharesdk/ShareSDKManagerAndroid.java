@@ -10,6 +10,7 @@ import com.facebook.react.bridge.ReadableNativeMap;
 import com.facebook.react.bridge.WritableMap;
 import com.mob.MobSDK;
 import com.mob.tools.utils.Hashon;
+import com.mr4iot.astroreality.utils.MapWriter;
 
 import java.util.HashMap;
 
@@ -48,7 +49,7 @@ public class ShareSDKManagerAndroid extends ReactContextBaseJavaModule {
             @Override
             public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
                 WritableMap params = Arguments.createMap();
-                params.putString("data", platform.getDb().exportData());
+                params.putMap("data", MapWriter.stringToWritableMap(platform.getDb().exportData()));
                 promise.resolve(params);
             }
 
@@ -142,7 +143,7 @@ public class ShareSDKManagerAndroid extends ReactContextBaseJavaModule {
             public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
                 WritableMap params = Arguments.createMap();
                 if(hashMap != null){
-                    params.putString("data",hashMap.toString());
+                    params.putMap("data", MapWriter.mapToWritableMap(hashMap));
                 }
                 promise.resolve(params);
             }
@@ -207,7 +208,7 @@ public class ShareSDKManagerAndroid extends ReactContextBaseJavaModule {
             public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
                 WritableMap params = Arguments.createMap();
                 if(hashMap != null){
-                    params.putString("data",hashMap.toString());
+                    params.putMap("data",MapWriter.mapToWritableMap(hashMap));
                 }
                 promise.resolve(params);
             }
@@ -268,20 +269,12 @@ public class ShareSDKManagerAndroid extends ReactContextBaseJavaModule {
 
         String name = ShareSDK.platformIdToName(platform);
         Platform plat = ShareSDK.getPlatform(name);
-        Hashon hashon = new Hashon();
         HashMap<String, Object> map = new HashMap<String, Object>();
         if(plat.isAuthValid()){
-            map.put("expiresIn", plat.getDb().getExpiresIn());
-            map.put("expiresTime", plat.getDb().getExpiresTime());
-            map.put("token", plat.getDb().getToken());
-            map.put("tokenSecret", plat.getDb().getTokenSecret());
-            map.put("userGender", plat.getDb().getUserGender());
-            map.put("userID", plat.getDb().getUserId());
-            map.put("openID", plat.getDb().get("openid"));
-            map.put("userName", plat.getDb().getUserName());
-            map.put("userIcon", plat.getDb().getUserIcon());
+            promise.resolve(MapWriter.stringToWritableMap(plat.getDb().exportData()));
+        } else {
+            promise.resolve(null);
         }
-        promise.resolve(hashon.fromHashMap(map));
     }
 
     @ReactMethod

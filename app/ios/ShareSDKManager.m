@@ -25,7 +25,7 @@
 RCT_EXPORT_MODULE();
 
 - (NSArray<NSString *> *)supportedEvents {
-  return @[@"success",@"fail",@"cancel"];
+  return @[];
 }
 
 + (void)ready {
@@ -82,7 +82,7 @@ RCT_EXPORT_MODULE();
 
 
 #pragma mark 无UI分享
-RCT_EXPORT_METHOD(share:(NSInteger)platformType shareParams:(NSDictionary *)shareParams)
+RCT_EXPORT_METHOD(share:(NSInteger)platformType shareParams:(NSDictionary *)shareParams resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
   NSLog(@"shareParams-->%@",shareParams);
   NSMutableDictionary *content = [NSMutableDictionary dictionary];
@@ -125,15 +125,15 @@ RCT_EXPORT_METHOD(share:(NSInteger)platformType shareParams:(NSDictionary *)shar
   [ShareSDK share:(SSDKPlatformType)platformType parameters:content onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {
     switch (state) {
       case SSDKResponseStateFail:
-        [self sendEventWithName:@"fail" body:@{@"error":[error description] }];
+        reject(@"share failed", @"failed", error);
         break;
         
       case SSDKResponseStateCancel:
-        [self sendEventWithName:@"cancel" body:@{@"error": @"取消分享" }];
+        resolve(@{@"cancel": @YES});
         break;
         
       case SSDKResponseStateSuccess:
-        [self sendEventWithName:@"success" body:@{@"rawdata":[contentEntity rawData] }];
+        resolve(@{@"data": userData});
         break;
         
       default:
@@ -170,27 +170,24 @@ RCT_REMAP_METHOD(isClientValid,
 }
 
 #pragma mark 授权
-RCT_EXPORT_METHOD(authorize:(NSInteger)platformType)
+RCT_EXPORT_METHOD(authorize:(NSInteger)platformType resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
   [ShareSDK authorize:(SSDKPlatformType)platformType settings:nil onStateChanged:^(SSDKResponseState state, SSDKUser *user, NSError *error) {
     switch (state) {
       case SSDKResponseStateFail:
-        // TODO callback 第二个参数为数组，将返回值全部都丢在这个数组中
-        //callback(@[[error description]]);
-        
-        [self sendEventWithName:@"fail" body:@{@"error":[error description] }];
+        reject(@"authorize failed", @"failed", error);
         break;
         
       case SSDKResponseStateCancel:
-        [self sendEventWithName:@"cancel" body:@{@"error":@"取消分享" }];
+        resolve(@{@"cancel": @YES});
         break;
         
-      case SSDKResponseStateSuccess:
-        //callback(@[[NSNull null],[contentEntity rawData]]);
-        [self sendEventWithName:@"success" body:@{@"rawdata":[user rawData] }];
-        
-        NSLog(@"success");
+      case SSDKResponseStateSuccess: {
+        NSMutableDictionary *result = user.rawData.mutableCopy;
+        [result addEntriesFromDictionary:user.credential.rawData];
+        resolve(@{@"data": result.copy});
         break;
+      }
         
       default:
         break;
@@ -199,44 +196,41 @@ RCT_EXPORT_METHOD(authorize:(NSInteger)platformType)
 }
 
 #pragma mark 检查平台是否已经授权
-RCT_EXPORT_METHOD(hasAuthorized:(NSInteger)platformType)
+RCT_EXPORT_METHOD(hasAuthorized:(NSInteger)platformType resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
-  [ShareSDK hasAuthorized:platformType];
+  resolve(@([ShareSDK hasAuthorized:platformType]));
 }
 
 #pragma mark 取消授权
-RCT_EXPORT_METHOD(cancelAuthorize:(NSInteger)platformType)
+RCT_EXPORT_METHOD(cancelAuthorize:(NSInteger)platformType resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
   [ShareSDK cancelAuthorize:(SSDKPlatformType)platformType];
+  resolve(@YES);
 }
 
 #pragma mark 获取用户信息
-RCT_EXPORT_METHOD(getUserInfo:(NSInteger)platformType)
+RCT_EXPORT_METHOD(getUserInfo:(NSInteger)platformType resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
   [ShareSDK getUserInfo:platformType onStateChanged:^(SSDKResponseState state, SSDKUser *user, NSError *error) {
     switch (state) {
       case SSDKResponseStateFail:
-        // TODO callback 第二个参数为数组，将返回值全部都丢在这个数组中
-        //callback(@[[error description]]);
-        
-        [self sendEventWithName:@"fail" body:@{@"error":[error description] }];
+        reject(@"getUserInfo failed", @"failed", error);
         break;
         
       case SSDKResponseStateCancel:
-        [self sendEventWithName:@"cancel" body:@{@"error":@"取消分享" }];
+        resolve(@{@"cancel": @YES});
         break;
         
-      case SSDKResponseStateSuccess:
-        //callback(@[[NSNull null],[contentEntity rawData]]);
-        [self sendEventWithName:@"success" body:@{@"rawdata":[user rawData] }];
-        
-        NSLog(@"success");
+      case SSDKResponseStateSuccess: {
+        NSMutableDictionary *result = user.rawData.mutableCopy;
+        [result addEntriesFromDictionary:user.credential.rawData];
+        resolve(@{@"data": result.copy});
         break;
+      }
         
       default:
         break;
     }
-    
   }];
 }
 

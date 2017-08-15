@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    View, ActivityIndicator, Image, Animated, NativeSyntheticEvent, NativeScrollEvent, StatusBar,
+    View, ActivityIndicator, Image, Animated, NativeSyntheticEvent, NativeScrollEvent, StatusBarProperties,
     StyleSheet, ViewStyle, TextStyle, Dimensions, Platform
 } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
@@ -12,7 +12,7 @@ import OverlayButton from '../components/base/OverlayButton';
 import WhatsNew from '../components/base/WhatsNew';
 import { AppState } from '../reducers';
 import { HomeState } from '../reducers/home';
-import { Feed, FeedType, HeadLine } from '../interfaces';
+import { Feed, FeedType } from '../interfaces';
 import connectComponent, { ConnectComponentProps } from '../utils/connectComponent';
 import { containerStyle } from '../utils/container';
 import SplashScreen from 'react-native-smart-splash-screen';
@@ -44,6 +44,13 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
     private lastScrollPosition = 0;
     private overlayVisible = true;
     private scrollStarted = false;
+
+    public static navigationOptions = {
+        statusbar: {
+            barStyle: 'light-content',
+            backgroundColor: 'rgba(0,0,0,0)'
+        } as StatusBarProperties
+    };
 
     constructor(props) {
         super(props);

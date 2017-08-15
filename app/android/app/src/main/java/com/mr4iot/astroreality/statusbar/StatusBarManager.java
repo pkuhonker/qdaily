@@ -50,39 +50,51 @@ public class StatusBarManager extends ReactContextBaseJavaModule {
         }
     }
 
-    private void setMIUIStatusBarDarkMode(boolean darkmode) {
-        Class<? extends Window> clazz = getCurrentActivity().getWindow().getClass();
-        try {
-            int darkModeFlag = 0;
-            Class<?> layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
-            Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
-            darkModeFlag = field.getInt(layoutParams);
-            Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
-            extraFlagField.invoke(getCurrentActivity().getWindow(), darkmode ? darkModeFlag : 0, darkModeFlag);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private void setMIUIStatusBarDarkMode(final boolean darkmode) {
+        final Activity activity = getCurrentActivity();
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Class<? extends Window> clazz = activity.getWindow().getClass();
+                try {
+                    int darkModeFlag = 0;
+                    Class<?> layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
+                    Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
+                    darkModeFlag = field.getInt(layoutParams);
+                    Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
+                    extraFlagField.invoke(activity.getWindow(), darkmode ? darkModeFlag : 0, darkModeFlag);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
-    private void setFlymeStatusBarDarkMode(boolean darkmode) {
-        Window window = getCurrentActivity().getWindow();
-        try {
-            WindowManager.LayoutParams lp = window.getAttributes();
-            Field darkFlag = WindowManager.LayoutParams.class.getDeclaredField("MEIZU_FLAG_DARK_STATUS_BAR_ICON");
-            Field meizuFlags = WindowManager.LayoutParams.class.getDeclaredField("meizuFlags");
-            darkFlag.setAccessible(true);
-            meizuFlags.setAccessible(true);
-            int bit = darkFlag.getInt(null);
-            int value = meizuFlags.getInt(lp);
-            if (darkmode) {
-                value |= bit;
-            } else {
-                value &= ~bit;
+    private void setFlymeStatusBarDarkMode(final boolean darkmode) {
+        final Activity activity = getCurrentActivity();
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Window window = activity.getWindow();
+                try {
+                    WindowManager.LayoutParams lp = window.getAttributes();
+                    Field darkFlag = WindowManager.LayoutParams.class.getDeclaredField("MEIZU_FLAG_DARK_STATUS_BAR_ICON");
+                    Field meizuFlags = WindowManager.LayoutParams.class.getDeclaredField("meizuFlags");
+                    darkFlag.setAccessible(true);
+                    meizuFlags.setAccessible(true);
+                    int bit = darkFlag.getInt(null);
+                    int value = meizuFlags.getInt(lp);
+                    if (darkmode) {
+                        value |= bit;
+                    } else {
+                        value &= ~bit;
+                    }
+                    meizuFlags.setInt(lp, value);
+                    window.setAttributes(lp);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-            meizuFlags.setInt(lp, value);
-            window.setAttributes(lp);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
     }
 }

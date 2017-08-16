@@ -28,7 +28,7 @@ const fetchErrorMiddleware: Middleware = store => next => action => {
             payload.message.indexOf('Network request failed') >= 0) {
             showToast('网络请求失败');
         } else {
-            showToast('未知错误: ' + payload);
+            showToast('网络请求错误: ' + payload.message);
         }
     }
     next(action);

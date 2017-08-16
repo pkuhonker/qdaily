@@ -20,6 +20,7 @@
     "flux-standard-action": "^1.2.0",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
+    "numbro": "^1.11.0",
     "query-string": "^4.3.4",
     "react": "16.0.0-alpha.6",
     "react-native": "~0.44.3",

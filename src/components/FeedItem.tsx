@@ -1,5 +1,6 @@
 import * as React from 'react';
 import moment from 'moment';
+import numbro from 'numbro';
 import {
     StyleSheet, Text, View, Image, Platform,
     ViewStyle, TextStyle, ImageStyle
@@ -26,17 +27,21 @@ export default class FeedItem extends React.Component<FeedProp, any> {
         return moment(time * 1000, undefined, 'zh-cn').fromNow();
     }
 
+    private formatNumber(num: number) {
+        return numbro(num).format('0.[0]a').toUpperCase();
+    }
+
     private renderFooter() {
         const { feed } = this.props;
 
         const comment = feed.post.comment_count ? [
             <Icon key='icon' type='EvilIcons' style={[styles.postDetailIcon]} name='comment' />,
-            <Text key='text' style={[styles.postDetailText]}>{feed.post.comment_count}</Text>
+            <Text key='text' style={[styles.postDetailText]}>{this.formatNumber(feed.post.comment_count)}</Text>
         ] : null;
 
         const praise = feed.post.praise_count ? [
             <Icon key='icon' type='EvilIcons' style={[styles.postDetailIcon]} name='heart' />,
-            <Text key='text' style={[styles.postDetailText]}>{feed.post.praise_count}</Text>
+            <Text key='text' style={[styles.postDetailText]}>{this.formatNumber(feed.post.praise_count)}</Text>
         ] : null;
 
         return (

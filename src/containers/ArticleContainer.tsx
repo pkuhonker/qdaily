@@ -1,3 +1,4 @@
+import numbro from 'numbro';
 import * as React from 'react';
 import {
     View, Image, Text, Animated, Easing, NavState, StyleSheet, ViewStyle, TextStyle, Platform, StatusBarProperties,
@@ -37,6 +38,7 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
 
     public static navigationOptions = {
         statusbar: {
+            barStyle: 'light-content',
             backgroundColor: 'rgba(0,0,0,0)'
         } as StatusBarProperties
     };
@@ -99,8 +101,10 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
         }
         if (Platform.OS === 'ios' || position !== undefined) {
             if (direction === 'top' || position < 200) {
+                CustomStatusBar.setBarStyle('light-content');
                 CustomStatusBar.setBackgroundColor('rgba(0,0,0,0)', true);
             } else {
+                CustomStatusBar.setBarStyle('dark-content');
                 CustomStatusBar.setBackgroundColor('#fff', true);
             }
         }
@@ -202,13 +206,14 @@ class ArticleContainer extends React.Component<Props, ArticleContainerState> {
     }
 
     private renderBadgeIcon(name: string, onPress: () => void, badge?: number) {
-        if (badge === 0) {
-            badge = undefined;
+        var badgeText = "";
+        if (badge > 0) {
+            badgeText = numbro(badge).format('0.[0]a').toUpperCase();
         }
         return (
             <View style={styles.badge}>
                 <Icon style={styles.badgeIcon} type='EvilIcons' name={name} onPress={onPress.bind(this)} />
-                <Text style={styles.badgeText}>{badge}</Text>
+                <Text style={styles.badgeText}>{badgeText}</Text>
             </View>
         );
     }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Animated, View, Image, TouchableWithoutFeedback, Easing, StyleSheet, ViewStyle, Dimensions } from 'react-native';
+import { Animated, View, Image, TouchableWithoutFeedback, Easing, StyleSheet, ViewStyle, Dimensions, StatusBarProperties } from 'react-native';
 import * as Toast from './base/Toast';
 import { NavigationScreenProps } from 'react-navigation';
 import { ShareItem } from '../share';
@@ -12,13 +12,19 @@ export type ShareViewProps = NavigationScreenProps<{
 
 const windowHeight = Dimensions.get('window').height;
 const itemSize = 77;
-const itemMargin = (Dimensions.get('window').width - 77 * 3) / 8;
+const itemMargin = (Dimensions.get('window').width - itemSize * 3) / 8;
 
 interface ShareViewState {
     containerY: Animated.Value;
 }
 
 export default class ShareView extends React.Component<ShareViewProps, ShareViewState> {
+    public static navigationOptions = {
+        statusbar: {
+            barStyle: 'light-content',
+            backgroundColor: 'rgba(0,0,0,0)'
+        } as StatusBarProperties
+    };
 
     constructor(props) {
         super(props);

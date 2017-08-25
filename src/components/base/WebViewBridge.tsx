@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { WebView, WebViewProperties, NativeSyntheticEvent, WebViewMessageEventData, Platform } from 'react-native';
+import { WebView, WebViewProperties, NativeSyntheticEvent, NavState, WebViewMessageEventData, Platform } from 'react-native';
 
 let bridgeScript = require('../../../res/other/bridge.js');
 
@@ -38,9 +38,27 @@ export interface WebViewBridgeProperties extends WebViewProperties {
     onBridgeMessage?: (data: WebViewMessge) => void;
 }
 
-export default class WebViewBridge extends React.Component<WebViewBridgeProperties, any> {
+interface WebViewBridgeState {
+    androidLoaded: boolean;
+}
+
+export default class WebViewBridge extends React.Component<WebViewBridgeProperties, WebViewBridgeState> {
 
     private webview: WebView;
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            androidLoaded: false
+        };
+    }
+
+    // fix android document.clientWidth == 0 when source is html string.
+    private needRelayout() {
+        return Platform.OS === 'android' &&
+            !this.state.androidLoaded &&
+            (typeof this.props.source === 'object' && (this.props.source as any).html);
+    }
 
     private onMessage(event: NativeSyntheticEvent<WebViewMessageEventData>) {
         const message: WebViewMessge = JSON.parse(event.nativeEvent.data);
@@ -56,20 +74,35 @@ export default class WebViewBridge extends React.Component<WebViewBridgeProperti
         }
     }
 
+    private onLoadEnd(event: NavState) {
+        if (this.needRelayout()) {
+            this.setState({ androidLoaded: true });
+            return;
+        }
+        if (this.props.onLoadEnd) {
+            // wait the html page layout complete.
+            setTimeout(() => {
+                this.props.onLoadEnd(event);
+            }, 0);
+        }
+    }
+
     public sendToWebView(name: string, options?: any) {
         this.webview.postMessage(JSON.stringify({ name, options }));
     }
 
     public render() {
-        const { injectedJavaScript = '', ...props } = this.props;
+        const { injectedJavaScript = '', source, ...props } = this.props;
 
         return (
             <WebView
                 {...props}
+                source={this.needRelayout() ? { html: '' } : source}
                 ref={ref => this.webview = ref as any}
                 mixedContentMode='always'   // fix tencent video error: http://blog.csdn.net/qq_16472137/article/details/54346078
                 injectedJavaScript={bridgeScript + injectedJavaScript}
                 onMessage={this.onMessage.bind(this)}
+                onLoadEnd={this.onLoadEnd.bind(this)}
             >
             </WebView>
         );

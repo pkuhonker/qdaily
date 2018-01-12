@@ -51,7 +51,7 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
             index: 0,
             routes: [
                 { key: 'news', title: 'NEWS' },
-                // { key: 'labs', title: 'LABS' }
+                { key: 'labs', title: 'LABS' }
             ],
             overlayOpacity: new Animated.Value(1)
         };
@@ -59,8 +59,8 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
 
     private fetchHome() {
         this.refreshNews();
-        // this.refreshPapers();
-        // this.props.actions.getLeftSidebar();
+        this.refreshPapers();
+        this.props.actions.getLeftSidebar();
     }
 
     private onWhatsNewExit() {
@@ -186,8 +186,8 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
         let headlineView: JSX.Element[];
         if (headline) {
             headlineView = [
-                <HeadLineCard headline={headline} onPress={() => this.toDetail(headline)} />,
-                <View style={{ height: 10, backgroundColor: '#f2f2f2' }} />
+                <HeadLineCard key={0} headline={headline} onPress={() => this.toDetail(headline)} />,
+                <View key={1} style={{ height: 10, backgroundColor: '#f2f2f2' }} />
             ];
         }
 
@@ -288,7 +288,7 @@ class HomeContainer extends React.Component<Props, HomeContainerState> {
                     renderHeader={this.renderTabBar.bind(this)}
                     onRequestChangeTab={index => this.setState({ index })}
                 />
-                <OverlayButton style={{ opacity: 0 }} onPress={() => {/* this.toDash() */ }}>
+                <OverlayButton style={{ opacity: 1 }} onPress={() => { this.toDash(); }}>
                     <Animated.View style={{ opacity: overlayOpacity }}>
                         <Image style={{ width: 54, height: 54, borderRadius: 27 }} source={require('../../res/imgs/icon_round_logo.png')}>
                         </Image>
@@ -309,7 +309,6 @@ const styles = StyleSheet.create({
 const tabBarStyles = StyleSheet.create({
     container: {
         backgroundColor: '#ffffff',
-        height: 0
     } as ViewStyle,
     tab: {
         padding: Platform.OS === 'android' ? 6 : 4,
